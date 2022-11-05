@@ -67,13 +67,13 @@ public class GridController : MonoBehaviour
 
     private void AddLine(Color materialColor, Vector3 position, Vector3 scale)
     {
-        var cube = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        cube.name = "GridLine";
-        cube.transform.parent = transform;
+        var line = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        line.name = "GridLine";
+        line.transform.parent = transform;
 
-        var meshRenderer = cube.GetComponent<MeshRenderer>();
+        var meshRenderer = line.GetComponent<MeshRenderer>();
         meshRenderer.material.color = materialColor;
-        cube.transform.position = (transform.position + position);
-        cube.transform.localScale = scale;
+        line.transform.position = (transform.position + position);
+        line.transform.localScale = scale;
     }
 }
