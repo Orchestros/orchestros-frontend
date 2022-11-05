@@ -453,6 +453,7 @@ GameObject:
   - component: {fileID: 298125992}
   - component: {fileID: 298125991}
   - component: {fileID: 298125996}
+  - component: {fileID: 298125997}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -604,6 +605,19 @@ MonoBehaviour:
   cylinder: {fileID: 60410827}
   cube: {fileID: 159618492}
   isAdding: 0
+--- !u!114 &298125997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298125989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 177870b5b4e146d8984a3b71116e645c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minFieldOfView: 3
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,6 +841,7 @@ GameObject:
   - component: {fileID: 1198607323}
   - component: {fileID: 1198607322}
   - component: {fileID: 1198607321}
+  - component: {fileID: 1198607325}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -913,6 +928,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1198607325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198607320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b2019207cbe6d4581a83717642a214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1199914520
 GameObject:
   m_ObjectHideFlags: 0

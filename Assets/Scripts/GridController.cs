@@ -3,8 +3,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class GridController : MonoBehaviour
-{        
-    private float fieldOfView = 10;
+{
+    public float fieldOfViewLineSpacingRatio = 5;
+    public float lineRelativeWidth = 0.00005f;
+    private float _fieldOfView = 10;
     private Camera _camera;
     private MeshFilter _meshFilter;
 
@@ -13,15 +15,15 @@ public class GridController : MonoBehaviour
     {
         _meshFilter = GetComponent<MeshFilter>();
         _camera = Camera.main;
-        fieldOfView = _camera!.fieldOfView;
+        _fieldOfView = _camera!.fieldOfView;
         UpdateGrid();
     }
 
     private void Update()
     {
-        if (Math.Abs(fieldOfView - _camera.fieldOfView) > 0.01)
+        if (Math.Abs(_fieldOfView - _camera.fieldOfView) > 0.01)
         {
-            fieldOfView = _camera.fieldOfView;
+            _fieldOfView = _camera.fieldOfView;
             UpdateGrid();
         }
     }
@@ -43,18 +45,20 @@ public class GridController : MonoBehaviour
         var halfPlaneWidth = localScale.x * bounds.size.x / 2;
         var halfPlaneHeight = localScale.z * bounds.size.z / 2;
 
+        var lineSpacing = _fieldOfView / fieldOfViewLineSpacingRatio;
+        var lineWidth = lineRelativeWidth*lineSpacing;
+        
+        var scaleX = new Vector3(lineWidth, 1, 1);
 
-        var scaleX = new Vector3(0.002f, 1, 1);
-
-        for (var x = -halfPlaneWidth; x < halfPlaneWidth; x += fieldOfView)
+        for (var x = -halfPlaneWidth; x < halfPlaneWidth; x += lineSpacing)
         {
             var point = new Vector3(x, 0.01f, 0);
             AddLine(materialColor, point, scaleX);
         }
 
-        var scaleZ = new Vector3(1, 1, 0.002f);
+        var scaleZ = new Vector3(1, 1, lineWidth);
 
-        for (var z = -halfPlaneHeight; z < halfPlaneHeight; z += fieldOfView)
+        for (var z = -halfPlaneHeight; z < halfPlaneHeight; z += lineSpacing)
         {
             var point = new Vector3(0, 0.01f, z);
             AddLine(materialColor, point, scaleZ);

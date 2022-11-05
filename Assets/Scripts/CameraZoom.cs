@@ -3,6 +3,7 @@
 public class CameraZoom : MonoBehaviour
 {
 
+    public float minFieldOfView = 2;
     private float _maxFieldOfView;
 
     private Camera _camera;
@@ -23,6 +24,9 @@ public class CameraZoom : MonoBehaviour
             if (_maxFieldOfView < newFieldOfView)
             {
                 newFieldOfView = _maxFieldOfView;
+            } else if (newFieldOfView < minFieldOfView)
+            {
+                newFieldOfView = minFieldOfView;
             }
             
             _camera.fieldOfView = newFieldOfView;
