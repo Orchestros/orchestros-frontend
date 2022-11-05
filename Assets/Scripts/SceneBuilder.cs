@@ -1,21 +1,52 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SceneBuilder : MonoBehaviour
 {
-    public Button button1;
-    public Button button2;
+    public Button addCylinderButton;
+    public Button addCubeButton;
+    public GameObject cylinder;
+    public GameObject cube;
+
+    public bool isAdding;
 
     // Start is called before the first frame update
     private void Start()
     {
-        button1.onClick.AddListener(X);
+        addCylinderButton.onClick.AddListener(AddCylinder);
+        addCubeButton.onClick.AddListener(AddCube);
     }
 
-    private static void X()
+
+    private void AddCylinder()
     {
-        Debug.Log("OAOA");
+        AddObject(cylinder);
     }
 
-    // Update is called once per frame
+    private void AddCube()
+    {
+        AddObject(cube);
+    }
+    
+
+    private void AddObject(GameObject sourceObject)
+    {
+        if (isAdding) return;
+
+        isAdding = true;
+
+        var newObject = Instantiate(sourceObject, sourceObject.transform.position,
+            sourceObject.transform.rotation);
+
+        newObject.layer = 2; // invisible to raytracing in layer 2 
+
+        var c = newObject.AddComponent<ObjectAdder>();
+        c.OnCompleted = OnCompleted;
+    }
+
+    private void OnCompleted()
+    {
+        isAdding = false;
+    }
 }
