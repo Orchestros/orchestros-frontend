@@ -8,11 +8,13 @@ public class ScaleIndicator : MonoBehaviour
     public GameObject text;
     public GameObject scale;
     private Camera _camera;
-    
+    private TextMeshProUGUI _innerTextMesh;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        _innerTextMesh = text.GetComponent<TextMeshProUGUI>();
         _camera = Camera.main;
     }
 
@@ -25,7 +27,7 @@ public class ScaleIndicator : MonoBehaviour
         var absDelta = Math.Abs(startX - endX);
 
         var t = absDelta / maxScaleViewportRatio;
-        text.GetComponent<TextMeshProUGUI>().text = t.ToString("0.00") + " m";
+        _innerTextMesh.text = t.ToString("0.00") + " m";
         
     }
 }
