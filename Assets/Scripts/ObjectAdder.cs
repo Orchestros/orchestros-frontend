@@ -41,7 +41,9 @@ public class ObjectAdder : MonoBehaviour
             OnCompleted();
         } else if (Input.GetKey(KeyCode.Z))
         {
-            gameObject.layer = 1;
+            var o = gameObject;
+            o.layer = 1;
+            o.tag = "SelectableObject";
             _meshRenderer.material.color = _initialColor;
             Destroy(_planeHandler);
             OnCompleted();
