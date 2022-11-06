@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// Controller allowing to select one or many objets with the "SelectableObject" tag.
@@ -176,14 +177,16 @@ public class SelectionController : MonoBehaviour
     /// </summary>
     private void UpdateSelection()
     {
+        var relativePoint = _camera.ScreenToViewportPoint(Input.mousePosition);
+
         _panelRectTransform.offsetMin = new Vector2(
-            Math.Min(Input.mousePosition.x, _startPointCanvas.x),
-            Math.Min(Input.mousePosition.y, _startPointCanvas.y)
-        );
-        _panelRectTransform.offsetMax = new Vector2(
-            Math.Max(Input.mousePosition.x, _startPointCanvas.x),
-            Math.Max(Input.mousePosition.y, _startPointCanvas.y)
-        ) - _rectParent.size;
+            Math.Min(relativePoint.x, _startPointCanvas.x),
+            Math.Min(relativePoint.y, _startPointCanvas.y)
+        ) * _rectParent.size;
+        _panelRectTransform.offsetMax = (_rectParent.size - new Vector2(
+            Math.Max(relativePoint.x, _startPointCanvas.x),
+            Math.Max(relativePoint.y, _startPointCanvas.y)
+        ) * _rectParent.size)*-1;
     }
 
     /// <summary>
@@ -192,7 +195,7 @@ public class SelectionController : MonoBehaviour
     private void StartSelection()
     {
         _isCurrentlySelecting = true;
-        _startPointCanvas = Input.mousePosition;
+        _startPointCanvas = _camera.ScreenToViewportPoint(Input.mousePosition);
         selectionPanel.SetActive(true);
     }
 }

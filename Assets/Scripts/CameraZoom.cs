@@ -3,8 +3,8 @@
 public class CameraZoom : MonoBehaviour
 {
 
-    public float minFieldOfView = 2;
-    private float _maxFieldOfView;
+    public float minOrthographicSize = 10;
+    private float _maxOrthographicSize;
 
     private Camera _camera;
     
@@ -12,24 +12,24 @@ public class CameraZoom : MonoBehaviour
     private void Start()
     {
         _camera = Camera.main;
-        if (_camera != null) _maxFieldOfView = _camera.fieldOfView;
+        if (_camera != null) _maxOrthographicSize = _camera.orthographicSize;
     }
 
     private void Update()
     {
         if (Input.mouseScrollDelta.y != 0)
         {
-            var newFieldOfView = _camera.fieldOfView + Input.mouseScrollDelta.y;
+            var orthographicSize = _camera.orthographicSize + Input.mouseScrollDelta.y*5;
 
-            if (_maxFieldOfView < newFieldOfView)
+            if (_maxOrthographicSize < orthographicSize)
             {
-                newFieldOfView = _maxFieldOfView;
-            } else if (newFieldOfView < minFieldOfView)
+                orthographicSize = _maxOrthographicSize;
+            } else if (orthographicSize < minOrthographicSize)
             {
-                newFieldOfView = minFieldOfView;
+                orthographicSize = minOrthographicSize;
             }
             
-            _camera.fieldOfView = newFieldOfView;
+            _camera.orthographicSize = orthographicSize;
         }
     }
 }

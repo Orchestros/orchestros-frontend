@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -619,7 +619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177870b5b4e146d8984a3b71116e645c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minFieldOfView: 3
+  minOrthographicSize: 10
 --- !u!114 &298125998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -781,8 +781,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 250
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -971,8 +971,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b2019207cbe6d4581a83717642a214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldOfViewLineSpacingRatio: 1
-  lineRelativeWidth: 0.00002
+  lineCount: 100
+  lineWidth: 0.001
 --- !u!114 &1198607326
 MonoBehaviour:
   m_ObjectHideFlags: 0
