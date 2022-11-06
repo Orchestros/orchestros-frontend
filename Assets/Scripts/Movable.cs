@@ -1,8 +1,14 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
+using MouseButton = Unity.VisualScripting.MouseButton;
 
 public class Movable : MonoBehaviour
 {
+    private Vector3 _dragOrigin;
     public float speed = 0.5f;
+
+    
     // Update is called once per frame
     private void Update()
     {

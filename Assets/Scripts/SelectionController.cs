@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// Controller allowing to select one or many objets with the "SelectableObject" tag.
@@ -183,10 +182,10 @@ public class SelectionController : MonoBehaviour
             Math.Min(relativePoint.x, _startPointCanvas.x),
             Math.Min(relativePoint.y, _startPointCanvas.y)
         ) * _rectParent.size;
-        _panelRectTransform.offsetMax = (_rectParent.size - new Vector2(
+        _panelRectTransform.offsetMax = _rectParent.size * (new Vector2(
             Math.Max(relativePoint.x, _startPointCanvas.x),
             Math.Max(relativePoint.y, _startPointCanvas.y)
-        ) * _rectParent.size)*-1;
+        )  - Vector2.one);
     }
 
     /// <summary>
