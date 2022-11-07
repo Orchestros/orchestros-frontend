@@ -1,7 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-using MouseButton = Unity.VisualScripting.MouseButton;
 
 public class Movable : MonoBehaviour
 {
