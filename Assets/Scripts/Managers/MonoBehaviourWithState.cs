@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Managers
@@ -19,5 +21,7 @@ namespace Managers
             activationEvent.Invoke(false);
             IsActive = false;
         }
+
+        public abstract bool ShouldBeEnabled(HashSet<Type> activeStates);
     }
 }

@@ -1,9 +1,7 @@
-using System;
-using System.Security.Cryptography;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI
 {
@@ -11,24 +9,40 @@ namespace UI
     {
         private FormConfiguration _configuration;
 
-        public GameObject titlePrefab;
         public GameObject textFieldPrefab;
-        public GameObject closeButtonPrefab;
-        public GameObject saveButtonPrefab;
 
+        private readonly Dictionary<string, TMP_InputField> _fields = new();
 
-        void SetFormConfiguration(FormConfiguration configuration)
+        public void OnSaveClicked()
+        {
+            _configuration.OnSave(
+                _fields.ToDictionary((pair => pair.Key), pair => pair.Value.text)
+            );
+        }
+
+        public void OnCancelClicked()
+        {
+            _configuration.OnCancel();
+        }
+
+        public void SetFormConfiguration(FormConfiguration configuration)
         {
             _configuration = configuration;
 
-            foreach (Transform child in gameObject.transform)
+            transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = _configuration.Title;
+
+            var inputsZone = transform.GetChild(1);
+
+            foreach (var item in configuration.Items)
             {
-                Destroy(child.gameObject);
+                var inputField = Instantiate(textFieldPrefab, inputsZone, false);
+                inputField.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = item.Label;
+                var tmpInputField = inputField.GetComponentInChildren<TMP_InputField>();
+                tmpInputField.text = item.DefaultValue;
+                _fields[item.ID] = tmpInputField;
             }
 
-            var g = Instantiate(titlePrefab, Vector3.zero, Quaternion.identity);
-            g.GetComponentInChildren<TextMeshProUGUI>().text = _configuration.Title;
-            g.transform.parent = transform;
+            transform.localPosition = new Vector3(289, 84);
         }
     }
 }

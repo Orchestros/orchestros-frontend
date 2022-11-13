@@ -556,6 +556,7 @@ RectTransform:
   - {fileID: 1438437372}
   - {fileID: 1555456248}
   - {fileID: 200322570}
+  - {fileID: 1411703715}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -577,6 +578,56 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minOrthographicSize: 10
+--- !u!1 &377606158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 377606159}
+  - component: {fileID: 377606160}
+  m_Layer: 0
+  m_Name: EditFormManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &377606159
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377606158}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2126056234}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &377606160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377606158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 063a61469b771844189535e9dceb0018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activationEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  selectionManager: {fileID: 1878162650}
+  formPrefab: {fileID: 638590108202579776, guid: 39cfabf199492b44d88bf177fac16d64, type: 3}
+  canvas: {fileID: 298125989}
 --- !u!1 &471223562
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,7 +750,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 501635684}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 377606160}
+        m_TargetAssemblyTypeName: Managers.EditFormManager, Assembly-CSharp
+        m_MethodName: OpenFormForSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &501635684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1364,6 +1427,69 @@ MonoBehaviour:
   lineCount: 100
   lineWidth: 0.001
   smallToLargeLine: 3
+--- !u!1 &1411703714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1411703715}
+  - component: {fileID: 1411703716}
+  m_Layer: 5
+  m_Name: Row
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1411703715
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411703714}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 298125995}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1411703716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411703714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1418512349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1424,8 +1550,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c77dbf69f282d349b43008e85747694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectManager: {fileID: 1449716517}
-  selectionManager: {fileID: 1878162650}
 --- !u!1 &1438437371
 GameObject:
   m_ObjectHideFlags: 0
@@ -1642,6 +1766,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb3714b4a7204a1e9fe653943e97ee95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activationEvent:
+    m_PersistentCalls:
+      m_Calls: []
   selectedTexture: {fileID: 2800000, guid: ae461cb788a538b449e1ca389d4388e2, type: 3}
   selectionPanel: {fileID: 1438437371}
   canvas: {fileID: 298125989}
@@ -2023,6 +2150,7 @@ Transform:
   - {fileID: 1418512354}
   - {fileID: 1449716518}
   - {fileID: 1878162649}
+  - {fileID: 377606159}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

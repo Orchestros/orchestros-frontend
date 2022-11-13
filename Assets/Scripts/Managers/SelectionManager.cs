@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using Object = UnityEngine.Object;
 
 namespace Managers
 {
     /// <summary>
     /// Controller allowing to select one or many objets with the "SelectableObject" tag.
     /// </summary>
-    public class SelectionManager : MonoBehaviour
+    public class SelectionManager : MonoBehaviourWithState
     {
         // The texture passed to the Highlighted component.
         public Texture selectedTexture;
@@ -65,6 +67,7 @@ namespace Managers
         {
             if (Input.GetMouseButtonDown(0))
             {
+                OnActivate();
                 OnMouseClicked();
             }
 
@@ -89,17 +92,27 @@ namespace Managers
         {
             var ray = _camera.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out var hit) && !_isCurrentlySelecting)
+            var raycast = Physics.Raycast(ray, out var hit);
+            
+            
+            if (raycast && !_isCurrentlySelecting)
             {
                 var colliderGameObject = hit.collider.gameObject;
-                ClearSelectionIfNeeded();
+                
+                Debug.Log(colliderGameObject);
+
 
                 if (colliderGameObject.CompareTag("SelectableObject"))
-                {
+                {                ClearSelectionIfNeeded();
+
                     ToggleObjectSelection(colliderGameObject);
-                }
-                else
+                    OnDeactivate();
+                } else if (  EventSystem.current.IsPointerOverGameObject())
                 {
+                  OnDeactivate();  
+                } else 
+                {                ClearSelectionIfNeeded();
+
                     _startHitPoint = hit.point;
                     StartSelection();
                 }
@@ -172,6 +185,7 @@ namespace Managers
 
             selectionPanel.SetActive(false);
             _isCurrentlySelecting = false;
+            OnDeactivate();
         }
 
         /// <summary>
@@ -188,7 +202,7 @@ namespace Managers
             _panelRectTransform.offsetMax = _rectParent.size * (new Vector2(
                 Math.Max(relativePoint.x, _startPointCanvas.x),
                 Math.Max(relativePoint.y, _startPointCanvas.y)
-            )  - Vector2.one);
+            ) - Vector2.one);
         }
 
         /// <summary>
@@ -204,6 +218,22 @@ namespace Managers
         private void OnDisable()
         {
             _isCurrentlySelecting = false;
+        }
+
+        public override bool ShouldBeEnabled(HashSet<Type> activeStates)
+        {
+            var prohibitedStates = new HashSet<Type>()
+            {
+                typeof(ObjectManager),
+                typeof(EditFormManager)
+            };
+            
+            return !activeStates.Any(x => prohibitedStates.Contains(x));
+        }
+
+        public List<GameObject> GetSelectedItems()
+        {
+            return _selectedObjects.Keys.ToList();
         }
     }
 }

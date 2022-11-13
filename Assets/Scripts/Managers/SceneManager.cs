@@ -1,24 +1,42 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Managers
 {
     public class SceneManager : MonoBehaviour
     {
-        public ObjectManager objectManager;
-        public SelectionManager selectionManager;
+        private HashSet<Type> _activeStates = new();
+        private MonoBehaviourWithState[] _states;
 
-        
-        
         private void Start()
         {
-            objectManager.activationEvent.AddListener(OnStateActivationChanged);
+            _states = Resources.FindObjectsOfTypeAll<MonoBehaviourWithState>();
+
+            foreach (var state in _states)
+            {
+                state.activationEvent.AddListener(isActive => OnStateActivationChanged(state, isActive));
+            }
+            
+            Debug.Log(_states.Length);
         }
 
-        private void OnStateActivationChanged(bool isActive)
+        private void OnStateActivationChanged(MonoBehaviourWithState state, bool isActive)
         {
-            selectionManager.enabled = !isActive;
-            Debug.Log(selectionManager.enabled);
+            if (isActive)
+            {
+                _activeStates.Add(state.GetType());
+            }
+            else
+            {
+                _activeStates.Remove(state.GetType());
+            }
+
+
+            foreach (var monoBehaviourWithState in _states)
+            {
+                monoBehaviourWithState.enabled = monoBehaviourWithState.ShouldBeEnabled(_activeStates);
+            }
         }
     }
 }

@@ -1,22 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace UI
 {
     public class FormConfiguration
     {
-        FormConfiguration(string title, List<FormConfigurationItem> items)
+        public FormConfiguration(string title, List<FormConfigurationItem> items, Action<Dictionary<string, string>> onSave, Action onCancel)
         {
             Title = title;
             Items = items;
+            OnSave = onSave;
+            OnCancel = onCancel;
         }
 
-        public string Title;
-        public List<FormConfigurationItem> Items;
+        public readonly string Title;
+        public readonly List<FormConfigurationItem> Items;
+        public Action<Dictionary<string, string>> OnSave;
+        public Action OnCancel;
     }
 
     public class FormConfigurationItem
     {
-        FormConfigurationItem(string label, string id, string defaultValue)
+        public FormConfigurationItem(string label, string id, string defaultValue)
         {
             ID = id;
             DefaultValue = defaultValue;

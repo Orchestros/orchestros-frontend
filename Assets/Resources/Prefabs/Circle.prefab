@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7699273442376795076}
   - component: {fileID: 7699273442376795075}
   - component: {fileID: 7699273442376795074}
+  - component: {fileID: -3589327933376382565}
   m_Layer: 0
   m_Name: Circle
   m_TagString: Untagged
@@ -98,3 +99,15 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &-3589327933376382565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7699273442376795073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7af39e80faa64568b5ae0567be281282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

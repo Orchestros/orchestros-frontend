@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Managers
 {
@@ -19,5 +22,14 @@ namespace Managers
             c.OnCompleted = OnDeactivate;
         }
 
+        public override bool ShouldBeEnabled(HashSet<Type> activeStates)
+        {
+            var prohibitedStates = new HashSet<Type>()
+            {
+                typeof(EditFormManager)
+            };
+            
+            return !activeStates.Any(x => prohibitedStates.Contains(x));
+        }
     }
 }
