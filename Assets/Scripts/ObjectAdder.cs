@@ -9,7 +9,7 @@ public class ObjectAdder : MonoBehaviour
     private Camera _mainCamera;
 
     public Action OnCompleted;
-    
+
     private void Start()
     {
         _mainCamera = Camera.main;
@@ -26,18 +26,19 @@ public class ObjectAdder : MonoBehaviour
     void Update()
     {
         var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        
+
         if (Physics.Raycast(ray, out var hit))
         {
             var transformPosition = hit.point;
             transform.position = transformPosition;
         }
-        
+
         if (Input.GetKey(KeyCode.A))
         {
             Destroy(gameObject);
             OnCompleted();
-        } else if (Input.GetKey(KeyCode.Z))
+        }
+        else if (Input.GetKey(KeyCode.Z))
         {
             var o = gameObject;
             o.layer = 1;
@@ -46,6 +47,5 @@ public class ObjectAdder : MonoBehaviour
             Destroy(_planeHandler);
             OnCompleted();
         }
-
     }
 }

@@ -27,7 +27,7 @@ public class ScaleIndicator : MonoBehaviour
         var absDelta = Math.Abs(startX - endX);
 
         var t = absDelta / maxScaleViewportRatio;
-        _innerTextMesh.text = t.ToString("0.00") + " m";
+        _innerTextMesh.text = t.ToString("0.00") + " cm";
         
     }
 }
