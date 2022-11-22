@@ -15,8 +15,8 @@ namespace UI
 
         public readonly string Title;
         public readonly List<FormConfigurationItem> Items;
-        public Action<Dictionary<string, string>> OnSave;
-        public Action OnCancel;
+        public readonly Action<Dictionary<string, string>> OnSave;
+        public readonly Action OnCancel;
     }
 
     public class FormConfigurationItem

@@ -6,7 +6,7 @@ namespace Managers
 {
     public class SceneManager : MonoBehaviour
     {
-        private HashSet<Type> _activeStates = new();
+        private readonly HashSet<Type> _activeStates = new();
         private MonoBehaviourWithState[] _states;
 
         private void Start()

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Numerics;
+using Vector3 = UnityEngine.Vector3;
 
 namespace World.Arena.EditableItem
 {
@@ -28,7 +30,7 @@ namespace World.Arena.EditableItem
                 newRadius = float.Parse(newValues["radius"]);
             }
 
-            localScale.Set(newRadius, localScale.y, newRadius);
+            gameObject.transform.localScale = new Vector3(newRadius, localScale.y, newRadius);
         }
     }
 }

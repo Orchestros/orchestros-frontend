@@ -93,25 +93,29 @@ namespace Managers
             var ray = _camera.ScreenPointToRay(Input.mousePosition);
 
             var raycast = Physics.Raycast(ray, out var hit);
-            
-            
+
+
             if (raycast && !_isCurrentlySelecting)
             {
                 var colliderGameObject = hit.collider.gameObject;
-                
+
                 Debug.Log(colliderGameObject);
 
 
                 if (colliderGameObject.CompareTag("SelectableObject"))
-                {                ClearSelectionIfNeeded();
+                {
+                    ClearSelectionIfNeeded();
 
                     ToggleObjectSelection(colliderGameObject);
                     OnDeactivate();
-                } else if (  EventSystem.current.IsPointerOverGameObject())
+                }
+                else if (EventSystem.current.IsPointerOverGameObject())
                 {
-                  OnDeactivate();  
-                } else 
-                {                ClearSelectionIfNeeded();
+                    OnDeactivate();
+                }
+                else
+                {
+                    ClearSelectionIfNeeded();
 
                     _startHitPoint = hit.point;
                     StartSelection();
@@ -126,14 +130,20 @@ namespace Managers
         {
             if (!Input.GetKey(KeyCode.LeftShift))
             {
-                foreach (var selectedObject in _selectedObjects.Keys.ToList())
-                {
-                    ToggleObjectSelection(selectedObject);
-                }
-
-                _selectedObjects.Clear();
+                ClearSelection();
             }
         }
+
+        private void ClearSelection()
+        {
+            foreach (var selectedObject in _selectedObjects.Keys.ToList())
+            {
+                ToggleObjectSelection(selectedObject);
+            }
+
+            _selectedObjects.Clear();
+        }
+
 
         /// <summary>
         ///     Adds/Removes the colliderGameObject from the selected objects dictionary. The value associated to the
@@ -141,7 +151,7 @@ namespace Managers
         ///     for an optimize deletion once the object is not selected anymore.
         /// </summary>
         /// <param name="colliderGameObject">The object to remove or add to the selected objects dictionary</param>
-        private void ToggleObjectSelection(GameObject colliderGameObject)
+        internal void ToggleObjectSelection(GameObject colliderGameObject)
         {
             if (_selectedObjects.ContainsKey(colliderGameObject))
             {
@@ -227,7 +237,7 @@ namespace Managers
                 typeof(ObjectManager),
                 typeof(EditFormManager)
             };
-            
+
             return !activeStates.Any(x => prohibitedStates.Contains(x));
         }
 

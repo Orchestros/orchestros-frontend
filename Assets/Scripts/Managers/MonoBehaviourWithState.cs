@@ -9,7 +9,7 @@ namespace Managers
     {
         public UnityEvent<bool> activationEvent = new();
 
-        protected bool IsActive = false;
+        protected bool IsActive;
         protected void OnActivate()
         {
             activationEvent.Invoke(true);

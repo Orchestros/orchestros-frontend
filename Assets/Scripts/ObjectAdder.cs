@@ -1,29 +1,36 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ObjectAdder : MonoBehaviour
 {
-    private MeshRenderer _meshRenderer;
-    private ObjectAdder _planeHandler;
-    private Color _initialColor;
+    private List<MeshRenderer> _meshRenderers;
+    private readonly List<Color> _initialColors = new();
     private Camera _mainCamera;
 
     public Action OnCompleted;
+    private static readonly int Color1 = Shader.PropertyToID("_Color");
 
     private void Start()
     {
         _mainCamera = Camera.main;
-        _planeHandler = GetComponent<ObjectAdder>();
-        _meshRenderer = GetComponent<MeshRenderer>();
 
-        var color = _meshRenderer.material.color;
-        _initialColor = color;
-        color.a = .5f;
-        GetComponent<MeshRenderer>().material.color = color;
+        _meshRenderers = GetComponentsInChildren<MeshRenderer>().ToList();
+
+        gameObject.layer = 2; // invisible to raytracing in layer 2 
+
+        foreach (var meshRenderer in _meshRenderers)
+        {
+            var color = meshRenderer.material.color;
+            _initialColors.Add(color);
+            color.a = .5f;
+            meshRenderer.material.SetColor(Color1, color);
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -33,19 +40,24 @@ public class ObjectAdder : MonoBehaviour
             transform.position = transformPosition;
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.Escape))
         {
             Destroy(gameObject);
             OnCompleted();
         }
-        else if (Input.GetKey(KeyCode.Z))
+        else if (Input.GetMouseButtonDown(0))
         {
             var o = gameObject;
             o.layer = 1;
             o.tag = "SelectableObject";
-            _meshRenderer.material.color = _initialColor;
-            Destroy(_planeHandler);
-            OnCompleted();
+
+            for (int i = 0; i < _meshRenderers.Count; i++)
+            {
+                _meshRenderers[i].material.color = _initialColors[i];
+                Destroy(this);
+            }
+            
+            OnCompleted(); 
         }
     }
 }
