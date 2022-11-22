@@ -17,6 +17,8 @@ public class CameraZoom : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.LeftControl)) return;
+
         if (Input.mouseScrollDelta.y != 0)
         {
             var orthographicSize = _camera.orthographicSize + Input.mouseScrollDelta.y*5;

@@ -1,7 +1,9 @@
 using UnityEngine;
+using Utils;
 
-public class Draggable : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
+    public float speed = 0.5f;
     public float relativeDragSpeed = 2f;
 
     private Vector3 _dragOrigin;
@@ -14,8 +16,11 @@ public class Draggable : MonoBehaviour
         _camera = Camera.main;
     }
 
+    // Update is called once per frame
     private void Update()
     {
+        if (Input.GetKey(KeyCode.LeftControl)) return;
+
         if (Input.GetMouseButtonDown(2))
         {
             _dragOrigin = Input.mousePosition;
@@ -24,7 +29,7 @@ public class Draggable : MonoBehaviour
 
         if (Input.GetMouseButton(2))
         {
-            Vector3 delta = -Camera.main.ScreenToViewportPoint(
+            var delta = -_camera.ScreenToViewportPoint(
                 (Input.mousePosition - _dragOrigin) *
                 (relativeDragSpeed * _camera.orthographicSize)
             );
@@ -33,5 +38,8 @@ public class Draggable : MonoBehaviour
 
             _dragOrigin = Input.mousePosition;
         }
+
+
+        transform.position += Mover.RetrieveDeltaContinuously(speed);
     }
 }

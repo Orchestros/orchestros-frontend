@@ -16,12 +16,12 @@ namespace Managers
         public GameObject canvas;
 
         private GameObject _formInstance;
-        private List<EditableItem> _editableItemsList;
+        private List<List<EditableItem>> _editableItemsList;
 
         public void OpenFormForSelection()
         {
             if (!enabled || IsActive) return;
-            
+
             OnActivate();
 
             BuildForm();
@@ -34,16 +34,21 @@ namespace Managers
 
             var summedEditableValues = new Dictionary<string, string>();
 
-
             _editableItemsList = selectionManager.GetSelectedItems()
-                .Select(selectedItem => selectedItem.GetComponent<EditableItem>()).ToList();
+                .Select(selectedItem => selectedItem.GetComponents<EditableItem>().ToList()).ToList();
+
 
             HashSet<string> sharedKeys = null;
 
 
-            foreach (var item in _editableItemsList)
+            foreach (var items in _editableItemsList)
             {
-                var editableValues = item.GetEditableValues();
+                Dictionary<string, string> editableValues = new Dictionary<string, string>();
+
+                foreach (var editableItem in items)
+                {
+                    editableValues.AddRange(editableItem.GetEditableValues());
+                }
 
                 if (sharedKeys == null)
                 {
@@ -90,11 +95,14 @@ namespace Managers
 
         private void OnSave(Dictionary<string, string> values)
         {
-            foreach (var item in _editableItemsList)
+            foreach (var items in _editableItemsList)
             {
-                item.UpdateValues(values);
+                foreach (var item in items)
+                {
+                    item.UpdateValues(values);
+                }
             }
-            
+
             OnCancel();
         }
 
