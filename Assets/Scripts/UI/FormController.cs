@@ -41,6 +41,8 @@ namespace UI
                 tmpInputField.text = item.DefaultValue;
                 _fields[item.ID] = tmpInputField;
             }
+            
+            
 
             transform.localPosition = new Vector3(289, 84);
         }

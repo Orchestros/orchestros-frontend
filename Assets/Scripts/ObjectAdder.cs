@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using World.Arena;
 
 public class ObjectAdder : MonoBehaviour
 {
@@ -49,14 +50,13 @@ public class ObjectAdder : MonoBehaviour
         {
             var o = gameObject;
             o.layer = 1;
-            o.tag = "SelectableObject";
+            o.AddComponent<ArenaObject>();
 
             for (int i = 0; i < _meshRenderers.Count; i++)
             {
                 _meshRenderers[i].material.color = _initialColors[i];
                 Destroy(this);
             }
-            
             OnCompleted(); 
         }
     }

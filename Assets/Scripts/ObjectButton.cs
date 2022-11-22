@@ -1,13 +1,13 @@
 using System;
 using System.Runtime.Serialization;
+using Managers;
 using UnityEngine;
 using UnityEngine.UI;
-using ObjectManager = Managers.ObjectManager;
 
 public class ObjectButton : MonoBehaviour
 {
     public GameObject prefab;
-    public ObjectManager manager;
+    public ArenaObjectsManager manager;
 
     private void Start()
     {

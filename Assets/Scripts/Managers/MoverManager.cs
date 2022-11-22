@@ -15,9 +15,6 @@ namespace Managers
 
         private void Update()
         {
-            
-        
-            
             if (!Input.GetKey(KeyCode.LeftControl)) return;
 
             var deltaVector = Input.GetKey(KeyCode.LeftShift) ? Mover.RetrieveDeltaOneTime(stepSpeed) : Mover.RetrieveDeltaContinuously(speed);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using World.Arena;
 
 namespace Managers
 {
@@ -45,7 +46,7 @@ namespace Managers
 
         private void OnCopyFinishes()
         {
-            foreach (var componentsInChild in _group.GetComponentsInChildren<Highlighted>())
+            foreach (var componentsInChild in _group.GetComponentsInChildren<Highlightable>())
             {
                 Destroy(componentsInChild);
             }

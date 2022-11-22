@@ -75,12 +75,16 @@ namespace Managers
 
             if (sharedKeys == null) return;
 
-            var formConfigurationItems = sharedKeys.Select(sharedKey => new FormConfigurationItem(
-                    sharedKey,
+            var formConfigurationItems = sharedKeys.Select(sharedKey =>
+            {
+                var label = sharedKey[..1].ToUpper() + sharedKey[1..].Replace("_", "");
+                
+                return new FormConfigurationItem(
+                    label,
                     sharedKey,
                     summedEditableValues[sharedKey]
-                )
-            ).ToList();
+                );
+            }).ToList();
 
 
             formController.SetFormConfiguration(

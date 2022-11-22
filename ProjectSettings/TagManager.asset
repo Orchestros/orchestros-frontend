@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - SelectableObject
+  - SelectionPanel
+  - Items
   layers:
   - Default
   - TransparentFX

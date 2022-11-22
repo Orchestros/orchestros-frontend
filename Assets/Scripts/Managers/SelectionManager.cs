@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Object = UnityEngine.Object;
+using World.Arena;
 
 namespace Managers
 {
@@ -12,8 +12,7 @@ namespace Managers
     /// </summary>
     public class SelectionManager : MonoBehaviourWithState
     {
-        // The texture passed to the Highlighted component.
-        public Texture selectedTexture;
+        public ArenaObjectsManager arenaObjectsManager;
 
         // An already existing panel that should be a child of the main canvas. It should
         // be disabled at first.
@@ -31,7 +30,7 @@ namespace Managers
         private Vector2 _startPointCanvas;
 
 
-        private readonly Dictionary<GameObject, Highlighted> _selectedObjects = new();
+        private readonly HashSet<GameObject> _selectedObjects = new();
 
         /// <summary>
         ///     Retrieves expansive objects at initialization.
@@ -72,16 +71,14 @@ namespace Managers
             }
 
 
-            if (_isCurrentlySelecting)
+            if (!_isCurrentlySelecting) return;
+            if (Input.GetMouseButtonUp(0))
             {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    EndSelection();
-                }
-                else
-                {
-                    UpdateSelection();
-                }
+                EndSelection();
+            }
+            else
+            {
+                UpdateSelection();
             }
         }
 
@@ -94,18 +91,13 @@ namespace Managers
 
             var raycast = Physics.Raycast(ray, out var hit);
 
-
             if (raycast && !_isCurrentlySelecting)
             {
                 var colliderGameObject = hit.collider.gameObject;
 
-                Debug.Log(colliderGameObject);
-
-
-                if (colliderGameObject.CompareTag("SelectableObject"))
+                if (colliderGameObject.GetComponent<ArenaObject>())
                 {
                     ClearSelectionIfNeeded();
-
                     ToggleObjectSelection(colliderGameObject);
                     OnDeactivate();
                 }
@@ -116,7 +108,6 @@ namespace Managers
                 else
                 {
                     ClearSelectionIfNeeded();
-
                     _startHitPoint = hit.point;
                     StartSelection();
                 }
@@ -134,9 +125,9 @@ namespace Managers
             }
         }
 
-        private void ClearSelection()
+        public void ClearSelection()
         {
-            foreach (var selectedObject in _selectedObjects.Keys.ToList())
+            foreach (var selectedObject in _selectedObjects.ToList())
             {
                 ToggleObjectSelection(selectedObject);
             }
@@ -151,18 +142,19 @@ namespace Managers
         ///     for an optimize deletion once the object is not selected anymore.
         /// </summary>
         /// <param name="colliderGameObject">The object to remove or add to the selected objects dictionary</param>
-        internal void ToggleObjectSelection(GameObject colliderGameObject)
+        private void ToggleObjectSelection(GameObject colliderGameObject)
         {
-            if (_selectedObjects.ContainsKey(colliderGameObject))
+            var highlightable = arenaObjectsManager.GetHighlightable(colliderGameObject);
+
+            if (_selectedObjects.Contains(colliderGameObject))
             {
-                Destroy(_selectedObjects[colliderGameObject]);
                 _selectedObjects.Remove(colliderGameObject);
+                highlightable.SetDisplay(false);
             }
             else
             {
-                var highlighted = colliderGameObject.AddComponent<Highlighted>();
-                highlighted.selectedTexture = selectedTexture;
-                _selectedObjects[colliderGameObject] = highlighted;
+                _selectedObjects.Add(colliderGameObject);
+                highlightable.SetDisplay(true);
             }
         }
 
@@ -175,20 +167,19 @@ namespace Managers
 
             if (Physics.Raycast(ray, out var endHitPoint))
             {
-                var selectableUnits = GameObject.FindGameObjectsWithTag("SelectableObject");
-
                 var maxX = Math.Max(endHitPoint.point.x, _startHitPoint.x);
                 var maxY = Math.Max(endHitPoint.point.z, _startHitPoint.z);
 
                 var minX = Math.Min(endHitPoint.point.x, _startHitPoint.x);
                 var minY = Math.Min(endHitPoint.point.z, _startHitPoint.z);
 
-                foreach (var unit in selectableUnits)
+                foreach (var unit in arenaObjectsManager.GetObjects())
                 {
                     if (maxX >= unit.transform.position.x && unit.transform.position.x >= minX &&
                         maxY >= unit.transform.position.z && unit.transform.position.z >= minY)
                     {
-                        ToggleObjectSelection(unit);
+                        // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
+                        ToggleObjectSelection(unit.gameObject);
                     }
                 }
             }
@@ -234,7 +225,7 @@ namespace Managers
         {
             var prohibitedStates = new HashSet<Type>()
             {
-                typeof(ObjectManager),
+                typeof(ArenaObjectsManager),
                 typeof(EditFormManager)
             };
 
@@ -243,7 +234,7 @@ namespace Managers
 
         public List<GameObject> GetSelectedItems()
         {
-            return _selectedObjects.Keys.ToList();
+            return _selectedObjects.ToList();
         }
     }
 }

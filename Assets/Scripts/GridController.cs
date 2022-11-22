@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class GridController : MonoBehaviour
 {
-    public float lineCount = 100;
-    public float lineWidth = 0.0001f;
+    public float lineSpacing = 5;
+    public float lineWidth = 0.001f;
     public float smallToLargeLine = 3;
     private MeshFilter _meshFilter;
 
@@ -39,7 +39,7 @@ public class GridController : MonoBehaviour
 
         var t = 0;
 
-        for (var x = -halfPlaneWidth; x < halfPlaneWidth; x += halfPlaneWidth / lineCount)
+        for (var x = -halfPlaneWidth; x < halfPlaneWidth; x += lineSpacing)
         {
             var point = new Vector3(x, 0.01f, 0);
 
@@ -50,7 +50,7 @@ public class GridController : MonoBehaviour
         var largeScaleZ = new Vector3(1, 1, lineWidth);
         var scaleZ = new Vector3(1, 1, lineWidth / smallToLargeLine);
 
-        for (var z = -halfPlaneHeight; z < halfPlaneHeight; z += halfPlaneHeight / lineCount * 16 / 9)
+        for (var z = -halfPlaneHeight; z < halfPlaneHeight; z += lineSpacing)
         {
             var point = new Vector3(0, 0.01f, z);
             t += 1;
