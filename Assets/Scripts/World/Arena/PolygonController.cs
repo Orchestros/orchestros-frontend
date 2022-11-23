@@ -29,19 +29,21 @@ namespace World.Arena
             _bordersCount = bordersCount;
 
             var apothemSize = borderLength / (2 * Mathf.Tan(Mathf.PI / bordersCount));
-            var polygonCenter = Vector3.zero - new Vector3(0, 0, apothemSize);
-
+            var parentScale = apothemSize*2.3f;
+            var polygonCenter = Vector3.zero - new Vector3(0, 0, apothemSize/parentScale + borderWidth/2/parentScale);
+            
 
             for (var i = 0; i < bordersCount; i++)
             {
                 var currentWall = Instantiate(wall, transform);
-                currentWall.transform.localScale = new Vector3(borderWidth, 10, borderLength);
-                currentWall.transform.localPosition =
-                    polygonCenter + Quaternion.Euler(0, 360 / bordersCount * i, 0) * polygonCenter;
+                currentWall.transform.localScale = new Vector3(borderWidth/parentScale, 10, borderLength/parentScale);
+                currentWall.transform.localPosition =  Quaternion.Euler(0, 360 / bordersCount * i, 0) * polygonCenter;
                 currentWall.transform.Rotate(new Vector3(0, 90 + 360 / bordersCount * i, 0));
                 _gameObjects.Add(currentWall);
                 Quaternion.Euler(0, 360 / bordersCount * i, 0);
             }
+
+            transform.localScale = new Vector3(parentScale, 1, parentScale);
         }
 
         public override Dictionary<string, string> GetEditableValues()
