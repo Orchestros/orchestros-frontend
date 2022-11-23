@@ -397,7 +397,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 08f5b0978c3e279458b647f67c6f738e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b1e4a603e29208b419cdd03d333744d3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2131,6 +2131,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   selectionManager: {fileID: 1878162650}
+  arenaObjectsManager: {fileID: 760284490}
 --- !u!1 &1927219968
 GameObject:
   m_ObjectHideFlags: 0

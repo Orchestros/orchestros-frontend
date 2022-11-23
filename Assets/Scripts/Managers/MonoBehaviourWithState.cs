@@ -10,6 +10,7 @@ namespace Managers
         public UnityEvent<bool> activationEvent = new();
 
         protected bool IsActive;
+
         protected void OnActivate()
         {
             activationEvent.Invoke(true);
@@ -18,6 +19,7 @@ namespace Managers
 
         protected void OnDeactivate()
         {
+            if (!IsActive) return;
             activationEvent.Invoke(false);
             IsActive = false;
         }

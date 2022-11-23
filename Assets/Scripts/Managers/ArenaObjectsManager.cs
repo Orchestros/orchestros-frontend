@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using World.Arena;
 
@@ -19,21 +20,26 @@ namespace Managers
             return _objects.ToList();
         }
 
-        public Highlightable GetHighlightable(GameObject instance)
+        public Highlightable GetHighlightable(GameObject objectWithHighlightable)
         {
-            return _highlightable[instance.GetInstanceID()];
+            return _highlightable[objectWithHighlightable.GetInstanceID()];
         }
 
-        private void OnObjectAdded(GameObject newObject)
+        public void OnObjectAdded(GameObject newObject)
         {
             _objects.Add(newObject);
-            newObject.AddComponent<ArenaObject>();
-            var highlightable = newObject.AddComponent<Highlightable>();
-            highlightable.selectedTexture = highlightedTexture;
-            
-            _highlightable[newObject.GetInstanceID()] = highlightable;
-            
+            newObject.layer = 1;
+            newObject.GetOrAddComponent<ArenaObject>();
+            AddHighlightableToGameObject(newObject);
             OnDeactivate();
+        }
+
+        private void AddHighlightableToGameObject(GameObject newObject)
+        {
+            if (_highlightable.ContainsKey(newObject.GetInstanceID())) return; // if it already  exists, do nothing
+            var highlightable = newObject.GetOrAddComponent<Highlightable>();
+            highlightable.selectedTexture = highlightedTexture;
+            _highlightable[newObject.GetInstanceID()] = highlightable;
         }
 
         public void RemoveObject(GameObject objectToRemove)
@@ -52,7 +58,7 @@ namespace Managers
                 sourceObject,
                 sourceObject.transform.position,
                 sourceObject.transform.rotation
-                );
+            );
 
             newObject.layer = 2; // invisible to raytracing in layer 2 
 

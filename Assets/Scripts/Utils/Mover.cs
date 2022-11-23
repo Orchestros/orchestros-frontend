@@ -15,7 +15,7 @@ namespace Utils
             return RetrieveDelta(speed, Input.GetKeyUp);
         }
 
-        public static Vector3 RetrieveDelta(float speed, Func<KeyCode, bool> check)
+        private static Vector3 RetrieveDelta(float speed, Func<KeyCode, bool> check)
         {
             var deltaX = 0f;
             var deltaZ = 0f;

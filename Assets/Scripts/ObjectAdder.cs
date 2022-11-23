@@ -48,10 +48,6 @@ public class ObjectAdder : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(0))
         {
-            var o = gameObject;
-            o.layer = 1;
-            o.AddComponent<ArenaObject>();
-
             for (int i = 0; i < _meshRenderers.Count; i++)
             {
                 _meshRenderers[i].material.color = _initialColors[i];

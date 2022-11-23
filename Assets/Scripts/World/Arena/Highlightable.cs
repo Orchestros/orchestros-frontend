@@ -22,7 +22,11 @@ namespace World.Arena
                 }
             }
 
-            if (_plane != null) return;
+            if (_plane != null) // If there already was a plane (if the object was copied for instance)
+            {
+                _plane.SetActive(false);
+                return;
+            }
 
             _plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
             var mesh = _plane.GetComponent<MeshRenderer>();

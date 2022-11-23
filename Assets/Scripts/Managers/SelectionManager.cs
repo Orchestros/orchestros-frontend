@@ -137,11 +137,10 @@ namespace Managers
 
 
         /// <summary>
-        ///     Adds/Removes the colliderGameObject from the selected objects dictionary. The value associated to the
-        ///     object (which acts as the key) correspond to the Highlighted component added to the object. Allowing
-        ///     for an optimize deletion once the object is not selected anymore.
+        ///     Enables/Deactivates the colliderGameObject's highlight and adds/removes it from the selected
+        ///     objects list which should be a reflection of all the objects with highlight enabled.
         /// </summary>
-        /// <param name="colliderGameObject">The object to remove or add to the selected objects dictionary</param>
+        /// <param name="colliderGameObject">The object to remove or add to the selected objects list</param>
         private void ToggleObjectSelection(GameObject colliderGameObject)
         {
             var highlightable = arenaObjectsManager.GetHighlightable(colliderGameObject);
@@ -226,7 +225,8 @@ namespace Managers
             var prohibitedStates = new HashSet<Type>()
             {
                 typeof(ArenaObjectsManager),
-                typeof(EditFormManager)
+                typeof(EditFormManager),
+                typeof(CopyPasteManager),
             };
 
             return !activeStates.Any(x => prohibitedStates.Contains(x));

@@ -9,6 +9,7 @@ namespace Managers
     public class CopyPasteManager : MonoBehaviourWithState
     {
         public SelectionManager selectionManager;
+        public ArenaObjectsManager arenaObjectsManager;
 
         private List<GameObject> _copiedObjects = new();
 
@@ -25,6 +26,7 @@ namespace Managers
             else if (Input.GetKey(KeyCode.V) && _copiedObjects.Count > 0)
             {
                 OnActivate();
+                Debug.Log("Yyy");
 
                 _group = new GameObject();
 
@@ -46,14 +48,15 @@ namespace Managers
 
         private void OnCopyFinishes()
         {
-            foreach (var componentsInChild in _group.GetComponentsInChildren<Highlightable>())
+            for (var i = 0; i < _group.transform.childCount; i++)
             {
-                Destroy(componentsInChild);
+                arenaObjectsManager.OnObjectAdded(_group.transform.GetChild(i).gameObject);
             }
 
+            Debug.Log("xxx");
             _group.transform.DetachChildren();
-
             Destroy(_group);
+            
             OnDeactivate();
         }
 
