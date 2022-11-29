@@ -13,6 +13,8 @@ namespace Managers
 
         private readonly Dictionary<int, Highlightable> _highlightable = new();
 
+        private readonly List<Action<GameObject>> _onObjectAddedCallbacks = new();
+
         public Texture highlightedTexture;
 
         public List<GameObject> GetObjects()
@@ -31,6 +33,11 @@ namespace Managers
             newObject.layer = 1;
             newObject.GetOrAddComponent<ArenaObject>();
             AddHighlightableToGameObject(newObject);
+            foreach (var callback in _onObjectAddedCallbacks)
+            {
+                callback(newObject);
+            }
+
             OnDeactivate();
         }
 
@@ -74,6 +81,11 @@ namespace Managers
             };
 
             return !activeStates.Any(x => prohibitedStates.Contains(x));
+        }
+
+        public void addOnObjectAddedCallback(Action<GameObject> newCallback)
+        {
+            _onObjectAddedCallbacks.Add(newCallback);
         }
     }
 }
