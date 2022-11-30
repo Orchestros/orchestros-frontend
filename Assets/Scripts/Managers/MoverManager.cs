@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Managers.DynamicLine;
 using UnityEngine;
 using Utils;
 
@@ -8,6 +9,7 @@ namespace Managers
     public class MoverManager : MonoBehaviourWithState
     {
         public SelectionManager selectionManager;
+        public DynamicLineManager dynamicLineManager;
 
         public float speed = 0.5f;
         public float stepSpeed = 10f;
@@ -34,16 +36,26 @@ namespace Managers
 
             if (isMouseDragged)
             {
-                var delta = Dragger.RetrieveDragDelta(_camera, _dragOrigin, relativeDragSpeed);
-                _dragOrigin = Input.mousePosition;
                 foreach (var selectedItem in selectionManager.GetSelectedItems())
                 {
-                    selectedItem.transform.Translate(-delta);
+                    var bounds = selectedItem.GetComponent<Renderer>().bounds;
+
+                    var ray = _camera.ScreenPointToRay(Input.mousePosition);
+
+                    if (!Physics.Raycast(ray, out var hit)) continue;
+                    
+                    
+                    bounds.center = hit.point;
+                    var newPosition = DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager,
+                        hit.point, bounds, selectedItem);
+                    newPosition.y = selectedItem.transform.position.y;
+                    selectedItem.transform.position = newPosition;
                 }
             }
 
             if (Input.GetMouseButtonUp(0))
             {
+                OnDisable();
                 isMouseDragged = false;
                 return;
             }
@@ -68,6 +80,11 @@ namespace Managers
                     selectedItem.transform.Rotate(Vector3.down * rotationSpeedInDegrees, Space.Self);
                 }
             }
+        }
+
+        private void OnDisable()
+        {
+            dynamicLineManager.ClearLinesAndTexts();
         }
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)

@@ -42,6 +42,7 @@ namespace Managers
                 }
 
                 var c = _group.AddComponent<ObjectAdder>();
+                c.dynamicLineManager = arenaObjectsManager.dynamicLineManager;
                 c.OnCompleted = OnCopyFinishes;
             }
         }

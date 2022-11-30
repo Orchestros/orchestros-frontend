@@ -51,43 +51,8 @@ public class ObjectAdder : MonoBehaviour
             }
 
             bounds.center = hit.point;
-
-            var dynamicLines = dynamicLineManager.UpdateBounds(bounds);
-
-            Debug.Log(dynamicLines.Count());
-
-            foreach (var line in dynamicLines)
-            {
-                Debug.Log(line.Direction);
-                switch (line.Direction)
-                {
-                    case Direction.Left:
-                        transformPosition.x = line.Delta + bounds.extents.x;
-                        break;
-                    case Direction.Right:
-                        transformPosition.x = line.Delta - bounds.extents.x;
-                        break;
-                    case Direction.Top:
-                        transformPosition.z = line.Delta + bounds.extents.z;
-                        break;
-                    case Direction.Bottom:
-                        transformPosition.z = line.Delta - bounds.extents.z;
-                        break;
-                    case Direction.Center:
-                        if (line.IsHorizontal())
-                        {
-                            transformPosition.z = line.Delta;
-                        }
-                        else
-                        {
-                            transformPosition.x = line.Delta;
-                        }
-
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
+            
+            transformPosition = DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, transformPosition, bounds);
 
             transform.position = transformPosition;
         }
@@ -108,4 +73,5 @@ public class ObjectAdder : MonoBehaviour
             OnCompleted();
         }
     }
+
 }

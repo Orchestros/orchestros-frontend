@@ -1527,6 +1527,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   selectionManager: {fileID: 1878162650}
+  dynamicLineManager: {fileID: 991677348}
   speed: 0.5
   stepSpeed: 10
   rotationSpeedInDegrees: 2.5
