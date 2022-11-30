@@ -22,7 +22,7 @@ public class GridController : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        var materialColor = new Color(0.69f, 0.76f, 1f);
+        var materialColor = new Color(0.6f, 0.6f, 0.6f);
 
         var planeMesh = _meshFilter.mesh;
         var bounds = planeMesh.bounds;

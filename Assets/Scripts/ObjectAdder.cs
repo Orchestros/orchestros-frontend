@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Managers.DynamicLine;
 using UnityEngine;
 using World.Arena;
 
 public class ObjectAdder : MonoBehaviour
 {
+    public DynamicLineManager dynamicLineManager;
+
+
     private List<MeshRenderer> _meshRenderers;
     private readonly List<Color> _initialColors = new();
     private Camera _mainCamera;
@@ -38,6 +42,53 @@ public class ObjectAdder : MonoBehaviour
         if (Physics.Raycast(ray, out var hit))
         {
             var transformPosition = hit.point;
+
+            var bounds = _meshRenderers.First().bounds;
+
+            foreach (var meshRenderer in _meshRenderers)
+            {
+                bounds.Encapsulate(meshRenderer.bounds);
+            }
+
+            bounds.center = hit.point;
+
+            var dynamicLines = dynamicLineManager.UpdateBounds(bounds);
+
+            Debug.Log(dynamicLines.Count());
+
+            foreach (var line in dynamicLines)
+            {
+                Debug.Log(line.Direction);
+                switch (line.Direction)
+                {
+                    case Direction.Left:
+                        transformPosition.x = line.Delta + bounds.extents.x;
+                        break;
+                    case Direction.Right:
+                        transformPosition.x = line.Delta - bounds.extents.x;
+                        break;
+                    case Direction.Top:
+                        transformPosition.z = line.Delta + bounds.extents.z;
+                        break;
+                    case Direction.Bottom:
+                        transformPosition.z = line.Delta - bounds.extents.z;
+                        break;
+                    case Direction.Center:
+                        if (line.IsHorizontal())
+                        {
+                            transformPosition.z = line.Delta;
+                        }
+                        else
+                        {
+                            transformPosition.x = line.Delta;
+                        }
+
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
             transform.position = transformPosition;
         }
 
@@ -53,7 +104,8 @@ public class ObjectAdder : MonoBehaviour
                 _meshRenderers[i].material.color = _initialColors[i];
                 Destroy(this);
             }
-            OnCompleted(); 
+
+            OnCompleted();
         }
     }
 }

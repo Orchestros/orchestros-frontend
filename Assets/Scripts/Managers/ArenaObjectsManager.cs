@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Managers.DynamicLine;
 using Unity.VisualScripting;
 using UnityEngine;
 using World.Arena;
@@ -14,8 +15,11 @@ namespace Managers
         private readonly Dictionary<int, Highlightable> _highlightable = new();
 
         private readonly List<Action<GameObject>> _onObjectAddedCallbacks = new();
+        private readonly List<Action<GameObject>> _onObjectRemovedCallbacks = new();
 
         public Texture highlightedTexture;
+
+        public DynamicLineManager dynamicLineManager;
 
         public List<GameObject> GetObjects()
         {
@@ -51,6 +55,11 @@ namespace Managers
 
         public void RemoveObject(GameObject objectToRemove)
         {
+            foreach (var callback in _onObjectRemovedCallbacks)
+            {
+                callback(objectToRemove);
+            }
+
             _objects.Remove(objectToRemove);
             Destroy(objectToRemove);
         }
@@ -70,12 +79,13 @@ namespace Managers
             newObject.layer = 2; // invisible to raytracing in layer 2 
 
             var objectAdder = newObject.AddComponent<ObjectAdder>();
+            objectAdder.dynamicLineManager = dynamicLineManager;
             objectAdder.OnCompleted = () => OnObjectAdded(newObject);
         }
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
-            var prohibitedStates = new HashSet<Type>()
+            var prohibitedStates = new HashSet<Type>
             {
                 typeof(EditFormManager)
             };
@@ -86,6 +96,11 @@ namespace Managers
         public void addOnObjectAddedCallback(Action<GameObject> newCallback)
         {
             _onObjectAddedCallbacks.Add(newCallback);
+        }
+
+        public void addOnObjectRemovedCallback(Action<GameObject> newCallback)
+        {
+            _onObjectRemovedCallbacks.Add(newCallback);
         }
     }
 }
