@@ -17,8 +17,6 @@ namespace Managers
             {
                 state.activationEvent.AddListener(isActive => OnStateActivationChanged(state, isActive));
             }
-            
-            Debug.Log(_states.Length);
         }
 
         private void OnStateActivationChanged(MonoBehaviourWithState state, bool isActive)
