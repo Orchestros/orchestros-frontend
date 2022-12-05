@@ -32,15 +32,14 @@ namespace World.Arena
             var parentScale = apothemSize*2.3f;
             var polygonCenter = Vector3.zero - new Vector3(0, 0, apothemSize/parentScale + borderWidth/2/parentScale);
             
-
             for (var i = 0; i < bordersCount; i++)
             {
                 var currentWall = Instantiate(wall, transform);
                 currentWall.transform.localScale = new Vector3(borderWidth/parentScale, 10, borderLength/parentScale);
-                currentWall.transform.localPosition =  Quaternion.Euler(0, 360 / bordersCount * i, 0) * polygonCenter;
-                currentWall.transform.Rotate(new Vector3(0, 90 + 360 / bordersCount * i, 0));
+                currentWall.transform.localPosition =  Quaternion.Euler(0, 360f / bordersCount * i, 0) * polygonCenter;
+                var degree = 90f + 360f / bordersCount * i;
+                currentWall.transform.Rotate(new Vector3(0, degree, 0));
                 _gameObjects.Add(currentWall);
-                Quaternion.Euler(0, 360 / bordersCount * i, 0);
             }
 
             transform.localScale = new Vector3(parentScale, 1, parentScale);
