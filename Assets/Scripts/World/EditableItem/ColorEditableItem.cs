@@ -22,7 +22,7 @@ namespace World.EditableItem
             return new Dictionary<string, string>
             {
                 {
-                    "color", _renderer.material.color.ToHexString().Substring(0, 6)
+                    "color", "#" + _renderer.material.color.ToHexString()[..6]
                 },
             };
         }
@@ -33,6 +33,7 @@ namespace World.EditableItem
             
             if (newValues.ContainsKey("color"))
             {
+                Debug.Log(newValues["color"]);
                 ColorUtility.TryParseHtmlString(newValues["color"], out color);
             }
 

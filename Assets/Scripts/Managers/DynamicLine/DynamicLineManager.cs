@@ -68,8 +68,7 @@ namespace Managers.DynamicLine
                 Direction.Center, renderers));
 
             var dynamicLines = new List<DynamicLine>();
-
-
+            
             linesTuple.Sort((a, b) => a.Item2.CompareTo(b.Item2));
 
 
@@ -206,15 +205,17 @@ namespace Managers.DynamicLine
         {
             var newTextObject = new GameObject();
             var newText = newTextObject.AddComponent<TextMeshProUGUI>();
+            
+            var distanceBetweenPoints = (line.OriginPoint - line.DestinationPoint).magnitude;
+            
             newText.SetText(
-                ((int)(line.OriginPoint - line.DestinationPoint).magnitude).ToString(CultureInfo.InvariantCulture));
+                ((int)distanceBetweenPoints).ToString(CultureInfo.InvariantCulture));
             newText.fontSize = 10;
             newText.alignment = TextAlignmentOptions.Center;
             var rect = newText.GetComponent<RectTransform>();
             rect.SetParent(panel.transform);
             rect.localScale = Vector3.one;
-
-
+            
             var meanPoint = (line.OriginPoint + line.DestinationPoint) / 2;
             var screenPointLine = _camera.WorldToScreenPoint(meanPoint);
 

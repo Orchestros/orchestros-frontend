@@ -16,7 +16,7 @@ namespace Managers.DynamicLine
             DestinationPoint = destinationPoint;
         }
 
-        public Renderer Renderer;
+        public readonly Renderer Renderer;
         public readonly Vector3 OriginPoint;
         public readonly Vector3 DestinationPoint;
         public readonly float Delta;

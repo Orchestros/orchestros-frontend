@@ -19,6 +19,8 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        CenterCameraOnCtrlAltC();
+
         if (Input.GetKey(KeyCode.LeftControl)) return;
 
         if (Input.GetMouseButtonDown(2))
@@ -41,5 +43,12 @@ public class CameraController : MonoBehaviour
 
 
         transform.position += Mover.RetrieveDeltaContinuously(speed);
+    }
+
+    private void CenterCameraOnCtrlAltC()
+    {
+        if (!Input.GetKey(KeyCode.LeftAlt) || !Input.GetKey(KeyCode.LeftControl) || !Input.GetKey((KeyCode.C))) return;
+        var cameraTransform = _camera.transform;
+        cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
     }
 }

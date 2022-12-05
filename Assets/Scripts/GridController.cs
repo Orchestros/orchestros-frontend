@@ -9,7 +9,7 @@ public class GridController : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _meshFilter = GetComponent<MeshFilter>();
         UpdateGrid();
@@ -30,19 +30,19 @@ public class GridController : MonoBehaviour
         // size in pixels
         var localScale = transform.localScale;
 
-        var halfPlaneWidth = localScale.x * bounds.size.x / 2;
+        var halfPlaneWidth = localScale.x * bounds.size.x / 2 ;
         var halfPlaneHeight = localScale.z * bounds.size.z / 2;
-
-
+        
         var largeScaleX = new Vector3(lineWidth, 1, 1);
         var scaleX = new Vector3(lineWidth / smallToLargeLine, 1, 1);
 
-        var t = 0;
+        var xCorrection = halfPlaneWidth % (lineSpacing * 10) - 5 *lineSpacing;
+        
+        var t = (int) xCorrection/10;
 
-        for (var x = -halfPlaneWidth; x < halfPlaneWidth; x += lineSpacing)
+        for (var x = -halfPlaneWidth + xCorrection % lineSpacing; x < halfPlaneWidth; x += lineSpacing)
         {
             var point = new Vector3(x, 0.01f, 0);
-
             t += 1;
             AddLine(materialColor, point, t % 10 == 0 ? largeScaleX : scaleX);
         }
@@ -50,7 +50,11 @@ public class GridController : MonoBehaviour
         var largeScaleZ = new Vector3(1, 1, lineWidth);
         var scaleZ = new Vector3(1, 1, lineWidth / smallToLargeLine);
 
-        for (var z = -halfPlaneHeight; z < halfPlaneHeight; z += lineSpacing)
+        var zCorrection = halfPlaneHeight % (lineSpacing * 10) - 1 * lineSpacing;
+
+        t = (int) zCorrection/10;
+
+        for (var z = -halfPlaneHeight + zCorrection % lineSpacing; z < halfPlaneHeight; z += lineSpacing)
         {
             var point = new Vector3(0, 0.01f, z);
             t += 1;

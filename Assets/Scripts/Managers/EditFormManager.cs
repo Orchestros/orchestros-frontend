@@ -26,7 +26,6 @@ namespace Managers
 
             BuildForm();
         }
-
         private void BuildForm()
         {
             _formInstance = Instantiate(formPrefab, canvas.transform);
@@ -78,7 +77,7 @@ namespace Managers
             var formConfigurationItems = sharedKeys.Select(sharedKey =>
             {
                 var label = sharedKey[..1].ToUpper() + sharedKey[1..].Replace("_", "");
-                
+
                 return new FormConfigurationItem(
                     label,
                     sharedKey,
@@ -95,6 +94,9 @@ namespace Managers
                     OnCancel
                 )
             );
+            
+            _formInstance.transform.SetLocalPositionAndRotation(
+                new Vector3(290, 0, 0), Quaternion.identity);
         }
 
         private void OnSave(Dictionary<string, string> values)
