@@ -14,8 +14,11 @@ namespace World.Arena
 
         private readonly List<GameObject> _gameObjects = new();
 
+        private Renderer _renderer;
+
         private void Start()
         {
+            _renderer = GetComponent<Renderer>();
             UpdatePolygon(_borderWidth, _borderLength, _bordersCount);
         }
 
@@ -35,6 +38,7 @@ namespace World.Arena
             for (var i = 0; i < bordersCount; i++)
             {
                 var currentWall = Instantiate(wall, transform);
+                currentWall.GetComponent<Renderer>().material.color = _renderer.material.color;
                 currentWall.transform.localScale = new Vector3(borderWidth/parentScale, 10, borderLength/parentScale);
                 currentWall.transform.localPosition =  Quaternion.Euler(0, 360f / bordersCount * i, 0) * polygonCenter;
                 var degree = 90f + 360f / bordersCount * i;
