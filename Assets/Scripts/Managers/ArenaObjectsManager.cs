@@ -39,7 +39,6 @@ namespace Managers
         public void OnObjectAdded(GameObject newObject)
         {
             _objects.Add(newObject);
-            newObject.layer = 1;
             newObject.GetOrAddComponent<ArenaObject>();
             
             AddHighlightableToGameObject(newObject);
@@ -89,9 +88,7 @@ namespace Managers
                 sourceObject.transform.position,
                 sourceObject.transform.rotation
             );
-
-            newObject.layer = 2; // invisible to raytracing in layer 2 
-
+            
             var objectAdder = newObject.AddComponent<ObjectAdder>();
             objectAdder.dynamicLineManager = dynamicLineManager;
             objectAdder.OnCompleted = () => OnObjectAdded(newObject);

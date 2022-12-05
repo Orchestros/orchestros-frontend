@@ -19,9 +19,10 @@ namespace World.Arena
         private void Start()
         {
             _renderer = GetComponent<Renderer>();
+            gameObject.layer = 2;   
             UpdatePolygon(_borderWidth, _borderLength, _bordersCount);
         }
-
+        
         private void UpdatePolygon(float borderWidth, float borderLength, int bordersCount)
         {
             foreach (var o in _gameObjects) Destroy(o);
@@ -39,6 +40,7 @@ namespace World.Arena
             {
                 var currentWall = Instantiate(wall, transform);
                 currentWall.GetComponent<Renderer>().material.color = _renderer.material.color;
+                currentWall.layer = 0;
                 currentWall.transform.localScale = new Vector3(borderWidth/parentScale, 10, borderLength/parentScale);
                 currentWall.transform.localPosition =  Quaternion.Euler(0, 360f / bordersCount * i, 0) * polygonCenter;
                 var degree = 90f + 360f / bordersCount * i;
@@ -47,6 +49,7 @@ namespace World.Arena
             }
 
             transform.localScale = new Vector3(parentScale, 1, parentScale);
+            Debug.Log(gameObject.layer);
         }
 
         public override Dictionary<string, string> GetEditableValues()

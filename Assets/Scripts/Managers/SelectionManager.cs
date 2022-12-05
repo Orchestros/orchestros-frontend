@@ -95,12 +95,13 @@ namespace Managers
             {
                 var colliderGameObject = hit.collider.gameObject;
 
-                if (colliderGameObject.GetComponent<ArenaObject>())
+                var closestArenaObject = colliderGameObject.GetComponentInParent<ArenaObject>();
+                if (closestArenaObject)
                 {
                     ClearSelectionIfNeeded();
-                    ToggleObjectSelection(colliderGameObject);
+                    ToggleObjectSelection(closestArenaObject.gameObject);
                     OnDeactivate();
-                }
+                } 
                 else if (EventSystem.current.IsPointerOverGameObject())
                 {
                     OnDeactivate();

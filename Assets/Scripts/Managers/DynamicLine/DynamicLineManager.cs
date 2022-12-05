@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
-using Vector2 = UnityEngine.Vector2;
 
 namespace Managers.DynamicLine
 {
@@ -53,6 +50,8 @@ namespace Managers.DynamicLine
 
             var bottomLeftCorner = boundsOfCurrentObjectAdder.center - boundsOfCurrentObjectAdder.extents;
             var topRightCorner = boundsOfCurrentObjectAdder.center + boundsOfCurrentObjectAdder.extents;
+            var bottomRightCorner = new Vector3(topRightCorner.x, topRightCorner.y, bottomLeftCorner.z);
+            var topLeftCorner = new Vector3(bottomLeftCorner.x, topRightCorner.y, topRightCorner.z);
 
             var renderers = _renderers.Values.ToList();
 
@@ -64,13 +63,14 @@ namespace Managers.DynamicLine
 
             linesTuple.AddRange(ComputeLinesForPoint(bottomLeftCorner, Direction.Top, Direction.Left, renderers));
             linesTuple.AddRange(ComputeLinesForPoint(topRightCorner, Direction.Bottom, Direction.Right, renderers));
+            linesTuple.AddRange(ComputeLinesForPoint(bottomRightCorner, Direction.Bottom, Direction.Right, renderers));
+            linesTuple.AddRange(ComputeLinesForPoint(topLeftCorner, Direction.Bottom, Direction.Right, renderers));
             linesTuple.AddRange(ComputeLinesForPoint(boundsOfCurrentObjectAdder.center, Direction.Center,
                 Direction.Center, renderers));
 
             var dynamicLines = new List<DynamicLine>();
             
             linesTuple.Sort((a, b) => a.Item2.CompareTo(b.Item2));
-
 
             var hasHorizontalAlign = false;
             var hasVerticalAlign = false;
@@ -172,7 +172,8 @@ namespace Managers.DynamicLine
             var newImage = newLineObject.AddComponent<Image>();
 
             var lineColor = line.IsUsedToSnap ? Color.magenta : Color.blue;
-            newImage.color = lineColor.WithAlpha(line.OriginatesFromCenter ? .8f : .5f);
+            lineColor.a = line.OriginatesFromCenter ? .8f : .5f;
+            newImage.color = lineColor;
 
             var rect = newLineObject.GetComponent<RectTransform>();
             rect.SetParent(panel.transform);
@@ -207,11 +208,26 @@ namespace Managers.DynamicLine
             var newText = newTextObject.AddComponent<TextMeshProUGUI>();
             
             var distanceBetweenPoints = (line.OriginPoint - line.DestinationPoint).magnitude;
+
+            if (line.OriginatesFromCenter)
+            {
+                if (line.IsVertical())
+                {
+                    distanceBetweenPoints -= line.Renderer.bounds.extents.x;
+                    
+                }
+                else
+                {
+                    distanceBetweenPoints -= line.Renderer.bounds.extents.z;
+                }
+            }
             
             newText.SetText(
                 ((int)distanceBetweenPoints).ToString(CultureInfo.InvariantCulture));
             newText.fontSize = 10;
             newText.alignment = TextAlignmentOptions.Center;
+            newText.color = Color.black;
+            
             var rect = newText.GetComponent<RectTransform>();
             rect.SetParent(panel.transform);
             rect.localScale = Vector3.one;

@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 2894173795624989162}
   - component: {fileID: 6515522097968305340}
   - component: {fileID: 2906072901774000531}
-  - component: {fileID: 2894173795624989161}
-  m_Layer: 0
+  - component: {fileID: -8146080967683241254}
+  m_Layer: 2
   m_Name: Polygon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99fc5f1c5bd4a11ad2598be03e77ebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2894173795624989161
+--- !u!114 &-8146080967683241254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

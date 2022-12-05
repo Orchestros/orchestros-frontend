@@ -1531,7 +1531,6 @@ MonoBehaviour:
   speed: 0.5
   stepSpeed: 10
   rotationSpeedInDegrees: 2.5
-  relativeDragSpeed: 2.5
   isMouseDragged: 0
 --- !u!1 &963194225
 GameObject:
@@ -1697,6 +1696,51 @@ MonoBehaviour:
   arenaObjectsManager: {fileID: 760284490}
   panel: {fileID: 572488316}
   canvas: {fileID: 298125994}
+--- !u!1 &1098071525
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1098071526}
+  - component: {fileID: 1098071527}
+  m_Layer: 0
+  m_Name: ExportManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1098071526
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098071525}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2126056234}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1098071527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098071525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 236ca47d4cda4315a2d4f7f8b7b7c9a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arenaObjectsManager: {fileID: 760284490}
 --- !u!1 &1185181564
 GameObject:
   m_ObjectHideFlags: 0
@@ -2698,6 +2742,7 @@ Transform:
   - {fileID: 760284489}
   - {fileID: 991677347}
   - {fileID: 1985673103}
+  - {fileID: 1098071526}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

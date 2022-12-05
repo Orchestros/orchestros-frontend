@@ -4,6 +4,7 @@ using Extensions;
 using Managers.DynamicLine;
 using UnityEngine;
 using Utils;
+using World.Arena;
 
 namespace Managers
 {
@@ -41,7 +42,6 @@ namespace Managers
                     var ray = _camera.ScreenPointToRay(Input.mousePosition);
 
                     if (!Physics.Raycast(ray, out var hit)) continue;
-                    
                     
                     bounds.center = hit.point;
                     var newPosition = DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager,
@@ -98,7 +98,7 @@ namespace Managers
 
             if (!raycast) return;
 
-            var colliderGameObject = hit.collider.gameObject;
+            var colliderGameObject = hit.collider.gameObject.GetComponentInParent<ArenaObject>().gameObject;
 
             if (selectionManager.GetSelectedEditableItems().Contains(colliderGameObject))
             {

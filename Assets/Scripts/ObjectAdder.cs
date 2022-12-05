@@ -17,10 +17,15 @@ public class ObjectAdder : MonoBehaviour
 
     public Action OnCompleted;
     public Action OnCanceled;
+
+    private int _initialLayer;
+    
     private static readonly int Color1 = Shader.PropertyToID("_Color");
 
     private void Start()
     {
+        _initialLayer = gameObject.layer;
+        Debug.Log(_initialLayer);
         _mainCamera = Camera.main;
 
         _meshRenderers = GetComponentsInChildren<MeshRenderer>().ToList();
@@ -73,6 +78,7 @@ public class ObjectAdder : MonoBehaviour
                 Destroy(this);
             }
 
+            gameObject.layer = _initialLayer;
             OnCompleted();
         }
     }
