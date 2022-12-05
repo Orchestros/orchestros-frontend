@@ -5,26 +5,29 @@ namespace Managers.DynamicLine
 {
     public class DynamicLine
     {
-        public DynamicLine(float delta, RectTransform.Axis axis, bool originatesFromCenter, Direction direction, Vector3 originPoint, Vector3 destinationPoint)
+        public DynamicLine(float delta, RectTransform.Axis axis, bool originatesFromCenter, Direction direction, Vector3 originPoint, Vector3 destinationPoint, Renderer renderer)
         {
             Delta = delta;
+            Renderer = renderer;
             OriginatesFromCenter = originatesFromCenter;
-            _axis = axis;
+            Axis = axis;
             Direction = direction;
             OriginPoint = originPoint;
             DestinationPoint = destinationPoint;
         }
 
+        public Renderer Renderer;
         public readonly Vector3 OriginPoint;
         public readonly Vector3 DestinationPoint;
         public readonly float Delta;
         public readonly bool OriginatesFromCenter;
-        private readonly RectTransform.Axis _axis;
+        public readonly RectTransform.Axis Axis;
         public readonly Direction Direction;
-        
+        public bool IsUsedToSnap;
+
         public bool IsVertical()
         {
-            return _axis == RectTransform.Axis.Vertical;
+            return Axis == RectTransform.Axis.Vertical;
         }
     }
 }

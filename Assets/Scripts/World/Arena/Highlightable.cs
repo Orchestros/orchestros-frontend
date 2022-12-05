@@ -56,6 +56,9 @@ namespace World.Arena
         {
             if (display)
             {
+                _arenaObject = GetComponent<ArenaObject>();
+                _lineRenderer = _plane.GetOrAddComponent<LineRenderer>();
+
                 var color = _arenaObject.CanBeEdited ? Color.blue : Color.black;
                 _lineRenderer.startColor = color;
                 _lineRenderer.endColor = color;

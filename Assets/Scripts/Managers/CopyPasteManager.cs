@@ -26,8 +26,6 @@ namespace Managers
             else if (Input.GetKey(KeyCode.V) && _copiedObjects.Count > 0)
             {
                 OnActivate();
-                Debug.Log("Yyy");
-
                 _group = new GameObject();
 
                 var firstObjectPosition = _copiedObjects.First().transform.position;
@@ -54,7 +52,6 @@ namespace Managers
                 arenaObjectsManager.OnObjectAdded(_group.transform.GetChild(i).gameObject);
             }
 
-            Debug.Log("xxx");
             _group.transform.DetachChildren();
             Destroy(_group);
             

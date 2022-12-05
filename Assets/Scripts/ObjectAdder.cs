@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Extensions;
 using Managers.DynamicLine;
 using UnityEngine;
 using World.Arena;
@@ -56,7 +57,7 @@ public class ObjectAdder : MonoBehaviour
             transformPosition = DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, transformPosition, bounds);
 
             transformPosition.y += 0.01f; // prevent flat objects from merging with the ground
-            transform.position = transformPosition;
+            transform.position = transformPosition.Round();
         }
 
         if (Input.GetKey(KeyCode.Escape))

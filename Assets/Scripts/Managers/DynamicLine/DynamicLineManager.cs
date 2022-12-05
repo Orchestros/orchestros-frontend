@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
 using Vector2 = UnityEngine.Vector2;
 
@@ -50,7 +51,6 @@ namespace Managers.DynamicLine
 
             var linesTuple = new List<Tuple<DynamicLine, float>>();
 
-
             var bottomLeftCorner = boundsOfCurrentObjectAdder.center - boundsOfCurrentObjectAdder.extents;
             var topRightCorner = boundsOfCurrentObjectAdder.center + boundsOfCurrentObjectAdder.extents;
 
@@ -58,7 +58,6 @@ namespace Managers.DynamicLine
 
             if (gameObjectToIgnore != null)
             {
-                Debug.Log("TESS");
                 renderers = _renderers.Where((a) => a.Key != gameObjectToIgnore.GetInstanceID()).Select(x => x.Value)
                     .ToList();
             }
@@ -70,12 +69,19 @@ namespace Managers.DynamicLine
 
             var dynamicLines = new List<DynamicLine>();
 
+
             linesTuple.Sort((a, b) => a.Item2.CompareTo(b.Item2));
+
 
             var hasHorizontalAlign = false;
             var hasVerticalAlign = false;
 
-            foreach (var dynamicLine in linesTuple.Select(lineTuple => lineTuple.Item1))
+            var linesFound = linesTuple.Select(lineTuple => lineTuple.Item1).GroupBy(s => new { s.Renderer, s.Axis })
+                .Select(grp => grp.FirstOrDefault())
+                .ToList();
+
+
+            foreach (var dynamicLine in linesFound)
             {
                 if (!hasVerticalAlign && dynamicLine.Direction == Direction.Center && dynamicLine.IsVertical())
                 {
@@ -107,13 +113,17 @@ namespace Managers.DynamicLine
                 }
             }
 
+            foreach (var line in dynamicLines)
+            {
+                line.IsUsedToSnap = true;
+            }
+
             foreach (var addTextForLine in dynamicLines.Select(AddTextForLine))
             {
                 _texts.Add(addTextForLine);
-                ;
             }
 
-            foreach (var newLineObject in dynamicLines.Select(AddLine))
+            foreach (var newLineObject in linesFound.Select(AddLine))
             {
                 _lines.Add(newLineObject);
             }
@@ -124,28 +134,29 @@ namespace Managers.DynamicLine
 
         private IEnumerable<Tuple<DynamicLine, float>> ComputeLinesForPoint(Vector3 currenPoint,
             Direction horizontalDirection,
-            Direction verticalDirection, List<Renderer> renderers)
+            Direction verticalDirection, IEnumerable<Renderer> renderers)
         {
             var objectLines = new List<DynamicLine>();
 
-            foreach (var bounds in renderers.Select(arenaObjectRenderer => arenaObjectRenderer.bounds))
+            foreach (var renderToCompareWith in renderers)
             {
+                var bounds = renderToCompareWith.bounds;
                 var centerPoint = bounds.center;
                 var bottomLeftPoint = (centerPoint - bounds.extents);
                 var topRightPoint = (centerPoint + bounds.extents);
 
                 objectLines.Add(new DynamicLine(bottomLeftPoint.x, RectTransform.Axis.Horizontal,
-                    false, verticalDirection, currenPoint, bottomLeftPoint));
+                    false, verticalDirection, currenPoint, bottomLeftPoint, renderToCompareWith));
                 objectLines.Add(new DynamicLine(topRightPoint.x, RectTransform.Axis.Horizontal,
-                    false, verticalDirection, currenPoint, bottomLeftPoint));
+                    false, verticalDirection, currenPoint, bottomLeftPoint, renderToCompareWith));
                 objectLines.Add(new DynamicLine(bottomLeftPoint.z, RectTransform.Axis.Vertical,
-                    false, horizontalDirection, currenPoint, topRightPoint));
+                    false, horizontalDirection, currenPoint, topRightPoint, renderToCompareWith));
                 objectLines.Add(new DynamicLine(topRightPoint.z, RectTransform.Axis.Vertical,
-                    false, horizontalDirection, currenPoint, topRightPoint));
+                    false, horizontalDirection, currenPoint, topRightPoint, renderToCompareWith));
                 objectLines.Add(new DynamicLine(centerPoint.x, RectTransform.Axis.Horizontal, true, verticalDirection,
-                    currenPoint, centerPoint));
+                    currenPoint, centerPoint, renderToCompareWith));
                 objectLines.Add(new DynamicLine(centerPoint.z, RectTransform.Axis.Vertical, true,
-                    horizontalDirection, currenPoint, centerPoint));
+                    horizontalDirection, currenPoint, centerPoint, renderToCompareWith));
             }
 
             return (from dynamicLine in objectLines
@@ -160,7 +171,10 @@ namespace Managers.DynamicLine
         {
             var newLineObject = new GameObject();
             var newImage = newLineObject.AddComponent<Image>();
-            newImage.color = Color.blue.WithAlpha(line.OriginatesFromCenter ? .8f : .5f);
+
+            var lineColor = line.IsUsedToSnap ? Color.magenta : Color.blue;
+            newImage.color = lineColor.WithAlpha(line.OriginatesFromCenter ? .8f : .5f);
+
             var rect = newLineObject.GetComponent<RectTransform>();
             rect.SetParent(panel.transform);
             rect.localScale = Vector3.one;
@@ -193,7 +207,7 @@ namespace Managers.DynamicLine
             var newTextObject = new GameObject();
             var newText = newTextObject.AddComponent<TextMeshProUGUI>();
             newText.SetText(
-                ((int) (line.OriginPoint - line.DestinationPoint).magnitude).ToString(CultureInfo.InvariantCulture));
+                ((int)(line.OriginPoint - line.DestinationPoint).magnitude).ToString(CultureInfo.InvariantCulture));
             newText.fontSize = 10;
             newText.alignment = TextAlignmentOptions.Center;
             var rect = newText.GetComponent<RectTransform>();

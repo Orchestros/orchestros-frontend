@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Extensions;
 using Managers.DynamicLine;
 using UnityEngine;
 using Utils;
@@ -14,10 +15,8 @@ namespace Managers
         public float speed = 0.5f;
         public float stepSpeed = 10f;
         public float rotationSpeedInDegrees = 2.5f;
-        public float relativeDragSpeed = 2.5f;
-        public bool isMouseDragged = false;
+        public bool isMouseDragged;
         private Camera _camera;
-        private Vector3 _dragOrigin;
 
         private void Start()
         {
@@ -29,7 +28,6 @@ namespace Managers
             if (Input.GetMouseButtonDown(0))
             {
 
-                _dragOrigin = Input.mousePosition;
                 OnMouseDown();
                 return;
             }
@@ -49,7 +47,7 @@ namespace Managers
                     var newPosition = DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager,
                         hit.point, bounds, selectedItem);
                     newPosition.y = selectedItem.transform.position.y;
-                    selectedItem.transform.position = newPosition;
+                    selectedItem.transform.position = newPosition.Round();
                 }
             }
 
@@ -89,7 +87,7 @@ namespace Managers
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
-            return selectionManager.GetSelectedEditableItems().Count > 0;
+            return selectionManager.GetSelectedEditableItems().Count > 0 && !activeStates.Contains(typeof(EditFormManager));
         }
 
         private void OnMouseDown()
