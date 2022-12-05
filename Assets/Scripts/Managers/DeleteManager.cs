@@ -13,7 +13,7 @@ namespace Managers
         {
             if (!Input.GetKey(KeyCode.Delete)) return;
 
-            var selectedItems = selectionManager.GetSelectedItems();
+            var selectedItems = selectionManager.GetSelectedEditableItems();
             
             selectionManager.ClearSelection();
 
@@ -26,7 +26,7 @@ namespace Managers
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
-            return !activeStates.Contains(typeof(EditFormManager)) && selectionManager.GetSelectedItems().Count > 0;
+            return !activeStates.Contains(typeof(EditFormManager)) && selectionManager.GetSelectedEditableItems().Count > 0;
         }
     }
 }

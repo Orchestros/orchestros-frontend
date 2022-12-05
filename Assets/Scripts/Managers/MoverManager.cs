@@ -36,7 +36,7 @@ namespace Managers
 
             if (isMouseDragged)
             {
-                foreach (var selectedItem in selectionManager.GetSelectedItems())
+                foreach (var selectedItem in selectionManager.GetSelectedEditableItems())
                 {
                     var bounds = selectedItem.GetComponent<Renderer>().bounds;
 
@@ -66,7 +66,7 @@ namespace Managers
                 ? Mover.RetrieveDeltaOneTime(stepSpeed)
                 : Mover.RetrieveDeltaContinuously(speed);
 
-            foreach (var selectedItem in selectionManager.GetSelectedItems())
+            foreach (var selectedItem in selectionManager.GetSelectedEditableItems())
             {
                 selectedItem.transform.position += deltaVector;
 
@@ -89,7 +89,7 @@ namespace Managers
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
-            return selectionManager.GetSelectedItems().Count > 0;
+            return selectionManager.GetSelectedEditableItems().Count > 0;
         }
 
         private void OnMouseDown()
@@ -102,7 +102,7 @@ namespace Managers
 
             var colliderGameObject = hit.collider.gameObject;
 
-            if (selectionManager.GetSelectedItems().Contains(colliderGameObject))
+            if (selectionManager.GetSelectedEditableItems().Contains(colliderGameObject))
             {
                 isMouseDragged = true;
             }

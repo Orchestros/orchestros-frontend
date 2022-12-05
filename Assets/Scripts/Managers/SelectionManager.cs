@@ -232,6 +232,11 @@ namespace Managers
             return !activeStates.Any(x => prohibitedStates.Contains(x));
         }
 
+        public List<GameObject> GetSelectedEditableItems()
+        {
+            return _selectedObjects.Where((a) => arenaObjectsManager.GetArenaObject(a).CanBeEdited).ToList();
+
+        }
         public List<GameObject> GetSelectedItems()
         {
             return _selectedObjects.ToList();

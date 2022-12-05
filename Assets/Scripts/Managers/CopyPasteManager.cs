@@ -21,7 +21,7 @@ namespace Managers
 
             if (Input.GetKey(KeyCode.C))
             {
-                _copiedObjects = selectionManager.GetSelectedItems();
+                _copiedObjects = selectionManager.GetSelectedEditableItems();
             }
             else if (Input.GetKey(KeyCode.V) && _copiedObjects.Count > 0)
             {
@@ -63,7 +63,7 @@ namespace Managers
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
-            return !activeStates.Contains(typeof(EditFormManager)) && selectionManager.GetSelectedItems().Count > 0;
+            return !activeStates.Contains(typeof(EditFormManager)) && selectionManager.GetSelectedEditableItems().Count > 0;
         }
     }
 }

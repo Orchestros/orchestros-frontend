@@ -34,7 +34,7 @@ namespace Managers
 
             var summedEditableValues = new Dictionary<string, string>();
 
-            _editableItemsList = selectionManager.GetSelectedItems()
+            _editableItemsList = selectionManager.GetSelectedEditableItems()
                 .Select(selectedItem => selectedItem.GetComponents<EditableItem>().ToList()).ToList();
 
 
@@ -118,7 +118,7 @@ namespace Managers
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
-            return selectionManager.GetSelectedItems().Count > 0;
+            return selectionManager.GetSelectedEditableItems().Count > 0;
         }
     }
 }

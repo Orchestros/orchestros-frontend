@@ -13,11 +13,12 @@ namespace Managers
         private readonly HashSet<GameObject> _objects = new();
 
         private readonly Dictionary<int, Highlightable> _highlightable = new();
+        private readonly Dictionary<int, ArenaObject> _arenaObjects = new();
 
         private readonly List<Action<GameObject>> _onObjectAddedCallbacks = new();
         private readonly List<Action<GameObject>> _onObjectRemovedCallbacks = new();
 
-        public Texture highlightedTexture;
+        public Material circleMaterial;
 
         public DynamicLineManager dynamicLineManager;
 
@@ -30,13 +31,20 @@ namespace Managers
         {
             return _highlightable[objectWithHighlightable.GetInstanceID()];
         }
+        public ArenaObject GetArenaObject(GameObject objectWithArena)
+        {
+            return _arenaObjects[objectWithArena.GetInstanceID()];
+        }
 
         public void OnObjectAdded(GameObject newObject)
         {
             _objects.Add(newObject);
             newObject.layer = 1;
             newObject.GetOrAddComponent<ArenaObject>();
+            
             AddHighlightableToGameObject(newObject);
+            AddArenaObjectToGameObject(newObject);
+            
             foreach (var callback in _onObjectAddedCallbacks)
             {
                 callback(newObject);
@@ -49,8 +57,14 @@ namespace Managers
         {
             if (_highlightable.ContainsKey(newObject.GetInstanceID())) return; // if it already  exists, do nothing
             var highlightable = newObject.GetOrAddComponent<Highlightable>();
-            highlightable.selectedTexture = highlightedTexture;
+            highlightable.circleMaterial = circleMaterial;
             _highlightable[newObject.GetInstanceID()] = highlightable;
+        }
+        private void AddArenaObjectToGameObject(GameObject newObject)
+        {
+            if (_arenaObjects.ContainsKey(newObject.GetInstanceID())) return; // if it already  exists, do nothing
+            var arenaObject = newObject.GetOrAddComponent<ArenaObject>();
+            _arenaObjects[newObject.GetInstanceID()] = arenaObject;
         }
 
         public void RemoveObject(GameObject objectToRemove)

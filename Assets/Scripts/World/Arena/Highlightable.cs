@@ -1,18 +1,20 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace World.Arena
 {
     public class Highlightable : MonoBehaviour
     {
-        public Texture selectedTexture;
+        private ArenaObject _arenaObject;
+        private LineRenderer _lineRenderer;
         private GameObject _plane;
-        
+        public Material circleMaterial;
+
         private const string HighlightedPlaneName = "HighlightedPlane";
 
         // Start is called before the first frame update
         private void Start()
         {
-            Debug.Log("STARTING");
             for (var i = 0; i < transform.childCount; i++)
             {
                 var child = transform.GetChild(i);
@@ -28,27 +30,69 @@ namespace World.Arena
                 return;
             }
 
-            _plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-            var mesh = _plane.GetComponent<MeshRenderer>();
             var localTransform = transform;
-            _plane.name = HighlightedPlaneName;
             var position = localTransform.position;
-            _plane.transform.parent = localTransform;
-            mesh.material.mainTexture = selectedTexture;
-            mesh.material.shader = Shader.Find("Sprites/Default");
-            _plane.transform.position = new Vector3(position.x, position.y, position.z);
-            _plane.transform.localScale = new Vector3(.3f, .3f, .3f);
+
+            _plane = new GameObject
+            {
+                name = HighlightedPlaneName,
+                transform =
+                {
+                    parent = localTransform,
+                    position = new Vector3(position.x, position.y + 0.1f, position.z),
+                    localScale = new Vector3(.3f, .3f, .3f)
+                }
+            };
+
+           
             _plane.SetActive(false);
+            
+            _arenaObject = GetComponent<ArenaObject>();
+            _lineRenderer = _plane.AddComponent<LineRenderer>();
+
         }
 
         public void SetDisplay(bool display)
         {
+            if (display)
+            {
+                var color = _arenaObject.CanBeEdited ? Color.blue : Color.black;
+                _lineRenderer.startColor = color;
+                _lineRenderer.endColor = color;
+                DrawCircle(4f, 2, color);
+
+            }
+
             _plane.SetActive(display);
         }
 
         private void OnDestroy()
         {
             Destroy(_plane);
+        }
+
+        private void DrawCircle(float radius, float lineWidth, Color color)
+        {
+
+            _lineRenderer.material = circleMaterial;
+            const int segments = 360;
+            _lineRenderer.useWorldSpace = false;
+            _lineRenderer.startWidth = lineWidth;
+            _lineRenderer.endWidth = lineWidth;
+            _lineRenderer.positionCount = segments + 1;
+
+            const int
+                pointCount =
+                    segments + 1; // add extra point to make startpoint and endpoint the same to close the circle
+            var points = new Vector3[pointCount];
+
+            for (var i = 0; i < pointCount; i++)
+            {
+                var rad = Mathf.Deg2Rad * (i * 360f / segments);
+                points[i] = new Vector3(Mathf.Sin(rad) * radius, 0, Mathf.Cos(rad) * radius);
+            }
+
+            _lineRenderer.SetPositions(points);
         }
     }
 }
