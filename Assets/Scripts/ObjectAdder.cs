@@ -15,6 +15,7 @@ public class ObjectAdder : MonoBehaviour
     private Camera _mainCamera;
 
     public Action OnCompleted;
+    public Action OnCanceled;
     private static readonly int Color1 = Shader.PropertyToID("_Color");
 
     private void Start()
@@ -60,7 +61,7 @@ public class ObjectAdder : MonoBehaviour
         if (Input.GetKey(KeyCode.Escape))
         {
             Destroy(gameObject);
-            OnCompleted();
+            OnCanceled();
         }
         else if (Input.GetMouseButtonDown(0))
         {
