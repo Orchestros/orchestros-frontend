@@ -5,7 +5,7 @@ using World.EditableItem;
 
 namespace XML
 {
-    public class Circle : ArenaObjectToXml
+    public class CircleToXML : ArenaObjectToXml
     {
         public override List<XmlElement> GetXMLElements(XmlDocument document)
         {
@@ -13,7 +13,7 @@ namespace XML
             var localScale = transform.localScale;
 
             node.SetAttribute("id", gameObject.GetInstanceID().ToString());
-            node.SetAttribute("radius", (localScale.x/2).ToString(CultureInfo.InvariantCulture)); 
+            node.SetAttribute("radius", ArgosHelper.FloatToStringWithArgosFactor(localScale.x/2)); 
             node.SetAttribute("movable", "false");
             
             var spawnCircleEditableItem = gameObject.GetComponent<SpawnCircleEditableItem>();

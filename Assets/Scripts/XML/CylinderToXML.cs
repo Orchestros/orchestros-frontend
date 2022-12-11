@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace XML
 {
-    public class Cylinder : ArenaObjectToXml
+    public class CylinderToXML : ArenaObjectToXml
     {
         public override List<XmlElement> GetXMLElements(XmlDocument document)
         {
@@ -12,8 +12,8 @@ namespace XML
             var localScale = transform.localScale;
 
             node.SetAttribute("id", gameObject.GetInstanceID().ToString());
-            node.SetAttribute("height", localScale.y.ToString(CultureInfo.InvariantCulture));
-            node.SetAttribute("radius", (localScale.x/2).ToString(CultureInfo.InvariantCulture)); 
+            node.SetAttribute("height", ArgosHelper.FloatToStringWithArgosFactor(localScale.y));
+            node.SetAttribute("radius", ArgosHelper.FloatToStringWithArgosFactor(localScale.x/2)); 
             node.SetAttribute("movable", "false");
 
             ArgosHelper.InsertBodyTagFromTransform(document, node, transform);

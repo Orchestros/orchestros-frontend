@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6515522097968305340}
   - component: {fileID: 2906072901774000531}
   - component: {fileID: -8146080967683241254}
+  - component: {fileID: 6410467672217690831}
   m_Layer: 2
   m_Name: Polygon
   m_TagString: Untagged
@@ -137,3 +138,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wall: {fileID: 8971053593205736512, guid: 248d8ef896b2a3148af6480173723661, type: 3}
+--- !u!114 &6410467672217690831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2894173795624989160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb8fbdd56b7040778f98cbde07c3e5f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

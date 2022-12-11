@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Xml;
+using Unity.VisualScripting;
 using UnityEngine;
 using XML;
 
@@ -19,23 +20,33 @@ namespace Managers
             var root = doc.DocumentElement;
             doc.InsertBefore(xmlDeclaration, root);
 
-            var element1 = doc.CreateElement(string.Empty, "argos-configuration", string.Empty);
-            doc.AppendChild(element1);
+            var configuration = doc.CreateElement(string.Empty, "argos-configuration", string.Empty);
+            doc.AppendChild(configuration);
 
+            var arena = doc.CreateElement(string.Empty, "arena", string.Empty);
+            arena.SetAttribute("center", "0,0,0");
+            configuration.AppendChild(arena);
+            
             if (!Input.GetKeyDown(KeyCode.E) || !Input.GetKey(KeyCode.LeftControl))
 
                 return;
 
 
-            foreach (var arenaObjectToXmlList in arenaObjectsManager.GetObjects()
-                         .Select(x => x.GetComponents<ArenaObjectToXml>()))
+            Bounds bounds = new Bounds();
+
+            foreach (var arenaGameObject in arenaObjectsManager.GetObjects())
             {
-                foreach (var arenaObjectToXml in arenaObjectToXmlList)
-                {
-                    foreach (var xmlElement in arenaObjectToXml.GetXMLElements(doc))
-                        element1.AppendChild(xmlElement);
-                }
+                var arenaObjectToXml = arenaGameObject.GetComponent<ArenaObjectToXml>();
+                if (!arenaObjectToXml) continue;
+                
+                bounds.Encapsulate(arenaGameObject.GetComponent<Renderer>().bounds);
+                
+                foreach (var xmlElement in arenaObjectToXml.GetXMLElements(doc))
+                    arena.AppendChild(xmlElement);
             }
+            
+            arena.SetAttribute("size", ArgosHelper.VectorToArgosVector(bounds.extents*2));
+
 
             Debug.Log(doc.OuterXml);
         }

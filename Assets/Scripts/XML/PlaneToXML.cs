@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace XML
 {
-    public class SurfaceToXML : ArenaObjectToXml
+    public class PlaneToXML : ArenaObjectToXml
     {
         public override List<XmlElement> GetXMLElements(XmlDocument document)
         {
