@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Xml;
-using Unity.VisualScripting;
 using UnityEngine;
-using World.Arena.EditableItem;
 using XML;
 
 namespace Managers
@@ -16,21 +12,32 @@ namespace Managers
 
         private void Update()
         {
-            var xmlDocument = new XmlDocument();
-            
+            var doc = new XmlDocument();
+
+            //(1) the xml declaration is recommended, but not mandatory
+            var xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
+            var root = doc.DocumentElement;
+            doc.InsertBefore(xmlDeclaration, root);
+
+            var element1 = doc.CreateElement(string.Empty, "argos-configuration", string.Empty);
+            doc.AppendChild(element1);
+
             if (!Input.GetKeyDown(KeyCode.E) || !Input.GetKey(KeyCode.LeftControl))
 
                 return;
 
 
-            foreach (var arenaObjectToXml in arenaObjectsManager.GetObjects()
-                         .Select(x => x.GetComponent<ArenaObjectToXml>()))
+            foreach (var arenaObjectToXmlList in arenaObjectsManager.GetObjects()
+                         .Select(x => x.GetComponents<ArenaObjectToXml>()))
             {
-                foreach (var xmlElement in arenaObjectToXml.GetXMLElements(xmlDocument))
-                    xmlDocument.AppendChild(xmlElement);
+                foreach (var arenaObjectToXml in arenaObjectToXmlList)
+                {
+                    foreach (var xmlElement in arenaObjectToXml.GetXMLElements(doc))
+                        element1.AppendChild(xmlElement);
+                }
             }
-            
-            Debug.Log(xmlDocument.OuterXml);
+
+            Debug.Log(doc.OuterXml);
         }
     }
 }

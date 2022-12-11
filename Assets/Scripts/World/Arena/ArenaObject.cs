@@ -1,6 +1,4 @@
-﻿using System;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace World.Arena
 {
@@ -8,8 +6,7 @@ namespace World.Arena
     {
         private bool _isLocked;
         public bool CanBeEdited => !_isLocked;
-
-
+        
         public void ChangeLock(bool newLockState)
         {
             _isLocked = newLockState;

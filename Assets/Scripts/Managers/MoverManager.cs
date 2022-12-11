@@ -96,9 +96,17 @@ namespace Managers
 
             var raycast = Physics.Raycast(ray, out var hit);
 
-            if (!raycast) return;
+            if (!raycast && !hit.collider.gameObject) return;
 
-            var colliderGameObject = hit.collider.gameObject.GetComponentInParent<ArenaObject>().gameObject;
+
+            var componentInParent = hit.collider.gameObject.GetComponentInParent<ArenaObject>();
+
+            if (!componentInParent)
+            {
+                return;
+            }
+            
+            var colliderGameObject = componentInParent.gameObject;
 
             if (selectionManager.GetSelectedEditableItems().Contains(colliderGameObject))
             {

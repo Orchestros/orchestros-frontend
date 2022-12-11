@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Numerics;
 using Vector3 = UnityEngine.Vector3;
 
-namespace World.Arena.EditableItem
+namespace World.EditableItem
 {
-    public class RadiusEditableItem : EditableItem
+    public class RadiusEditableItem : Arena.EditableItem.EditableItem
     {
         public override Dictionary<string, string> GetEditableValues()
         {
@@ -14,7 +13,7 @@ namespace World.Arena.EditableItem
             return new Dictionary<string, string>
             {
                 {
-                    "radius", localScale.x.ToString(CultureInfo.CurrentCulture)
+                    "radius", (localScale.x / 2).ToString(CultureInfo.CurrentCulture)
                 },
             };
         }
@@ -27,7 +26,7 @@ namespace World.Arena.EditableItem
 
             if (newValues.ContainsKey("radius"))
             {
-                newRadius = float.Parse(newValues["radius"]);
+                newRadius = float.Parse(newValues["radius"]) * 2;
             }
 
             gameObject.transform.localScale = new Vector3(newRadius, localScale.y, newRadius);

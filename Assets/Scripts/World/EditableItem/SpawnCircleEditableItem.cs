@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace World.Arena.EditableItem
+namespace World.EditableItem
 {
-    public class SpawnCircleEditableItem : EditableItem
+    public class SpawnCircleEditableItem : Arena.EditableItem.EditableItem
     {
+        public bool isSpawnCircle = false;
+
         public override Dictionary<string, string> GetEditableValues()
         {
-            var spawnCircle = GetComponent<SpawnCircle>();
-
             return new Dictionary<string, string>
             {
                 {
-                    "spawn_circle", (spawnCircle == null ? 0 : 1).ToString()
+                    "spawn_circle", (isSpawnCircle ? 1 : 0).ToString()
                 }
             };
         }
@@ -22,19 +22,8 @@ namespace World.Arena.EditableItem
         {
             if (!newValues.ContainsKey("spawn_circle")) return;
 
-            var spawnCircle = GetComponent<SpawnCircle>();
-
-            if (int.Parse(newValues["spawn_circle"]) != 0)
-            {
-                if (spawnCircle == null)
-                {
-                    gameObject.AddComponent<SpawnCircle>();
-                }
-            }
-            else if (spawnCircle != null)
-            {
-                Destroy(spawnCircle);
-            }
+            int.TryParse(newValues["spawn_circle"], out var spawnCircleNewValue);
+            isSpawnCircle = spawnCircleNewValue != 0;
         }
     }
 }
