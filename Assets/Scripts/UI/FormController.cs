@@ -16,7 +16,7 @@ namespace UI
         public void OnSaveClicked()
         {
             _configuration.OnSave(
-                _fields.ToDictionary((pair => pair.Key), pair => pair.Value.text)
+                _fields.ToDictionary(pair => pair.Key, pair => pair.Value.text)
             );
         }
 

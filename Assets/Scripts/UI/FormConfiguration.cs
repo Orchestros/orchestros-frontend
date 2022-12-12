@@ -28,8 +28,8 @@ namespace UI
             Label = label;
         }
 
-        public string Label;
-        public string ID;
-        public string DefaultValue;
+        public readonly string Label;
+        public readonly string ID;
+        public readonly string DefaultValue;
     }
 }

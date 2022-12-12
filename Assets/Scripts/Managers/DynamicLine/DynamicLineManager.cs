@@ -57,7 +57,7 @@ namespace Managers.DynamicLine
 
             if (gameObjectToIgnore != null)
             {
-                renderers = _renderers.Where((a) => a.Key != gameObjectToIgnore.GetInstanceID()).Select(x => x.Value)
+                renderers = _renderers.Where(a => a.Key != gameObjectToIgnore.GetInstanceID()).Select(x => x.Value)
                     .ToList();
             }
 
@@ -141,8 +141,8 @@ namespace Managers.DynamicLine
             {
                 var bounds = renderToCompareWith.bounds;
                 var centerPoint = bounds.center;
-                var bottomLeftPoint = (centerPoint - bounds.extents);
-                var topRightPoint = (centerPoint + bounds.extents);
+                var bottomLeftPoint = centerPoint - bounds.extents;
+                var topRightPoint = centerPoint + bounds.extents;
 
                 objectLines.Add(new DynamicLine(bottomLeftPoint.x, RectTransform.Axis.Horizontal,
                     false, verticalDirection, currenPoint, bottomLeftPoint, renderToCompareWith));
@@ -260,10 +260,10 @@ namespace Managers.DynamicLine
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
-            var prohibitedStates = new HashSet<Type>()
+            var prohibitedStates = new HashSet<Type>
             {
                 typeof(MoverManager),
-                typeof(ArenaObjectsManager),
+                typeof(ArenaObjectsManager)
             };
 
             return activeStates.Any(x => prohibitedStates.Contains(x));

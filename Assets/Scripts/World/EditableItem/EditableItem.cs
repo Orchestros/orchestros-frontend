@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace World.Arena.EditableItem
+namespace World.EditableItem
 {
     public abstract class EditableItem : MonoBehaviour
     {

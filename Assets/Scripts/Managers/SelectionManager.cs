@@ -91,27 +91,25 @@ namespace Managers
 
             var raycast = Physics.Raycast(ray, out var hit);
 
-            if (raycast && !_isCurrentlySelecting)
-            {
-                var colliderGameObject = hit.collider.gameObject;
+            if (!raycast || _isCurrentlySelecting) return;
+            var colliderGameObject = hit.collider.gameObject;
 
-                var closestArenaObject = colliderGameObject.GetComponentInParent<ArenaObject>();
-                if (closestArenaObject)
-                {
-                    ClearSelectionIfNeeded();
-                    ToggleObjectSelection(closestArenaObject.gameObject);
-                    OnDeactivate();
-                } 
-                else if (EventSystem.current.IsPointerOverGameObject())
-                {
-                    OnDeactivate();
-                }
-                else
-                {
-                    ClearSelectionIfNeeded();
-                    _startHitPoint = hit.point;
-                    StartSelection();
-                }
+            var closestArenaObject = colliderGameObject.GetComponentInParent<ArenaObject>();
+            if (closestArenaObject)
+            {
+                ClearSelectionIfNeeded();
+                ToggleObjectSelection(closestArenaObject.gameObject);
+                OnDeactivate();
+            }
+            else if (EventSystem.current.IsPointerOverGameObject())
+            {
+                OnDeactivate();
+            }
+            else
+            {
+                ClearSelectionIfNeeded();
+                _startHitPoint = hit.point;
+                StartSelection();
             }
         }
 
@@ -173,14 +171,15 @@ namespace Managers
                 var minX = Math.Min(endHitPoint.point.x, _startHitPoint.x);
                 var minY = Math.Min(endHitPoint.point.z, _startHitPoint.z);
 
-                foreach (var unit in arenaObjectsManager.GetObjects())
+                foreach (var unit in arenaObjectsManager.GetObjects().Where(unit =>
+                         {
+                             Vector3 position;
+                             return maxX >= (position = unit.transform.position).x && position.x >= minX &&
+                                    maxY >= position.z && position.z >= minY;
+                         }))
                 {
-                    if (maxX >= unit.transform.position.x && unit.transform.position.x >= minX &&
-                        maxY >= unit.transform.position.z && unit.transform.position.z >= minY)
-                    {
-                        // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
-                        ToggleObjectSelection(unit.gameObject);
-                    }
+                    // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
+                    ToggleObjectSelection(unit.gameObject);
                 }
             }
 
@@ -223,11 +222,11 @@ namespace Managers
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
-            var prohibitedStates = new HashSet<Type>()
+            var prohibitedStates = new HashSet<Type>
             {
                 typeof(ArenaObjectsManager),
                 typeof(EditFormManager),
-                typeof(CopyPasteManager),
+                typeof(CopyPasteManager)
             };
 
             return !activeStates.Any(x => prohibitedStates.Contains(x));
@@ -235,9 +234,9 @@ namespace Managers
 
         public List<GameObject> GetSelectedEditableItems()
         {
-            return _selectedObjects.Where((a) => arenaObjectsManager.GetArenaObject(a).CanBeEdited).ToList();
-
+            return _selectedObjects.Where(a => arenaObjectsManager.GetArenaObject(a).CanBeEdited).ToList();
         }
+
         public List<GameObject> GetSelectedItems()
         {
             return _selectedObjects.ToList();

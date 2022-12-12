@@ -4,7 +4,6 @@ using System.Linq;
 using Extensions;
 using Managers.DynamicLine;
 using UnityEngine;
-using World.Arena;
 
 public class ObjectAdder : MonoBehaviour
 {
@@ -71,7 +70,7 @@ public class ObjectAdder : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(0))
         {
-            for (int i = 0; i < _meshRenderers.Count; i++)
+            for (var i = 0; i < _meshRenderers.Count; i++)
             {
                 _meshRenderers[i].material.color = _initialColors[i];
                 Destroy(this);

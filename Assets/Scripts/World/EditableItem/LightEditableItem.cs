@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using Vector3 = UnityEngine.Vector3;
 
 namespace World.EditableItem
 {
-    public class LightEditableItem : Arena.EditableItem.EditableItem
+    public class LightEditableItem : EditableItem
     {
         private float _intensity;
         public override Dictionary<string, string> GetEditableValues()
@@ -13,7 +12,7 @@ namespace World.EditableItem
             {
                 {
                     "intensity", _intensity.ToString(CultureInfo.CurrentCulture)
-                },
+                }
             };
         }
 

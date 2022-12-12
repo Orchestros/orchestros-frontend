@@ -4,7 +4,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace World.EditableItem
 {
-    public class RadiusEditableItem : Arena.EditableItem.EditableItem
+    public class RadiusEditableItem : EditableItem
     {
         public override Dictionary<string, string> GetEditableValues()
         {
@@ -14,7 +14,7 @@ namespace World.EditableItem
             {
                 {
                     "radius", (localScale.x / 2).ToString(CultureInfo.CurrentCulture)
-                },
+                }
             };
         }
 

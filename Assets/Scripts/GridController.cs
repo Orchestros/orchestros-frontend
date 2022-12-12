@@ -72,7 +72,7 @@ public class GridController : MonoBehaviour
 
         var meshRenderer = line.GetComponent<MeshRenderer>();
         meshRenderer.material.color = materialColor;
-        line.transform.position = (transform.position + position);
+        line.transform.position = transform.position + position;
         line.transform.localScale = scale;
     }
 }

@@ -2,7 +2,7 @@
 using System.Globalization;
 using UnityEngine;
 
-namespace World.Arena.EditableItem
+namespace World.EditableItem
 {
     public class PositionEditableItem : EditableItem
     {

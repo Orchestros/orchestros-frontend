@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
 using System.Xml;
 using UnityEngine;
@@ -52,7 +51,7 @@ namespace Managers.Argos.XML
                    FloatToString(vector.x);
         }
 
-        public static Quaternion ArgosVectorToQuaternion(string argosPosition)
+        private static Quaternion ArgosVectorToQuaternion(string argosPosition)
         {
             var values = argosPosition.Split(",").Select(StringToFloat).ToList();
 

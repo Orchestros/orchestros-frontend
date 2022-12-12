@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace World.EditableItem
 {
-    public class SpawnCircleEditableItem : Arena.EditableItem.EditableItem
+    public class SpawnCircleEditableItem : EditableItem
     {
-        public bool isSpawnCircle = false;
+        public bool isSpawnCircle;
 
         public override Dictionary<string, string> GetEditableValues()
         {

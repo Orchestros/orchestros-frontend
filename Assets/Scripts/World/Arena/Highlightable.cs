@@ -62,7 +62,7 @@ namespace World.Arena
                 var color = _arenaObject.CanBeEdited ? Color.blue : Color.black;
                 _lineRenderer.startColor = color;
                 _lineRenderer.endColor = color;
-                DrawCircle(4f, 2, color);
+                DrawCircle(4f, 2);
 
             }
 
@@ -74,7 +74,7 @@ namespace World.Arena
             Destroy(_plane);
         }
 
-        private void DrawCircle(float radius, float lineWidth, Color color)
+        private void DrawCircle(float radius, float lineWidth)
         {
 
             _lineRenderer.material = circleMaterial;
@@ -86,7 +86,7 @@ namespace World.Arena
 
             const int
                 pointCount =
-                    segments + 1; // add extra point to make startpoint and endpoint the same to close the circle
+                    segments + 1; // add extra point to make start point and endpoint the same to close the circle
             var points = new Vector3[pointCount];
 
             for (var i = 0; i < pointCount; i++)

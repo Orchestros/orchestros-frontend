@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using ColorUtility = UnityEngine.ColorUtility;
-using Vector3 = UnityEngine.Vector3;
 
 namespace World.EditableItem
 {
-    public class ColorEditableItem : Arena.EditableItem.EditableItem
+    public class ColorEditableItem : EditableItem
     {
         private Renderer _renderer;
 
@@ -23,7 +21,7 @@ namespace World.EditableItem
             {
                 {
                     "color", "#" + _renderer.material.color.ToHexString()[..6]
-                },
+                }
             };
         }
 

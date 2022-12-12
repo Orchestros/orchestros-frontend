@@ -18,20 +18,18 @@ public class CameraZoom : MonoBehaviour
     private void Update()
     {
         if (Input.GetKey(KeyCode.LeftControl)) return;
+        if (Input.mouseScrollDelta.y == 0) return;
+        
+        var orthographicSize = _camera.orthographicSize + Input.mouseScrollDelta.y*5;
 
-        if (Input.mouseScrollDelta.y != 0)
+        if (_maxOrthographicSize < orthographicSize)
         {
-            var orthographicSize = _camera.orthographicSize + Input.mouseScrollDelta.y*5;
-
-            if (_maxOrthographicSize < orthographicSize)
-            {
-                orthographicSize = _maxOrthographicSize;
-            } else if (orthographicSize < minOrthographicSize)
-            {
-                orthographicSize = minOrthographicSize;
-            }
-            
-            _camera.orthographicSize = orthographicSize;
+            orthographicSize = _maxOrthographicSize;
+        } else if (orthographicSize < minOrthographicSize)
+        {
+            orthographicSize = minOrthographicSize;
         }
+            
+        _camera.orthographicSize = orthographicSize;
     }
 }

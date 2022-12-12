@@ -16,7 +16,7 @@ namespace Managers.Argos
 
         private void Start()
         {
-            _parsers = GetComponents<ArenaObjectToXml>().ToDictionary((a) => a.Tag, a => a);
+            _parsers = GetComponents<ArenaObjectToXml>().ToDictionary(a => a.Tag, a => a);
         }
 
 

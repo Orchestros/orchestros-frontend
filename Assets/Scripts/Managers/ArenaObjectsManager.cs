@@ -5,6 +5,7 @@ using Managers.DynamicLine;
 using Unity.VisualScripting;
 using UnityEngine;
 using World.Arena;
+using Object = UnityEngine.Object;
 
 namespace Managers
 {
@@ -54,7 +55,7 @@ namespace Managers
             OnDeactivate();
         }
 
-        private void AddHighlightableToGameObject(GameObject newObject)
+        private void AddHighlightableToGameObject(Object newObject)
         {
             if (_highlightable.ContainsKey(newObject.GetInstanceID())) return; // if it already  exists, do nothing
             var highlightable = newObject.GetOrAddComponent<Highlightable>();
@@ -62,7 +63,7 @@ namespace Managers
             highlightable.transform.position += new Vector3(0, 0.2f, 0);
             _highlightable[newObject.GetInstanceID()] = highlightable;
         }
-        private void AddArenaObjectToGameObject(GameObject newObject)
+        private void AddArenaObjectToGameObject(Object newObject)
         {
             if (_arenaObjects.ContainsKey(newObject.GetInstanceID())) return; // if it already  exists, do nothing
             var arenaObject = newObject.GetOrAddComponent<ArenaObject>();

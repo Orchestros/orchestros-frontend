@@ -4,7 +4,7 @@ using System.Linq;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
-using World.Arena.EditableItem;
+using World.EditableItem;
 
 namespace Managers
 {
@@ -42,7 +42,7 @@ namespace Managers
 
             foreach (var items in _editableItemsList)
             {
-                Dictionary<string, string> editableValues = new Dictionary<string, string>();
+                var editableValues = new Dictionary<string, string>();
 
                 foreach (var editableItem in items)
                 {
@@ -101,12 +101,9 @@ namespace Managers
 
         private void OnSave(Dictionary<string, string> values)
         {
-            foreach (var items in _editableItemsList)
+            foreach (var item in _editableItemsList.SelectMany(items => items))
             {
-                foreach (var item in items)
-                {
-                    item.UpdateValues(values);
-                }
+                item.UpdateValues(values);
             }
 
             OnCancel();

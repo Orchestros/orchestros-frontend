@@ -47,7 +47,7 @@ public class CameraController : MonoBehaviour
 
     private void CenterCameraOnCtrlAltC()
     {
-        if (!Input.GetKey(KeyCode.LeftAlt) || !Input.GetKey(KeyCode.LeftControl) || !Input.GetKey((KeyCode.C))) return;
+        if (!Input.GetKey(KeyCode.LeftAlt) || !Input.GetKey(KeyCode.LeftControl) || !Input.GetKey(KeyCode.C)) return;
         var cameraTransform = _camera.transform;
         cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
     }

@@ -13,7 +13,7 @@ namespace Extensions
         public static Vector3 Round(this Vector3 vector3, int decimalPlaces = 0)
         {
             float multiplier = 1;
-            for (int i = 0; i < decimalPlaces; i++)
+            for (var i = 0; i < decimalPlaces; i++)
             {
                 multiplier *= 10f;
             }
