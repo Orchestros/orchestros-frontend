@@ -1,26 +1,24 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Xml;
 using UnityEngine;
 
-namespace XML
+namespace Managers.Export.XML
 {
-    public class CylinderToXML : ArenaObjectToXml
+    public class CubeToXML : ArenaObjectToXml
     {
-        public override ArgosTag Tag => ArgosTag.Cylinder;
+        public override ArgosTag Tag => ArgosTag.Cube;
 
         public override List<XmlElement> GetXMLElements(XmlDocument document, GameObject arenaObject)
         {
-            var node = document.CreateElement(string.Empty, "cylinder", string.Empty);
+            var node = document.CreateElement(string.Empty, "box", string.Empty);
             var localScale = arenaObject.transform.localScale;
 
             node.SetAttribute("id", arenaObject.GetInstanceID().ToString());
-            node.SetAttribute("height", ArgosHelper.FloatToStringWithArgosFactor(localScale.y));
-            node.SetAttribute("radius", ArgosHelper.FloatToStringWithArgosFactor(localScale.x/2)); 
+            node.SetAttribute("size", ArgosHelper.VectorToArgosVector(localScale));
             node.SetAttribute("movable", "false");
 
             ArgosHelper.InsertBodyTagFromTransform(document, node, arenaObject.transform);
-
+            
             return new List<XmlElement> { node };
         }
         
@@ -29,4 +27,5 @@ namespace XML
             return arenaObject.GetComponent<Renderer>().bounds;
         }
     }
+    
 }

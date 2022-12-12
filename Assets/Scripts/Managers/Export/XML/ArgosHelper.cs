@@ -2,12 +2,10 @@
 using System.Xml;
 using UnityEngine;
 
-namespace XML
+namespace Managers.Export.XML
 {
     public static class ArgosHelper
     {
-        private const double ToArgosFactor = .25;
-
         public static string VectorToArgosVector(Vector3 vector)
         {
             return FloatToStringWithArgosFactor(-vector.z) + "," +
@@ -43,10 +41,10 @@ namespace XML
 
         public static string FloatToStringWithArgosFactor(float source)
         {
-            return FloatToString(source * ToArgosFactor);
+            return FloatToString(source/30);
         }
 
-        private static string FloatToString(double source)
+        public static string FloatToString(double source)
         {
             return source.ToString(CultureInfo.InvariantCulture);
         }

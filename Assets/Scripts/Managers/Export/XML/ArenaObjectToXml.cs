@@ -2,7 +2,7 @@
 using System.Xml;
 using UnityEngine;
 
-namespace XML
+namespace Managers.Export.XML
 {
     public abstract class ArenaObjectToXml : MonoBehaviour
     {

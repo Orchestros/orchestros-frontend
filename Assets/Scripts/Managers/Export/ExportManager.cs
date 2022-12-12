@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using Unity.VisualScripting;
+using Managers.Export.XML;
 using UnityEngine;
-using XML;
 
-namespace Managers
+namespace Managers.Export
 {
     public class ExportManager : MonoBehaviour
     {
-        public float x = 0;
         public ArenaObjectsManager arenaObjectsManager;
 
         private Dictionary<ArgosTag, ArenaObjectToXml> _parsers;
+
+        public TextAsset baseXML;
 
         private void Start()
         {
@@ -28,20 +27,15 @@ namespace Managers
 
 
             var doc = new XmlDocument();
+            doc.LoadXml(baseXML.text);
 
-            var xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
-            var root = doc.DocumentElement;
-            doc.InsertBefore(xmlDeclaration, root);
 
-            var configuration = doc.CreateElement(string.Empty, "argos-configuration", string.Empty);
-            doc.AppendChild(configuration);
-
-            var arena = doc.CreateElement(string.Empty, "arena", string.Empty);
+            var arena = (XmlElement)doc.GetElementsByTagName("arena")[0];
+            var loopFunctions = (XmlElement)doc.GetElementsByTagName("loop_functions")[0];
             arena.SetAttribute("center", "0,0,0");
-            configuration.AppendChild(arena);
 
-            List<Bounds> boundsList = new List<Bounds>();
-            
+            var boundsList = new List<Bounds>();
+
             foreach (var arenaGameObject in arenaObjectsManager.GetObjects())
             {
                 var argosTagForObject = arenaGameObject.GetComponent<ArgosInfo>().tag;
@@ -51,28 +45,46 @@ namespace Managers
                 var parser = _parsers[argosTagForObject];
                 foreach (var xmlElement in parser.GetXMLElements(doc, arenaGameObject))
                 {
-                    arena.AppendChild(xmlElement);
+                    if (argosTagForObject is ArgosTag.Circle or ArgosTag.Plane)
+                    {
+                        loopFunctions.AppendChild(xmlElement);
+                    }
+                    else
+                    {
+                        arena.AppendChild(xmlElement);
+                    }
                 }
 
                 boundsList.Add(parser.GetBounds(arenaGameObject));
             }
 
-            Bounds summedBounds = boundsList.First();
+            // Compute arena bounds
 
-            foreach (var bounds in boundsList.GetRange(1, boundsList.Count-1))
+            var summedBounds = boundsList.First();
+
+            foreach (var bounds in boundsList.GetRange(1, boundsList.Count - 1))
             {
                 summedBounds.Encapsulate(bounds);
             }
-            
+
+            var distributePosition = (XmlElement) arena.SelectNodes("distribute/position")?[0];
+            if (distributePosition != null)
+            {
+                distributePosition.SetAttribute("max", ArgosHelper.VectorToArgosVectorNoHeight(
+                    summedBounds.center - new Vector3(10, 0, -10)
+                )); 
+                distributePosition.SetAttribute("min", ArgosHelper.VectorToArgosVectorNoHeight(
+                    summedBounds.center + new Vector3(10, 0, -10)
+                ));
+            }
 
             arena.SetAttribute("center",
                 ArgosHelper.VectorToArgosVector(summedBounds.center));
             arena.SetAttribute("size", ArgosHelper.VectorToArgosVector(new Vector3(
-                summedBounds.extents.x * 2,
+                -summedBounds.extents.x * 2,
                 summedBounds.extents.y * 2,
-                summedBounds.extents.z * 2 -x
+                -summedBounds.extents.z * 2
             )));
-
 
             Debug.Log(doc.OuterXml);
         }

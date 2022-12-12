@@ -3,7 +3,7 @@ using System.Xml;
 using UnityEngine;
 using World.EditableItem;
 
-namespace XML
+namespace Managers.Export.XML
 {
     public class CircleToXML : ArenaObjectToXml
     {
@@ -11,24 +11,26 @@ namespace XML
 
         public override List<XmlElement> GetXMLElements(XmlDocument document, GameObject arenaObject)
         {
-            var node = document.CreateElement(string.Empty, "circle", string.Empty);
-            var localScale = arenaObject.transform.localScale;
-
-            node.SetAttribute("id", arenaObject.GetInstanceID().ToString());
-            node.SetAttribute("radius", ArgosHelper.FloatToStringWithArgosFactor(localScale.x/2)); 
-            node.SetAttribute("movable", "false");
-            
-            var spawnCircleEditableItem = arenaObject.GetComponent<SpawnCircleEditableItem>();
             var isEditableCircle = false;
+            var spawnCircleEditableItem = arenaObject.GetComponent<SpawnCircleEditableItem>();
 
             if (spawnCircleEditableItem)
             {
                 isEditableCircle = spawnCircleEditableItem.isSpawnCircle;
             }
-            
+
+
+            var node = document.CreateElement(string.Empty, isEditableCircle ? "spawnCircle" : "circle", string.Empty);
+            var localScale = arenaObject.transform.localScale;
+
+            node.SetAttribute("id", arenaObject.GetInstanceID().ToString());
+            node.SetAttribute("radius", ArgosHelper.FloatToStringWithArgosFactor(localScale.x/2)); 
+          
+            node.SetAttribute("color", "black");
+
+            node.SetAttribute("position", ArgosHelper.VectorToArgosVectorNoHeight(arenaObject.transform.position));
             node.SetAttribute("spawn_circle", isEditableCircle ? "true" :"false");
 
-            ArgosHelper.InsertBodyTagFromTransform(document, node, arenaObject.transform);
 
             return new List<XmlElement> { node };
         }

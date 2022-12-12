@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
-using XML;
 
 namespace World.Arena
 {

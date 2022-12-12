@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using Unity.VisualScripting;
 using UnityEngine;
 using World.Arena;
 
-namespace XML
+namespace Managers.Export.XML
 {
     public class PolygonToXML : ArenaObjectToXml
     {
