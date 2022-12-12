@@ -92,7 +92,7 @@ namespace Managers
             var objectAdder = newObject.AddComponent<ObjectAdder>();
             objectAdder.dynamicLineManager = dynamicLineManager;
             objectAdder.OnCompleted = () => OnObjectAdded(newObject);
-            objectAdder.OnCanceled = () => OnDeactivate();
+            objectAdder.OnCanceled = OnDeactivate;
         }
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)

@@ -67,8 +67,8 @@ public class ObjectAdder : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Escape))
         {
-            Destroy(gameObject);
             OnCanceled();
+            Destroy(gameObject);
         }
         else if (Input.GetMouseButtonDown(0))
         {

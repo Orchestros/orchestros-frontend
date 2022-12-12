@@ -10,16 +10,16 @@ namespace XML
 
         public static string VectorToArgosVector(Vector3 vector)
         {
-            return FloatToStringWithArgosFactor(vector.x) + "," +
-                   FloatToStringWithArgosFactor(vector.y) + "," +
-                   FloatToStringWithArgosFactor(vector.z)
+            return FloatToStringWithArgosFactor(-vector.z) + "," +
+                   FloatToStringWithArgosFactor(-vector.x) + "," +
+                   FloatToStringWithArgosFactor(vector.y)
                 ;
         }
 
         public static string VectorToArgosVectorNoHeight(Vector3 vector)
         {
-            return FloatToStringWithArgosFactor(vector.x) + "," +
-                   FloatToStringWithArgosFactor(vector.z) + "," +
+            return FloatToStringWithArgosFactor(vector.z) + "," +
+                   FloatToStringWithArgosFactor(-vector.x) + "," +
                    0;
         }
 
@@ -27,7 +27,8 @@ namespace XML
         {
             var vector = quaternion.eulerAngles;
 
-            return FloatToString(vector.y) + "," +
+            // argos treats rotation different (z,y,x) where z i argos <=> y in unity
+            return FloatToString(-vector.y) + "," +
                    FloatToString(vector.z) + "," +
                    FloatToString(vector.x);
         }

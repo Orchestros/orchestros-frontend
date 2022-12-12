@@ -26,7 +26,7 @@ namespace Managers
             var arena = doc.CreateElement(string.Empty, "arena", string.Empty);
             arena.SetAttribute("center", "0,0,0");
             configuration.AppendChild(arena);
-            
+
             if (!Input.GetKeyDown(KeyCode.E) || !Input.GetKey(KeyCode.LeftControl))
 
                 return;
@@ -38,14 +38,15 @@ namespace Managers
             {
                 var arenaObjectToXml = arenaGameObject.GetComponent<ArenaObjectToXml>();
                 if (!arenaObjectToXml) continue;
-                
+
                 bounds.Encapsulate(arenaGameObject.GetComponent<Renderer>().bounds);
-                
+
                 foreach (var xmlElement in arenaObjectToXml.GetXMLElements(doc))
                     arena.AppendChild(xmlElement);
             }
-            
-            arena.SetAttribute("size", ArgosHelper.VectorToArgosVector(bounds.extents*2));
+
+            arena.SetAttribute("center", ArgosHelper.VectorToArgosVector(bounds.center));
+            arena.SetAttribute("size", ArgosHelper.VectorToArgosVector(bounds.extents * 2));
 
 
             Debug.Log(doc.OuterXml);

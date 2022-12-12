@@ -9,7 +9,7 @@ namespace XML
         public override List<XmlElement> GetXMLElements(XmlDocument document)
         {
             var node = document.CreateElement(string.Empty, "box", string.Empty);
-            var localScale = transform.lossyScale;
+            var localScale = transform.localScale;
 
             node.SetAttribute("id", gameObject.GetInstanceID().ToString());
             node.SetAttribute("size", ArgosHelper.VectorToArgosVector(localScale));
