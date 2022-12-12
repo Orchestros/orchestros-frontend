@@ -7,11 +7,10 @@ namespace UI
 {
     public class FormController : MonoBehaviour
     {
-        private FormConfiguration _configuration;
-
         public GameObject textFieldPrefab;
 
         private readonly Dictionary<string, TMP_InputField> _fields = new();
+        private FormConfiguration _configuration;
 
         public void OnSaveClicked()
         {
@@ -41,8 +40,7 @@ namespace UI
                 tmpInputField.text = item.DefaultValue;
                 _fields[item.ID] = tmpInputField;
             }
-            
-            
+
 
             transform.localPosition = new Vector3(289, 84);
         }

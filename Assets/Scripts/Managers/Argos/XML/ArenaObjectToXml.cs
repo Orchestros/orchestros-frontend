@@ -12,7 +12,7 @@ namespace Managers.Argos.XML
 
 
         public abstract GameObject InstantiateFromElement(XmlElement element);
-        
+
         public abstract List<XmlElement> GetXMLElements(XmlDocument document, GameObject arenaObject);
 
         public abstract Bounds GetBounds(GameObject arenaObject);

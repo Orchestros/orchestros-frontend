@@ -14,7 +14,7 @@ namespace World.EditableItem
             _renderer = GetComponent<Renderer>();
         }
 
-        
+
         public override Dictionary<string, string> GetEditableValues()
         {
             return new Dictionary<string, string>
@@ -28,7 +28,7 @@ namespace World.EditableItem
         public override void UpdateValues(Dictionary<string, string> newValues)
         {
             var color = _renderer.material.color;
-            
+
             if (newValues.ContainsKey("color"))
             {
                 Debug.Log(newValues["color"]);

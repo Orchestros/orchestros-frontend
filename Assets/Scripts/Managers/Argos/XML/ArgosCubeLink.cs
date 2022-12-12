@@ -26,14 +26,13 @@ namespace Managers.Argos.XML
             node.SetAttribute("movable", "false");
 
             ArgosHelper.InsertBodyTagFromTransform(document, node, arenaObject.transform);
-            
+
             return new List<XmlElement> { node };
         }
-        
+
         public override Bounds GetBounds(GameObject arenaObject)
         {
             return arenaObject.GetComponent<Renderer>().bounds;
         }
     }
-    
 }

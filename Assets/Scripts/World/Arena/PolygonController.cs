@@ -8,11 +8,11 @@ namespace World.Arena
     {
         public GameObject wall;
 
-        private float _borderLength = 10;
-        private float _borderWidth = 3;
-        private int _bordersCount = 3;
-
         public readonly List<GameObject> Walls = new();
+
+        private float _borderLength = 10;
+        private int _bordersCount = 3;
+        private float _borderWidth = 3;
 
         private Renderer _renderer;
 
@@ -23,7 +23,6 @@ namespace World.Arena
             UpdatePolygon(_borderWidth, _borderLength, _bordersCount);
         }
 
-   
 
         private void UpdatePolygon(float borderWidth, float borderLength, int bordersCount)
         {

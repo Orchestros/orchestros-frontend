@@ -6,7 +6,7 @@ namespace World.Arena
     {
         private bool _isLocked;
         public bool CanBeEdited => !_isLocked;
-        
+
         public void ChangeLock(bool newLockState)
         {
             _isLocked = newLockState;

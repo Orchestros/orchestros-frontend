@@ -14,9 +14,9 @@ namespace Managers
 
         public GameObject formPrefab;
         public GameObject canvas;
+        private List<List<EditableItem>> _editableItemsList;
 
         private GameObject _formInstance;
-        private List<List<EditableItem>> _editableItemsList;
 
         public void OpenFormForSelection()
         {
@@ -26,6 +26,7 @@ namespace Managers
 
             BuildForm();
         }
+
         private void BuildForm()
         {
             _formInstance = Instantiate(formPrefab, canvas.transform);
@@ -44,32 +45,19 @@ namespace Managers
             {
                 var editableValues = new Dictionary<string, string>();
 
-                foreach (var editableItem in items)
-                {
-                    editableValues.AddRange(editableItem.GetEditableValues());
-                }
+                foreach (var editableItem in items) editableValues.AddRange(editableItem.GetEditableValues());
 
                 if (sharedKeys == null)
-                {
                     sharedKeys = new HashSet<string>(editableValues.Keys);
-                }
                 else
-                {
                     sharedKeys.IntersectWith(editableValues.Keys);
-                }
 
 
                 foreach (var pair in editableValues)
-                {
                     if (summedEditableValues.ContainsKey(pair.Key))
-                    {
                         summedEditableValues[pair.Key] = "";
-                    }
                     else
-                    {
                         summedEditableValues[pair.Key] = pair.Value;
-                    }
-                }
             }
 
             if (sharedKeys == null) return;
@@ -94,17 +82,14 @@ namespace Managers
                     OnCancel
                 )
             );
-            
+
             _formInstance.transform.SetLocalPositionAndRotation(
                 new Vector3(290, 0, 0), Quaternion.identity);
         }
 
         private void OnSave(Dictionary<string, string> values)
         {
-            foreach (var item in _editableItemsList.SelectMany(items => items))
-            {
-                item.UpdateValues(values);
-            }
+            foreach (var item in _editableItemsList.SelectMany(items => items)) item.UpdateValues(values);
 
             OnCancel();
         }

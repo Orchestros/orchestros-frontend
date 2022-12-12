@@ -5,12 +5,11 @@ namespace World.Arena
 {
     public class Highlightable : MonoBehaviour
     {
+        private const string HighlightedPlaneName = "HighlightedPlane";
+        public Material circleMaterial;
         private ArenaObject _arenaObject;
         private LineRenderer _lineRenderer;
         private GameObject _plane;
-        public Material circleMaterial;
-
-        private const string HighlightedPlaneName = "HighlightedPlane";
 
         // Start is called before the first frame update
         private void Start()
@@ -18,10 +17,7 @@ namespace World.Arena
             for (var i = 0; i < transform.childCount; i++)
             {
                 var child = transform.GetChild(i);
-                if (child.gameObject.name == HighlightedPlaneName)
-                {
-                    _plane = child.gameObject;
-                }
+                if (child.gameObject.name == HighlightedPlaneName) _plane = child.gameObject;
             }
 
             if (_plane != null) // If there already was a plane (if the object was copied for instance)
@@ -44,12 +40,16 @@ namespace World.Arena
                 }
             };
 
-           
+
             _plane.SetActive(false);
-            
+
             _arenaObject = GetComponent<ArenaObject>();
             _lineRenderer = _plane.AddComponent<LineRenderer>();
+        }
 
+        private void OnDestroy()
+        {
+            Destroy(_plane);
         }
 
         public void SetDisplay(bool display)
@@ -63,20 +63,13 @@ namespace World.Arena
                 _lineRenderer.startColor = color;
                 _lineRenderer.endColor = color;
                 DrawCircle(4f, 2);
-
             }
 
             _plane.SetActive(display);
         }
 
-        private void OnDestroy()
-        {
-            Destroy(_plane);
-        }
-
         private void DrawCircle(float radius, float lineWidth)
         {
-
             _lineRenderer.material = circleMaterial;
             const int segments = 360;
             _lineRenderer.useWorldSpace = false;

@@ -10,9 +10,9 @@ namespace Managers.Argos
     {
         public ArenaObjectsManager arenaObjectsManager;
 
-        private Dictionary<ArgosTag, ArenaObjectToXml> _parsers;
-
         public TextAsset baseXML;
+
+        private Dictionary<ArgosTag, ArenaObjectToXml> _parsers;
 
         private void Start()
         {
@@ -44,16 +44,10 @@ namespace Managers.Argos
 
                 var parser = _parsers[argosTagForObject];
                 foreach (var xmlElement in parser.GetXMLElements(doc, arenaGameObject))
-                {
                     if (argosTagForObject is ArgosTag.Circle or ArgosTag.Plane)
-                    {
                         loopFunctions.AppendChild(xmlElement);
-                    }
                     else
-                    {
                         arena.AppendChild(xmlElement);
-                    }
-                }
 
                 boundsList.Add(parser.GetBounds(arenaGameObject));
             }
@@ -62,17 +56,14 @@ namespace Managers.Argos
 
             var summedBounds = boundsList.First();
 
-            foreach (var bounds in boundsList.GetRange(1, boundsList.Count - 1))
-            {
-                summedBounds.Encapsulate(bounds);
-            }
+            foreach (var bounds in boundsList.GetRange(1, boundsList.Count - 1)) summedBounds.Encapsulate(bounds);
 
-            var distributePosition = (XmlElement) arena.SelectNodes("distribute/position")?[0];
+            var distributePosition = (XmlElement)arena.SelectNodes("distribute/position")?[0];
             if (distributePosition != null)
             {
                 distributePosition.SetAttribute("max", ArgosHelper.VectorToArgosVectorNoHeight(
                     summedBounds.center - new Vector3(10, 0, -10)
-                )); 
+                ));
                 distributePosition.SetAttribute("min", ArgosHelper.VectorToArgosVectorNoHeight(
                     summedBounds.center + new Vector3(10, 0, -10)
                 ));

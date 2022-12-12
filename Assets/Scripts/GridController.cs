@@ -17,10 +17,7 @@ public class GridController : MonoBehaviour
 
     private void UpdateGrid()
     {
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
+        foreach (Transform child in transform) Destroy(child.gameObject);
 
         var materialColor = new Color(0.6f, 0.6f, 0.6f);
 
@@ -30,15 +27,15 @@ public class GridController : MonoBehaviour
         // size in pixels
         var localScale = transform.localScale;
 
-        var halfPlaneWidth = localScale.x * bounds.size.x / 2 ;
+        var halfPlaneWidth = localScale.x * bounds.size.x / 2;
         var halfPlaneHeight = localScale.z * bounds.size.z / 2;
-        
+
         var largeScaleX = new Vector3(lineWidth, 1, 1);
         var scaleX = new Vector3(lineWidth / smallToLargeLine, 1, 1);
 
-        var xCorrection = halfPlaneWidth % (lineSpacing * 10) - 5 *lineSpacing;
-        
-        var t = (int) xCorrection/10;
+        var xCorrection = halfPlaneWidth % (lineSpacing * 10) - 5 * lineSpacing;
+
+        var t = (int)xCorrection / 10;
 
         for (var x = -halfPlaneWidth + xCorrection % lineSpacing; x < halfPlaneWidth; x += lineSpacing)
         {
@@ -52,7 +49,7 @@ public class GridController : MonoBehaviour
 
         var zCorrection = halfPlaneHeight % (lineSpacing * 10) - 1 * lineSpacing;
 
-        t = (int) zCorrection/10;
+        t = (int)zCorrection / 10;
 
         for (var z = -halfPlaneHeight + zCorrection % lineSpacing; z < halfPlaneHeight; z += lineSpacing)
         {

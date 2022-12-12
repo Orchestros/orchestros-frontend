@@ -9,24 +9,22 @@ namespace Managers
         public SelectionManager selectionManager;
 
         public ArenaObjectsManager arenaObjectsManager;
+
         private void Update()
         {
             if (!Input.GetKey(KeyCode.Delete)) return;
 
             var selectedItems = selectionManager.GetSelectedEditableItems();
-            
+
             selectionManager.ClearSelection();
 
-            foreach (var selectedItem in selectedItems)
-            {
-                arenaObjectsManager.RemoveObject(selectedItem);
-            }
-
+            foreach (var selectedItem in selectedItems) arenaObjectsManager.RemoveObject(selectedItem);
         }
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
-            return !activeStates.Contains(typeof(EditFormManager)) && selectionManager.GetSelectedEditableItems().Count > 0;
+            return !activeStates.Contains(typeof(EditFormManager)) &&
+                   selectionManager.GetSelectedEditableItems().Count > 0;
         }
     }
 }

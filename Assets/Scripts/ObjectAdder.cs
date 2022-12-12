@@ -7,19 +7,18 @@ using UnityEngine;
 
 public class ObjectAdder : MonoBehaviour
 {
+    private static readonly int Color1 = Shader.PropertyToID("_Color");
     public DynamicLineManager dynamicLineManager;
+    private readonly List<Color> _initialColors = new();
+
+    private int _initialLayer;
+    private Camera _mainCamera;
 
 
     private List<MeshRenderer> _meshRenderers;
-    private readonly List<Color> _initialColors = new();
-    private Camera _mainCamera;
-
-    public Action OnCompleted;
     public Action OnCanceled;
 
-    private int _initialLayer;
-    
-    private static readonly int Color1 = Shader.PropertyToID("_Color");
+    public Action OnCompleted;
 
     private void Start()
     {
@@ -51,14 +50,12 @@ public class ObjectAdder : MonoBehaviour
 
             var bounds = _meshRenderers.First().bounds;
 
-            foreach (var meshRenderer in _meshRenderers)
-            {
-                bounds.Encapsulate(meshRenderer.bounds);
-            }
+            foreach (var meshRenderer in _meshRenderers) bounds.Encapsulate(meshRenderer.bounds);
 
             bounds.center = hit.point;
-            
-            transformPosition = DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, transformPosition, bounds);
+
+            transformPosition =
+                DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, transformPosition, bounds);
             transformPosition.y += 0.01f; // prevent flat objects from merging with the ground
             transform.position = transformPosition.Round();
         }
@@ -80,5 +77,4 @@ public class ObjectAdder : MonoBehaviour
             OnCompleted();
         }
     }
-
 }

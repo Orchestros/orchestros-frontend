@@ -25,22 +25,21 @@ namespace Managers
 
             var demo = doc.CreateElement("demo");
             demo.SetAttribute("id", "demo-1");
-            
+
             var currentIndex = 0;
-            
+
             foreach (var arenaGameObject in arenaObjectsManager.GetObjects())
             {
                 var argosTagForObject = arenaGameObject.GetComponent<ArgosInfo>().tag;
 
                 if (argosTagForObject != ArgosTag.Robot) continue;
-                
+
                 var robot = doc.CreateElement("epuck");
                 robot.SetAttribute("id", "Epuck-" + currentIndex);
                 robot.SetAttribute("position",
                     ArgosHelper.VectorToArgosVectorNoHeight2D(arenaGameObject.transform.position));
                 demo.AppendChild(robot);
                 currentIndex += 1;
-
             }
 
             loopFunctions.AppendChild(demo);

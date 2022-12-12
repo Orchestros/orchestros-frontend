@@ -28,15 +28,9 @@ namespace World.EditableItem
             var newX = localScale.x;
             var newZ = localScale.z;
 
-            if (newValues.ContainsKey("length"))
-            {
-                newX = float.Parse(newValues["length"]);
-            }
+            if (newValues.ContainsKey("length")) newX = float.Parse(newValues["length"]);
 
-            if (newValues.ContainsKey("width"))
-            {
-                newZ = float.Parse(newValues["width"]);
-            }
+            if (newValues.ContainsKey("width")) newZ = float.Parse(newValues["width"]);
 
             gameObject.transform.localScale = new Vector3(newX, localScale.y, newZ);
         }

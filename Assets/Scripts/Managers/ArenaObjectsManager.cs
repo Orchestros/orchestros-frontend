@@ -11,17 +11,16 @@ namespace Managers
 {
     public class ArenaObjectsManager : MonoBehaviourWithState
     {
-        private readonly HashSet<GameObject> _objects = new();
-
-        private readonly Dictionary<int, Highlightable> _highlightable = new();
-        private readonly Dictionary<int, ArenaObject> _arenaObjects = new();
-
-        private readonly List<Action<GameObject>> _onObjectAddedCallbacks = new();
-        private readonly List<Action<GameObject>> _onObjectRemovedCallbacks = new();
-
         public Material circleMaterial;
 
         public DynamicLineManager dynamicLineManager;
+        private readonly Dictionary<int, ArenaObject> _arenaObjects = new();
+
+        private readonly Dictionary<int, Highlightable> _highlightable = new();
+        private readonly HashSet<GameObject> _objects = new();
+
+        private readonly List<Action<GameObject>> _onObjectAddedCallbacks = new();
+        private readonly List<Action<GameObject>> _onObjectRemovedCallbacks = new();
 
         public List<GameObject> GetObjects()
         {
@@ -32,6 +31,7 @@ namespace Managers
         {
             return _highlightable[objectWithHighlightable.GetInstanceID()];
         }
+
         public ArenaObject GetArenaObject(GameObject objectWithArena)
         {
             return _arenaObjects[objectWithArena.GetInstanceID()];
@@ -43,14 +43,10 @@ namespace Managers
             newObject.GetOrAddComponent<ArenaObject>();
 
 
-    
             AddHighlightableToGameObject(newObject);
             AddArenaObjectToGameObject(newObject);
-            
-            foreach (var callback in _onObjectAddedCallbacks)
-            {
-                callback(newObject);
-            }
+
+            foreach (var callback in _onObjectAddedCallbacks) callback(newObject);
 
             OnDeactivate();
         }
@@ -63,6 +59,7 @@ namespace Managers
             highlightable.transform.position += new Vector3(0, 0.2f, 0);
             _highlightable[newObject.GetInstanceID()] = highlightable;
         }
+
         private void AddArenaObjectToGameObject(Object newObject)
         {
             if (_arenaObjects.ContainsKey(newObject.GetInstanceID())) return; // if it already  exists, do nothing
@@ -72,10 +69,7 @@ namespace Managers
 
         public void RemoveObject(GameObject objectToRemove)
         {
-            foreach (var callback in _onObjectRemovedCallbacks)
-            {
-                callback(objectToRemove);
-            }
+            foreach (var callback in _onObjectRemovedCallbacks) callback(objectToRemove);
 
             _objects.Remove(objectToRemove);
             Destroy(objectToRemove);

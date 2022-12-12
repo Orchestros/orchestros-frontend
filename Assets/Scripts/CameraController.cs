@@ -5,9 +5,9 @@ public class CameraController : MonoBehaviour
 {
     public float speed = 0.5f;
     public float relativeDragSpeed = 2f;
+    private Camera _camera;
 
     private Vector3 _dragOrigin;
-    private Camera _camera;
 
 
     // Update is called once per frame

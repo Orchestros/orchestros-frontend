@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Managers.Argos.XML
 
         public override GameObject InstantiateFromElement(XmlElement element)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override List<XmlElement> GetXMLElements(XmlDocument document, GameObject arenaObject)
@@ -20,9 +21,7 @@ namespace Managers.Argos.XML
             var elements = new List<XmlElement>();
 
             foreach (var child in arenaObject.transform.GetComponent<PolygonController>().Walls)
-            {
                 elements.AddRange(GetXMLWall(document, child, arenaObject.transform.localScale.x));
-            }
 
             return elements;
         }
@@ -33,10 +32,8 @@ namespace Managers.Argos.XML
 
             var newBounds = wallObjects.First().GetComponent<Renderer>().bounds;
 
-            foreach (var wallObject in wallObjects.GetRange(1,wallObjects.Count-1))
-            {
+            foreach (var wallObject in wallObjects.GetRange(1, wallObjects.Count - 1))
                 newBounds.Encapsulate(wallObject.GetComponent<Renderer>().bounds);
-            }
 
             return newBounds;
         }

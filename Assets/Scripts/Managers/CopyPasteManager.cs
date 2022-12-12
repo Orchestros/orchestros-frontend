@@ -34,9 +34,7 @@ namespace Managers
                              copiedObject.transform.position - firstObjectPosition,
                              copiedObject.transform.rotation
                          )))
-                {
                     newObject.transform.parent = _group.transform;
-                }
 
                 var c = _group.AddComponent<ObjectAdder>();
                 c.dynamicLineManager = arenaObjectsManager.dynamicLineManager;
@@ -48,19 +46,18 @@ namespace Managers
         private void OnCopyFinishes()
         {
             for (var i = 0; i < _group.transform.childCount; i++)
-            {
                 arenaObjectsManager.OnObjectAdded(_group.transform.GetChild(i).gameObject);
-            }
 
             _group.transform.DetachChildren();
             Destroy(_group);
-            
+
             OnDeactivate();
         }
 
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
-            return !activeStates.Contains(typeof(EditFormManager)) && selectionManager.GetSelectedEditableItems().Count > 0;
+            return !activeStates.Contains(typeof(EditFormManager)) &&
+                   selectionManager.GetSelectedEditableItems().Count > 0;
         }
     }
 }

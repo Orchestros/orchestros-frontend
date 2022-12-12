@@ -15,12 +15,12 @@ namespace Managers.DynamicLine
         public ArenaObjectsManager arenaObjectsManager;
         public GameObject panel;
         public Canvas canvas;
-        private readonly Dictionary<int, Renderer> _renderers = new();
-        private Camera _camera;
-        private RectTransform _canvasRect;
 
         private readonly List<GameObject> _lines = new();
+        private readonly Dictionary<int, Renderer> _renderers = new();
         private readonly List<GameObject> _texts = new();
+        private Camera _camera;
+        private RectTransform _canvasRect;
 
         private Bounds _currentBounds;
 
@@ -30,6 +30,11 @@ namespace Managers.DynamicLine
             _camera = Camera.main;
             arenaObjectsManager.addOnObjectAddedCallback(OnObjectAdded);
             arenaObjectsManager.addOnObjectRemovedCallback(OnObjectRemoved);
+        }
+
+        private void OnDisable()
+        {
+            ClearLinesAndTexts();
         }
 
         private void OnObjectAdded(GameObject newGameObject)
@@ -56,10 +61,8 @@ namespace Managers.DynamicLine
             var renderers = _renderers.Values.ToList();
 
             if (gameObjectToIgnore != null)
-            {
                 renderers = _renderers.Where(a => a.Key != gameObjectToIgnore.GetInstanceID()).Select(x => x.Value)
                     .ToList();
-            }
 
             linesTuple.AddRange(ComputeLinesForPoint(bottomLeftCorner, Direction.Top, Direction.Left, renderers));
             linesTuple.AddRange(ComputeLinesForPoint(topRightCorner, Direction.Bottom, Direction.Right, renderers));
@@ -69,7 +72,7 @@ namespace Managers.DynamicLine
                 Direction.Center, renderers));
 
             var dynamicLines = new List<DynamicLine>();
-            
+
             linesTuple.Sort((a, b) => a.Item2.CompareTo(b.Item2));
 
             var hasHorizontalAlign = false;
@@ -106,26 +109,14 @@ namespace Managers.DynamicLine
                     dynamicLines.Add(dynamicLine);
                 }
 
-                if (hasHorizontalAlign && hasVerticalAlign)
-                {
-                    break;
-                }
+                if (hasHorizontalAlign && hasVerticalAlign) break;
             }
 
-            foreach (var line in dynamicLines)
-            {
-                line.IsUsedToSnap = true;
-            }
+            foreach (var line in dynamicLines) line.IsUsedToSnap = true;
 
-            foreach (var addTextForLine in dynamicLines.Select(AddTextForLine))
-            {
-                _texts.Add(addTextForLine);
-            }
+            foreach (var addTextForLine in dynamicLines.Select(AddTextForLine)) _texts.Add(addTextForLine);
 
-            foreach (var newLineObject in linesFound.Select(AddLine))
-            {
-                _lines.Add(newLineObject);
-            }
+            foreach (var newLineObject in linesFound.Select(AddLine)) _lines.Add(newLineObject);
 
             return dynamicLines;
         }
@@ -206,32 +197,27 @@ namespace Managers.DynamicLine
         {
             var newTextObject = new GameObject();
             var newText = newTextObject.AddComponent<TextMeshProUGUI>();
-            
+
             var distanceBetweenPoints = (line.OriginPoint - line.DestinationPoint).magnitude;
 
             if (line.OriginatesFromCenter)
             {
                 if (line.IsVertical())
-                {
                     distanceBetweenPoints -= line.Renderer.bounds.extents.x;
-                    
-                }
                 else
-                {
                     distanceBetweenPoints -= line.Renderer.bounds.extents.z;
-                }
             }
-            
+
             newText.SetText(
                 ((int)distanceBetweenPoints).ToString(CultureInfo.InvariantCulture));
             newText.fontSize = 10;
             newText.alignment = TextAlignmentOptions.Center;
             newText.color = Color.black;
-            
+
             var rect = newText.GetComponent<RectTransform>();
             rect.SetParent(panel.transform);
             rect.localScale = Vector3.one;
-            
+
             var meanPoint = (line.OriginPoint + line.DestinationPoint) / 2;
             var screenPointLine = _camera.WorldToScreenPoint(meanPoint);
 
@@ -269,22 +255,11 @@ namespace Managers.DynamicLine
             return activeStates.Any(x => prohibitedStates.Contains(x));
         }
 
-        private void OnDisable()
-        {
-            ClearLinesAndTexts();
-        }
-
         public void ClearLinesAndTexts()
         {
-            foreach (var lineToDestroy in _lines)
-            {
-                Destroy(lineToDestroy);
-            }
+            foreach (var lineToDestroy in _lines) Destroy(lineToDestroy);
 
-            foreach (var textToDestroy in _texts)
-            {
-                Destroy(textToDestroy);
-            }
+            foreach (var textToDestroy in _texts) Destroy(textToDestroy);
 
             _lines.Clear();
             _texts.Clear();

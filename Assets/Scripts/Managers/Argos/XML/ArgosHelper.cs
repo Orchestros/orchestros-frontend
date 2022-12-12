@@ -20,10 +20,11 @@ namespace Managers.Argos.XML
 
             return new Vector3(-values[1], values[2], -values[0]);
         }
-        
+
         public static Vector3 ArgosVectorToVectorAbsolute(string argosPosition)
         {
-            var values = argosPosition.Split(",").Select(x => Mathf.Abs(StringToFloatWithInverseArgosFactor(x))).ToList();
+            var values = argosPosition.Split(",").Select(x => Mathf.Abs(StringToFloatWithInverseArgosFactor(x)))
+                .ToList();
 
             return new Vector3(values[1], values[2], values[0]);
         }
@@ -35,12 +36,13 @@ namespace Managers.Argos.XML
                    0;
         }
 
-        
+
         public static string VectorToArgosVectorNoHeight2D(Vector3 vector)
         {
             return FloatToStringWithArgosFactor(vector.z) + "," +
                    FloatToStringWithArgosFactor(-vector.x);
         }
+
         private static string QuaternionToArgosVector(Quaternion quaternion)
         {
             var vector = quaternion.eulerAngles;
@@ -68,7 +70,7 @@ namespace Managers.Argos.XML
 
         public static void SetPositionAndOrientationFromBody(XmlElement element, GameObject gameObject)
         {
-            var body = (XmlElement) element.GetElementsByTagName("body")[0];
+            var body = (XmlElement)element.GetElementsByTagName("body")[0];
 
             gameObject.transform.SetPositionAndRotation(
                 ArgosVectorToVector(body.GetAttribute("position")),
@@ -95,6 +97,5 @@ namespace Managers.Argos.XML
         {
             return source.ToString(CultureInfo.InvariantCulture);
         }
-
     }
 }

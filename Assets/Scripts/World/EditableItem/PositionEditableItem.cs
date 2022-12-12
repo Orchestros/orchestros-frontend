@@ -28,15 +28,9 @@ namespace World.EditableItem
             var newX = position.x;
             var newZ = position.z;
 
-            if (newValues.ContainsKey("x"))
-            {
-                newX = float.Parse(newValues["x"]);
-            }
+            if (newValues.ContainsKey("x")) newX = float.Parse(newValues["x"]);
 
-            if (newValues.ContainsKey("z"))
-            {
-                newZ = float.Parse(newValues["z"]);
-            }
+            if (newValues.ContainsKey("z")) newZ = float.Parse(newValues["z"]);
 
             gameObject.transform.position = new Vector3(newX, position.y, newZ);
         }

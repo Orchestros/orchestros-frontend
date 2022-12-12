@@ -33,10 +33,7 @@ namespace Managers.Argos.XML
             var isEditableCircle = false;
             var spawnCircleEditableItem = arenaObject.GetComponent<SpawnCircleEditableItem>();
 
-            if (spawnCircleEditableItem)
-            {
-                isEditableCircle = spawnCircleEditableItem.isSpawnCircle;
-            }
+            if (spawnCircleEditableItem) isEditableCircle = spawnCircleEditableItem.isSpawnCircle;
 
 
             var node = document.CreateElement(string.Empty, isEditableCircle ? "spawnCircle" : "circle", string.Empty);

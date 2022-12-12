@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using Vector3 = UnityEngine.Vector3;
+using UnityEngine;
 
 namespace World.EditableItem
 {
@@ -24,10 +24,7 @@ namespace World.EditableItem
 
             var newRadius = localScale.x;
 
-            if (newValues.ContainsKey("radius"))
-            {
-                newRadius = float.Parse(newValues["radius"]) * 2;
-            }
+            if (newValues.ContainsKey("radius")) newRadius = float.Parse(newValues["radius"]) * 2;
 
             gameObject.transform.localScale = new Vector3(newRadius, localScale.y, newRadius);
         }

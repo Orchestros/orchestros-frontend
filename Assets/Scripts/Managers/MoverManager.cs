@@ -28,13 +28,11 @@ namespace Managers
         {
             if (Input.GetMouseButtonDown(0))
             {
-
                 OnMouseDown();
                 return;
             }
 
             if (isMouseDragged)
-            {
                 foreach (var selectedItem in selectionManager.GetSelectedEditableItems())
                 {
                     var bounds = selectedItem.GetComponent<Renderer>().bounds;
@@ -42,14 +40,13 @@ namespace Managers
                     var ray = _camera.ScreenPointToRay(Input.mousePosition);
 
                     if (!Physics.Raycast(ray, out var hit)) continue;
-                    
+
                     bounds.center = hit.point;
                     var newPosition = DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager,
                         hit.point, bounds, selectedItem);
                     newPosition.y = selectedItem.transform.position.y;
                     selectedItem.transform.position = newPosition.Round();
                 }
-            }
 
             if (Input.GetMouseButtonUp(0))
             {
@@ -69,25 +66,16 @@ namespace Managers
                 selectedItem.transform.position += deltaVector;
 
                 if (Input.GetAxis("Mouse ScrollWheel") > 0)
-                {
                     selectedItem.transform.Rotate(Vector3.up * rotationSpeedInDegrees, Space.Self);
-                }
 
                 if (Input.GetAxis("Mouse ScrollWheel") < 0)
-                {
                     selectedItem.transform.Rotate(Vector3.down * rotationSpeedInDegrees, Space.Self);
-                }
             }
         }
 
         private void OnDisable()
         {
             dynamicLineManager.ClearLinesAndTexts();
-        }
-
-        public override bool ShouldBeEnabled(HashSet<Type> activeStates)
-        {
-            return selectionManager.GetSelectedEditableItems().Count > 0 && !activeStates.Contains(typeof(EditFormManager));
         }
 
         private void OnMouseDown()
@@ -101,17 +89,17 @@ namespace Managers
 
             var componentInParent = hit.collider.gameObject.GetComponentInParent<ArenaObject>();
 
-            if (!componentInParent)
-            {
-                return;
-            }
-            
+            if (!componentInParent) return;
+
             var colliderGameObject = componentInParent.gameObject;
 
-            if (selectionManager.GetSelectedEditableItems().Contains(colliderGameObject))
-            {
-                isMouseDragged = true;
-            }
+            if (selectionManager.GetSelectedEditableItems().Contains(colliderGameObject)) isMouseDragged = true;
+        }
+
+        public override bool ShouldBeEnabled(HashSet<Type> activeStates)
+        {
+            return selectionManager.GetSelectedEditableItems().Count > 0 &&
+                   !activeStates.Contains(typeof(EditFormManager));
         }
     }
 }

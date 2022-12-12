@@ -15,7 +15,7 @@ namespace Managers.Argos.XML
             var radius = ArgosHelper.StringToFloatWithInverseArgosFactor(element.GetAttribute("radius"));
             var height = ArgosHelper.StringToFloatWithInverseArgosFactor(element.GetAttribute("height"));
             newObject.transform.localScale = new Vector3(radius, height, radius);
-            
+
             return newObject;
         }
 
@@ -26,14 +26,14 @@ namespace Managers.Argos.XML
 
             node.SetAttribute("id", arenaObject.GetInstanceID().ToString());
             node.SetAttribute("height", ArgosHelper.FloatToStringWithArgosFactor(localScale.y));
-            node.SetAttribute("radius", ArgosHelper.FloatToStringWithArgosFactor(localScale.x/2)); 
+            node.SetAttribute("radius", ArgosHelper.FloatToStringWithArgosFactor(localScale.x / 2));
             node.SetAttribute("movable", "false");
 
             ArgosHelper.InsertBodyTagFromTransform(document, node, arenaObject.transform);
 
             return new List<XmlElement> { node };
         }
-        
+
         public override Bounds GetBounds(GameObject arenaObject)
         {
             return arenaObject.GetComponent<Renderer>().bounds;

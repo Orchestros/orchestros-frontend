@@ -6,6 +6,7 @@ namespace World.EditableItem
     public class LightEditableItem : EditableItem
     {
         private float _intensity;
+
         public override Dictionary<string, string> GetEditableValues()
         {
             return new Dictionary<string, string>
@@ -22,10 +23,7 @@ namespace World.EditableItem
 
             var newIntensity = localScale.x;
 
-            if (newValues.ContainsKey("intensity"))
-            {
-                newIntensity = float.Parse(newValues["intensity"]);
-            }
+            if (newValues.ContainsKey("intensity")) newIntensity = float.Parse(newValues["intensity"]);
 
             _intensity = newIntensity;
         }

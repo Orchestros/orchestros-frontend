@@ -10,9 +10,9 @@ namespace Managers.Argos
     {
         public ArenaObjectsManager arenaObjectsManager;
 
-        private Dictionary<ArgosTag, ArenaObjectToXml> _parsers;
-
         public TextAsset baseXML;
+
+        private Dictionary<ArgosTag, ArenaObjectToXml> _parsers;
 
         private void Start()
         {
@@ -37,23 +37,25 @@ namespace Managers.Argos
                 var newObject = _parsers[ArgosTag.Cube].InstantiateFromElement(element);
                 arenaObjectsManager.OnObjectAdded(newObject);
             }
-            
+
             foreach (XmlElement element in arena.GetElementsByTagName("cylinder"))
             {
                 var newObject = _parsers[ArgosTag.Cylinder].InstantiateFromElement(element);
                 arenaObjectsManager.OnObjectAdded(newObject);
             }
-            
+
             foreach (XmlElement element in loopFunctions.GetElementsByTagName("circle"))
             {
                 var newObject = _parsers[ArgosTag.Circle].InstantiateFromElement(element);
                 arenaObjectsManager.OnObjectAdded(newObject);
             }
+
             foreach (XmlElement element in loopFunctions.GetElementsByTagName("spawnCircle"))
             {
                 var newObject = _parsers[ArgosTag.Circle].InstantiateFromElement(element);
                 arenaObjectsManager.OnObjectAdded(newObject);
             }
+
             foreach (XmlElement element in loopFunctions.GetElementsByTagName("plane"))
             {
                 var newObject = _parsers[ArgosTag.Plane].InstantiateFromElement(element);

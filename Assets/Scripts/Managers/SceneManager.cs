@@ -14,27 +14,19 @@ namespace Managers
             _states = Resources.FindObjectsOfTypeAll<MonoBehaviourWithState>();
 
             foreach (var state in _states)
-            {
                 state.activationEvent.AddListener(isActive => OnStateActivationChanged(state, isActive));
-            }
         }
 
         private void OnStateActivationChanged(MonoBehaviourWithState state, bool isActive)
         {
             if (isActive)
-            {
                 _activeStates.Add(state.GetType());
-            }
             else
-            {
                 _activeStates.Remove(state.GetType());
-            }
 
 
             foreach (var monoBehaviourWithState in _states)
-            {
                 monoBehaviourWithState.enabled = monoBehaviourWithState.ShouldBeEnabled(_activeStates);
-            }
         }
     }
 }
