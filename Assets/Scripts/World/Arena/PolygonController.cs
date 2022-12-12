@@ -34,7 +34,6 @@ namespace World.Arena
             _borderLength = borderLength;
             _borderWidth = borderWidth;
             _bordersCount = bordersCount;
-            var newBounds = new Bounds();
 
             var apothemSize = borderLength / (2 * Mathf.Tan(Mathf.PI / bordersCount));
             const float paddingFactorForSelectionCircle = 2.3f;

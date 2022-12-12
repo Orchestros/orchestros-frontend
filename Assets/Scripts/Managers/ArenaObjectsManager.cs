@@ -40,7 +40,9 @@ namespace Managers
         {
             _objects.Add(newObject);
             newObject.GetOrAddComponent<ArenaObject>();
-            
+
+
+    
             AddHighlightableToGameObject(newObject);
             AddArenaObjectToGameObject(newObject);
             
@@ -57,6 +59,7 @@ namespace Managers
             if (_highlightable.ContainsKey(newObject.GetInstanceID())) return; // if it already  exists, do nothing
             var highlightable = newObject.GetOrAddComponent<Highlightable>();
             highlightable.circleMaterial = circleMaterial;
+            highlightable.transform.position += new Vector3(0, 0.2f, 0);
             _highlightable[newObject.GetInstanceID()] = highlightable;
         }
         private void AddArenaObjectToGameObject(GameObject newObject)
