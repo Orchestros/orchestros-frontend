@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 7822924616467254019}
   - component: {fileID: 4179310856292882356}
   - component: {fileID: 5099131445871921347}
+  - component: {fileID: 6919550137257861623}
   - component: {fileID: 7005234987650356452}
-  - component: {fileID: -3677366996040493443}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -126,6 +126,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36999ce5fd674eb48bac87a67866b4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6919550137257861623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7822924616467254021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c2968cea01447380b051d7993fe493, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tag: 4
 --- !u!114 &7005234987650356452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,17 +149,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c99fc5f1c5bd4a11ad2598be03e77ebe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-3677366996040493443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7822924616467254021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 214cafee84ec4b089fae403543c981c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

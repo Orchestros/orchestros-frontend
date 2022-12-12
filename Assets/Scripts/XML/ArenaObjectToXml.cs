@@ -6,6 +6,9 @@ namespace XML
 {
     public abstract class ArenaObjectToXml : MonoBehaviour
     {
-        public abstract List<XmlElement> GetXMLElements(XmlDocument document);
+        public abstract ArgosTag Tag { get; }
+        public abstract List<XmlElement> GetXMLElements(XmlDocument document, GameObject arenaObject);
+
+        public abstract Bounds GetBounds(GameObject arenaObject);
     }
 }

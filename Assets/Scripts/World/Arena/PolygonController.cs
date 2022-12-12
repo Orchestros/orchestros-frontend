@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 using XML;
@@ -20,10 +21,12 @@ namespace World.Arena
         private void Start()
         {
             _renderer = GetComponent<Renderer>();
-            gameObject.layer = 2;   
+            gameObject.layer = 2;
             UpdatePolygon(_borderWidth, _borderLength, _bordersCount);
         }
-        
+
+   
+
         private void UpdatePolygon(float borderWidth, float borderLength, int bordersCount)
         {
             foreach (var o in Walls) Destroy(o);
@@ -32,27 +35,30 @@ namespace World.Arena
             _borderLength = borderLength;
             _borderWidth = borderWidth;
             _bordersCount = bordersCount;
+            var newBounds = new Bounds();
 
             var apothemSize = borderLength / (2 * Mathf.Tan(Mathf.PI / bordersCount));
-            var paddingFactorForSelectionCircle = 2.3f;
-            var scaledApothemSize = apothemSize*paddingFactorForSelectionCircle; 
-            var polygonCenter = Vector3.zero - new Vector3(0, 0, apothemSize/scaledApothemSize + borderWidth/2/scaledApothemSize);
-            
+            const float paddingFactorForSelectionCircle = 2.3f;
+            var scaledApothemSize = apothemSize * paddingFactorForSelectionCircle;
+            var polygonCenter = Vector3.zero -
+                                new Vector3(0, 0,
+                                    apothemSize / scaledApothemSize + borderWidth / 2 / scaledApothemSize);
+
             for (var i = 0; i < bordersCount; i++)
             {
                 var currentWall = Instantiate(wall, transform);
-                
-                currentWall.GetComponent<Renderer>().material.color = _renderer.material.color;
+                var wallRenderer = currentWall.GetComponent<Renderer>();
+                wallRenderer.material.color = _renderer.material.color;
                 currentWall.layer = 0;
-                currentWall.transform.localScale = new Vector3(borderWidth/scaledApothemSize, 10/scaledApothemSize, borderLength/scaledApothemSize);
-                currentWall.transform.localPosition =  Quaternion.Euler(0, 360f / bordersCount * i, 0) * polygonCenter;
+                currentWall.transform.localScale = new Vector3(borderWidth / scaledApothemSize, 10 / scaledApothemSize,
+                    borderLength / scaledApothemSize);
+                currentWall.transform.localPosition = Quaternion.Euler(0, 360f / bordersCount * i, 0) * polygonCenter;
                 var degree = 90f + 360f / bordersCount * i;
                 currentWall.transform.Rotate(new Vector3(0, degree, 0));
                 Walls.Add(currentWall);
             }
 
             transform.localScale = new Vector3(scaledApothemSize, scaledApothemSize, scaledApothemSize);
-            Debug.Log(gameObject.layer);
         }
 
         public override Dictionary<string, string> GetEditableValues()

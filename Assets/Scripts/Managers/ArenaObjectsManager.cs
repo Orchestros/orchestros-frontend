@@ -88,7 +88,7 @@ namespace Managers
                 sourceObject.transform.position,
                 sourceObject.transform.rotation
             );
-            
+
             var objectAdder = newObject.AddComponent<ObjectAdder>();
             objectAdder.dynamicLineManager = dynamicLineManager;
             objectAdder.OnCompleted = () => OnObjectAdded(newObject);

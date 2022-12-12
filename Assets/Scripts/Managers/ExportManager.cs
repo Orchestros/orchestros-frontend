@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,14 +10,25 @@ namespace Managers
 {
     public class ExportManager : MonoBehaviour
     {
+        public float x = 0;
         public ArenaObjectsManager arenaObjectsManager;
+
+        private Dictionary<ArgosTag, ArenaObjectToXml> _parsers;
+
+        private void Start()
+        {
+            _parsers = GetComponents<ArenaObjectToXml>().ToDictionary((a) => a.Tag, a => a);
+        }
 
 
         private void Update()
         {
+            if (!Input.GetKeyDown(KeyCode.E) || !Input.GetKey(KeyCode.LeftControl))
+                return;
+
+
             var doc = new XmlDocument();
 
-            //(1) the xml declaration is recommended, but not mandatory
             var xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
             var root = doc.DocumentElement;
             doc.InsertBefore(xmlDeclaration, root);
@@ -27,26 +40,38 @@ namespace Managers
             arena.SetAttribute("center", "0,0,0");
             configuration.AppendChild(arena);
 
-            if (!Input.GetKeyDown(KeyCode.E) || !Input.GetKey(KeyCode.LeftControl))
-
-                return;
-
-
-            Bounds bounds = new Bounds();
-
+            List<Bounds> boundsList = new List<Bounds>();
+            
             foreach (var arenaGameObject in arenaObjectsManager.GetObjects())
             {
-                var arenaObjectToXml = arenaGameObject.GetComponent<ArenaObjectToXml>();
-                if (!arenaObjectToXml) continue;
+                var argosTagForObject = arenaGameObject.GetComponent<ArgosInfo>().tag;
 
-                bounds.Encapsulate(arenaGameObject.GetComponent<Renderer>().bounds);
+                if (!_parsers.ContainsKey(argosTagForObject)) continue;
 
-                foreach (var xmlElement in arenaObjectToXml.GetXMLElements(doc))
+                var parser = _parsers[argosTagForObject];
+                foreach (var xmlElement in parser.GetXMLElements(doc, arenaGameObject))
+                {
                     arena.AppendChild(xmlElement);
+                }
+
+                boundsList.Add(parser.GetBounds(arenaGameObject));
             }
 
-            arena.SetAttribute("center", ArgosHelper.VectorToArgosVector(bounds.center));
-            arena.SetAttribute("size", ArgosHelper.VectorToArgosVector(bounds.extents * 2));
+            Bounds summedBounds = boundsList.First();
+
+            foreach (var bounds in boundsList.GetRange(1, boundsList.Count-1))
+            {
+                summedBounds.Encapsulate(bounds);
+            }
+            
+
+            arena.SetAttribute("center",
+                ArgosHelper.VectorToArgosVector(summedBounds.center));
+            arena.SetAttribute("size", ArgosHelper.VectorToArgosVector(new Vector3(
+                summedBounds.extents.x * 2,
+                summedBounds.extents.y * 2,
+                summedBounds.extents.z * 2 -x
+            )));
 
 
             Debug.Log(doc.OuterXml);
