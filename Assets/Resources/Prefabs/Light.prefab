@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2308372327218320201}
   - component: {fileID: 7822924616467254019}
   - component: {fileID: 8598041906278801134}
+  - component: {fileID: -3444530175219245665}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -98,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f0c2753c4e4d3d9dceedfe2a0b62f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intensity: 0
 --- !u!136 &7822924616467254019
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -124,3 +126,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36999ce5fd674eb48bac87a67866b4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3444530175219245665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7822924616467254021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c2968cea01447380b051d7993fe493, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tag: 6

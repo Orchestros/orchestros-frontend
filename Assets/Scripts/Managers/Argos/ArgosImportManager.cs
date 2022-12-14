@@ -3,6 +3,9 @@ using System.Linq;
 using System.Xml;
 using Managers.Argos.XML;
 using UnityEngine;
+using UnityEngine.Windows;
+using Utils;
+using Input = UnityEngine.Input;
 
 namespace Managers.Argos
 {
@@ -17,6 +20,12 @@ namespace Managers.Argos
         private void Start()
         {
             _parsers = GetComponents<ArenaObjectToXml>().ToDictionary(a => a.Tag, a => a);
+            
+            
+            if (GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile))
+            {
+                ImportArgosFile(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile));
+            }
         }
 
 
@@ -24,10 +33,17 @@ namespace Managers.Argos
         {
             if (!Input.GetKeyDown(KeyCode.I) || !Input.GetKey(KeyCode.LeftControl))
                 return;
+            
+            var file = ArgosFileLoader.GetArgosFilePathFromUser();
+            ImportArgosFile(file);
+        }
 
-
+        private void ImportArgosFile(string filePath)
+        {
+            
             var doc = new XmlDocument();
-            doc.LoadXml(baseXML.text);
+            var fileContent = System.IO.File.ReadAllText(filePath);
+            doc.LoadXml(fileContent);
 
             var arena = (XmlElement)doc.GetElementsByTagName("arena")[0];
             var loopFunctions = (XmlElement)doc.GetElementsByTagName("loop_functions")[0];
@@ -44,6 +60,12 @@ namespace Managers.Argos
                 arenaObjectsManager.OnObjectAdded(newObject);
             }
 
+            foreach (XmlElement element in arena.GetElementsByTagName("light"))
+            {
+                var newObject = _parsers[ArgosTag.Light].InstantiateFromElement(element);
+                arenaObjectsManager.OnObjectAdded(newObject);
+            }
+
             foreach (XmlElement element in loopFunctions.GetElementsByTagName("circle"))
             {
                 var newObject = _parsers[ArgosTag.Circle].InstantiateFromElement(element);
@@ -56,7 +78,7 @@ namespace Managers.Argos
                 arenaObjectsManager.OnObjectAdded(newObject);
             }
 
-            foreach (XmlElement element in loopFunctions.GetElementsByTagName("plane"))
+            foreach (XmlElement element in loopFunctions.GetElementsByTagName("rectangle"))
             {
                 var newObject = _parsers[ArgosTag.Plane].InstantiateFromElement(element);
                 arenaObjectsManager.OnObjectAdded(newObject);

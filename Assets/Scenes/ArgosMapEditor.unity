@@ -1709,6 +1709,7 @@ GameObject:
   - component: {fileID: 1098071532}
   - component: {fileID: 1098071531}
   - component: {fileID: 1098071530}
+  - component: {fileID: 1098071534}
   - component: {fileID: 1098071529}
   - component: {fileID: 1098071528}
   - component: {fileID: 1098071533}
@@ -1827,6 +1828,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arenaObjectsManager: {fileID: 760284490}
   baseXML: {fileID: 4900000, guid: f926a77526dd7ae41b0a68ff53d5deb0, type: 3}
+--- !u!114 &1098071534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098071525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51dfd38394624c2fb33a48c9f2b5ca90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7822924616467254021, guid: 508b0207557912a47ba17f35e061ed05, type: 3}
 --- !u!1 &1185181564
 GameObject:
   m_ObjectHideFlags: 0
@@ -2142,7 +2156,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxScaleViewportRatio: 10
   text: {fileID: 1935020184}
-  scale: {fileID: 1927219968}
 --- !u!4 &1555456248
 Transform:
   m_ObjectHideFlags: 0

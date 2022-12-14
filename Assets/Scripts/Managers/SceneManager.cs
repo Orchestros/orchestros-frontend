@@ -17,6 +17,14 @@ namespace Managers
                 state.activationEvent.AddListener(isActive => OnStateActivationChanged(state, isActive));
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Scenes/Menu");
+            }
+        }
+
         private void OnStateActivationChanged(MonoBehaviourWithState state, bool isActive)
         {
             if (isActive)

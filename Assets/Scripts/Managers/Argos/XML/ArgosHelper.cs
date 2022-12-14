@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Xml;
 using UnityEngine;
@@ -17,8 +18,7 @@ namespace Managers.Argos.XML
         public static Vector3 ArgosVectorToVector(string argosPosition)
         {
             var values = argosPosition.Split(",").Select(StringToFloatWithInverseArgosFactor).ToList();
-
-            return new Vector3(-values[1], values[2], -values[0]);
+            return values.Count == 2 ? new Vector3(-values[1], 0, values[0]) : new Vector3(-values[1], values[2], values[0]);
         }
 
         public static Vector3 ArgosVectorToVectorAbsolute(string argosPosition)
@@ -43,7 +43,7 @@ namespace Managers.Argos.XML
                    FloatToStringWithArgosFactor(-vector.x);
         }
 
-        private static string QuaternionToArgosVector(Quaternion quaternion)
+        public static string QuaternionToArgosVector(Quaternion quaternion)
         {
             var vector = quaternion.eulerAngles;
 
@@ -53,11 +53,11 @@ namespace Managers.Argos.XML
                    FloatToString(vector.x);
         }
 
-        private static Quaternion ArgosVectorToQuaternion(string argosPosition)
+        public static Quaternion ArgosVectorToQuaternion(string argosPosition)
         {
             var values = argosPosition.Split(",").Select(StringToFloat).ToList();
 
-            return Quaternion.Euler(values[2], values[0], values[1]);
+            return Quaternion.Euler(values[2], -values[0], values[1]);
         }
 
         public static void InsertBodyTagFromTransform(XmlDocument document, XmlElement parentNode, Transform transform)
@@ -80,12 +80,12 @@ namespace Managers.Argos.XML
 
         public static string FloatToStringWithArgosFactor(float source)
         {
-            return FloatToString(source / 30);
+            return FloatToString(Math.Round(source) / 100);
         }
 
         public static float StringToFloatWithInverseArgosFactor(string source)
         {
-            return StringToFloat(source) * 30;
+            return (float)Math.Round(StringToFloat(source) * 100);
         }
 
         public static float StringToFloat(string source)

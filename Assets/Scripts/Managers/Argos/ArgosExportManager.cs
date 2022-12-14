@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using Managers.Argos.XML;
 using UnityEngine;
+using Utils;
 
 namespace Managers.Argos
 {
@@ -22,10 +24,30 @@ namespace Managers.Argos
 
         private void Update()
         {
-            if (!Input.GetKeyDown(KeyCode.E) || !Input.GetKey(KeyCode.LeftControl))
+            if (!Input.GetKey(KeyCode.LeftControl) || !Input.GetKeyDown(KeyCode.S))
                 return;
+            
+            Debug.Log("xxx");
 
+            string outputPath;
 
+            if (!GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile) || Input.GetKey(KeyCode.LeftShift))
+            {
+                outputPath = ArgosFileLoader.GetArgosFilePathFromUser();
+            }
+            else
+            {
+                outputPath = GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile);
+            }
+
+            if (outputPath.Length > 0)
+            {
+                BuildXML(outputPath);
+            }
+        }
+
+        private void BuildXML(string outputPath)
+        {
             var doc = new XmlDocument();
             doc.LoadXml(baseXML.text);
 
@@ -61,11 +83,15 @@ namespace Managers.Argos
             var distributePosition = (XmlElement)arena.SelectNodes("distribute/position")?[0];
             if (distributePosition != null)
             {
+                var leftBottom = summedBounds.center - summedBounds.extents;
+                var topRight = summedBounds.center + summedBounds.extents;
+                
+                
                 distributePosition.SetAttribute("max", ArgosHelper.VectorToArgosVectorNoHeight(
-                    summedBounds.center - new Vector3(10, 0, -10)
+                    new Vector3(Math.Min(leftBottom.x, topRight.x), 0, Math.Max(leftBottom.z, topRight.z))
                 ));
                 distributePosition.SetAttribute("min", ArgosHelper.VectorToArgosVectorNoHeight(
-                    summedBounds.center + new Vector3(10, 0, -10)
+                    new Vector3(Math.Max(leftBottom.x, topRight.x), 0, Math.Min(leftBottom.z, topRight.z))
                 ));
             }
 
@@ -73,11 +99,19 @@ namespace Managers.Argos
                 ArgosHelper.VectorToArgosVector(summedBounds.center));
             arena.SetAttribute("size", ArgosHelper.VectorToArgosVector(new Vector3(
                 -summedBounds.extents.x * 2,
-                summedBounds.extents.y * 2,
+                ArgosHelper.StringToFloatWithInverseArgosFactor("2"),
                 -summedBounds.extents.z * 2
             )));
 
-            Debug.Log(doc.OuterXml);
+            if (System.IO.File.Exists(outputPath))
+            {
+                
+                System.IO.File.Copy(outputPath, outputPath+DateTime.Now.ToFileTime()+"_old");
+            }
+            
+            System.IO.File.WriteAllText(outputPath, doc.OuterXml);
         }
     }
+    
+    
 }

@@ -12,5 +12,6 @@ public enum ArgosTag
     Plane,
     Circle,
     Cylinder,
-    Robot
+    Robot,
+    Light
 }

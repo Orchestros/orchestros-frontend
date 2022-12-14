@@ -5,7 +5,7 @@ using World.EditableItem;
 
 namespace Managers.Argos.XML
 {
-    public class CircleToXML : ArenaObjectToXml
+    public class ArgosCircleLink : ArenaObjectToXml
     {
         public override ArgosTag Tag => ArgosTag.Circle;
 
@@ -13,8 +13,11 @@ namespace Managers.Argos.XML
         {
             var newObject = Instantiate(prefab);
             var radius = ArgosHelper.StringToFloatWithInverseArgosFactor(element.GetAttribute("radius"));
-            newObject.transform.localScale = new Vector3(radius, 1, radius);
+            newObject.transform.localScale = new Vector3(radius*2, 1, radius*2);
+            Debug.Log("x");
             var position = ArgosHelper.ArgosVectorToVector(element.GetAttribute("position"));
+            Debug.Log(position);
+
             position += new Vector3(0, 1, 0);
             newObject.transform.position = position;
             var spawnCircleEditableItem = newObject.GetComponent<SpawnCircleEditableItem>();

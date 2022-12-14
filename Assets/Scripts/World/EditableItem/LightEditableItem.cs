@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using UnityEngine.Serialization;
 
 namespace World.EditableItem
 {
     public class LightEditableItem : EditableItem
     {
-        private float _intensity;
+        public float intensity;
 
         public override Dictionary<string, string> GetEditableValues()
         {
             return new Dictionary<string, string>
             {
                 {
-                    "intensity", _intensity.ToString(CultureInfo.CurrentCulture)
+                    "intensity", intensity.ToString(CultureInfo.CurrentCulture)
                 }
             };
         }
@@ -25,7 +26,7 @@ namespace World.EditableItem
 
             if (newValues.ContainsKey("intensity")) newIntensity = float.Parse(newValues["intensity"]);
 
-            _intensity = newIntensity;
+            intensity = newIntensity;
         }
     }
 }
