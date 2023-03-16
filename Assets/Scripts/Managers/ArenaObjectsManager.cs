@@ -39,7 +39,21 @@ namespace Managers
 
         public void OnObjectAdded(GameObject newObject)
         {
+            var position = newObject.transform.position;
+
+            if (newObject.transform.position.y < 0.2f)
+            {
+                position.Set(
+                    position.x,
+                    newObject.GetComponent<MeshRenderer>().bounds.extents.y,
+                    position.z
+                );
+            }
+
             _objects.Add(newObject);
+            var transformPosition = position;
+            newObject.transform.position = transformPosition;
+
             newObject.GetOrAddComponent<ArenaObject>();
 
 

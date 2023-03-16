@@ -56,7 +56,10 @@ public class ObjectAdder : MonoBehaviour
 
             transformPosition =
                 DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, transformPosition, bounds);
-            transformPosition.y += 0.01f; // prevent flat objects from merging with the ground
+            
+            // Object real size
+            transformPosition.y = bounds.extents.y;
+            
             transform.position = transformPosition.Round();
         }
 

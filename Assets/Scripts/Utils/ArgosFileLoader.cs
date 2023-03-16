@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using UnityEngine;
+using Application = UnityEngine.Device.Application;
 
 namespace Utils
 {
@@ -7,8 +8,13 @@ namespace Utils
         public static string GetArgosFilePathFromUser()
         {
             string[] extensions = { "Argos map", "argos,xml", "All files", "*" };
-            var file = EditorUtility.OpenFilePanelWithFilters("Select Argos File", "", extensions);
-            return file;
+            // Check if is web platform
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                return "";
+            }
+
+            return "";
         }
     }
 }

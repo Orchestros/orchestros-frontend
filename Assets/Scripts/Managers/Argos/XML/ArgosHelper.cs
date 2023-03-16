@@ -90,6 +90,11 @@ namespace Managers.Argos.XML
 
         public static float StringToFloat(string source)
         {
+            if (source.Length == 0)
+            {
+                return 0;
+            }
+            
             return float.Parse(source, CultureInfo.InvariantCulture);
         }
 
