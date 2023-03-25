@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml;
 using Managers.Argos.XML;
 using UnityEngine;
@@ -27,15 +28,20 @@ namespace Managers
         {
             if (!Input.GetKeyDown(KeyCode.E) || !Input.GetKey(KeyCode.LeftControl))
                 return;
-            
+
+            UpdateAsync();
+        }
+
+        private async Task UpdateAsync()
+        {
             var doc = new XmlDocument();
-            doc.LoadXml(System.IO.File.ReadAllText(currentXML));
-            
+            doc.LoadXml(await ArgosFileLoader.GetArgosFileLoader().GetContentFromPathOrUrl(currentXML));
+
             var loopFunctions = (XmlElement)doc.GetElementsByTagName("loop_functions")[0];
 
             // Get last demo id
             var greatestDemoId = 0;
-            
+
             foreach (var oldDemo in loopFunctions.GetElementsByTagName("demo"))
             {
                 var idString = ((XmlElement)oldDemo).GetAttribute("id");
@@ -43,13 +49,13 @@ namespace Managers
                 idString = Regex.Replace(idString, "[^0-9]", "");
 
                 if (!int.TryParse(idString, out var demoId)) continue;
-                
+
                 if (demoId > greatestDemoId)
                 {
                     greatestDemoId = demoId;
                 }
             }
-            
+
             var demo = doc.CreateElement("demo");
             demo.SetAttribute("id", "demo_" + (greatestDemoId + 1));
 
@@ -62,7 +68,7 @@ namespace Managers
                 if (argosTagForObject != ArgosTag.Robot) continue;
 
                 print(argosTagForObject);
-                
+
                 var robot = doc.CreateElement("epuck");
                 robot.SetAttribute("id", "Epuck-" + currentIndex);
                 robot.SetAttribute("position",
@@ -72,7 +78,7 @@ namespace Managers
             }
 
             loopFunctions.AppendChild(demo);
-            
+
             doc.Save(currentXML);
         }
     }

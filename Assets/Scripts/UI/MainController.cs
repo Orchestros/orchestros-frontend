@@ -19,9 +19,9 @@ namespace UI
             _newSceneButton.clickable.clicked += () => { SceneManager.LoadScene("Scenes/ArgosMapEditor"); };
 
             _openSceneButton = _uiDocument.rootVisualElement.Query<Button>("openMap").First();
-            _openSceneButton.clickable.clicked += () =>
+            _openSceneButton.clickable.clicked += async () =>
             {
-                var file = ArgosFileLoader.GetArgosFilePathFromUser();
+                var file = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
 
                 if (file.Length <= 0) return;
 
@@ -31,9 +31,9 @@ namespace UI
             };
 
             _loadDemoButton = _uiDocument.rootVisualElement.Query<Button>("newDemo").First();
-            _loadDemoButton.clickable.clicked += () =>
+            _loadDemoButton.clickable.clicked += async () =>
             {
-                var file = ArgosFileLoader.GetArgosFilePathFromUser();
+                var file = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
 
                 if (file.Length <= 0) return;
                 SceneManager.UnloadSceneAsync("Menu");

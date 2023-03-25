@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml;
 using Managers.Argos.XML;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.Windows;
 using Utils;
 using Input = UnityEngine.Input;
@@ -33,16 +34,20 @@ namespace Managers.Argos
         {
             if (!Input.GetKeyDown(KeyCode.I) || !Input.GetKey(KeyCode.LeftControl))
                 return;
-            
-            var file = ArgosFileLoader.GetArgosFilePathFromUser();
+
+            AsyncUpdate();
+        }
+
+        private async void AsyncUpdate()
+        {
+            var file = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
             ImportArgosFile(file);
         }
 
-        private void ImportArgosFile(string filePath)
+        private async void ImportArgosFile(string filePath)
         {
-            
             var doc = new XmlDocument();
-            var fileContent = System.IO.File.ReadAllText(filePath);
+            var fileContent = await ArgosFileLoader.GetArgosFileLoader().GetContentFromPathOrUrl(filePath);
             doc.LoadXml(fileContent);
 
             var arena = (XmlElement)doc.GetElementsByTagName("arena")[0];

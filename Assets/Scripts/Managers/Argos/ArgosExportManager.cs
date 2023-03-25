@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml;
 using Managers.Argos.XML;
 using UnityEngine;
@@ -26,14 +27,17 @@ namespace Managers.Argos
         {
             if (!Input.GetKey(KeyCode.LeftControl) || !Input.GetKeyDown(KeyCode.S))
                 return;
-            
-            Debug.Log("xxx");
 
+            AsyncUpdate();
+        }
+
+        private async Task AsyncUpdate()
+        {
             string outputPath;
 
             if (!GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile) || Input.GetKey(KeyCode.LeftShift))
             {
-                outputPath = ArgosFileLoader.GetArgosFilePathFromUser();
+                outputPath = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
             }
             else
             {
@@ -103,13 +107,7 @@ namespace Managers.Argos
                 -summedBounds.extents.z * 2
             )));
 
-            if (System.IO.File.Exists(outputPath))
-            {
-                
-                System.IO.File.Copy(outputPath, outputPath+DateTime.Now.ToFileTime()+"_old");
-            }
-            
-            System.IO.File.WriteAllText(outputPath, doc.OuterXml);
+            ArgosFileLoader.SaveFile(outputPath, doc.OuterXml);
         }
     }
     
