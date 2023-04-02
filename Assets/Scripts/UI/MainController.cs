@@ -5,6 +5,9 @@ using Utils;
 
 namespace UI
 {
+    /// <summary>
+    /// Controller for the main menu UI.
+    /// </summary>
     public class MainController : MonoBehaviour
     {
         private UIDocument _uiDocument;
@@ -12,6 +15,9 @@ namespace UI
         private Button _openSceneButton;
         private Button _loadDemoButton;
 
+        /// <summary>
+        /// Sets up event handlers for the UI buttons.
+        /// </summary>
         private void Start()
         {
             _uiDocument = GetComponent<UIDocument>();
@@ -41,6 +47,7 @@ namespace UI
                 var file = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
 
                 if (file.Length <= 0) return;
+
                 SceneManager.UnloadSceneAsync("Menu");
                 SceneManager.LoadScene("Scenes/Demonstrator");
                 GlobalVariables.Set(GlobalVariablesKey.ArgosFile, file);

@@ -4,27 +4,39 @@ using UnityEngine;
 
 namespace Managers
 {
+    /// <summary>
+    /// Manages the deletion of objects in the arena.
+    /// </summary>
     public class DeleteManager : MonoBehaviourWithState
     {
-        public SelectionManager selectionManager;
+        [SerializeField] private SelectionManager selectionManager; // the selection manager
+        [SerializeField] private ArenaObjectsManager arenaObjectsManager; // the arena objects manager
 
-        public ArenaObjectsManager arenaObjectsManager;
-
+        /// <summary>
+        /// Called once per frame to check for deletion input.
+        /// </summary>
         private void Update()
         {
-            if (!Input.GetKey(KeyCode.Delete)) return;
+            // If the delete key is not pressed, do nothing
+            if (!Input.GetKey(KeyCode.Delete))
+            {
+                return;
+            }
 
+            // Get the currently selected items and clear the selection
             var selectedItems = selectionManager.GetSelectedEditableItems();
-
             selectionManager.ClearSelection();
 
-            foreach (var selectedItem in selectedItems) arenaObjectsManager.RemoveObject(selectedItem);
+            // Remove each selected item from the arena
+            foreach (var selectedItem in selectedItems)
+            {
+                arenaObjectsManager.RemoveObject(selectedItem);
+            }
         }
 
-        public override bool ShouldBeEnabled(HashSet<Type> activeStates)
-        {
-            return !activeStates.Contains(typeof(EditFormManager)) &&
-                   selectionManager.GetSelectedEditableItems().Count > 0;
-        }
+        /// <inheritdoc />
+        public override bool ShouldBeEnabled(HashSet<Type> activeStates) =>
+            !activeStates.Contains(typeof(EditFormManager)) &&
+            selectionManager.GetSelectedEditableItems().Count > 0;
     }
 }

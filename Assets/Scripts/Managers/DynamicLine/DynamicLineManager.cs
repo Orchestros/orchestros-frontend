@@ -28,8 +28,8 @@ namespace Managers.DynamicLine
         {
             _canvasRect = canvas.GetComponent<RectTransform>();
             _camera = Camera.main;
-            arenaObjectsManager.addOnObjectAddedCallback(OnObjectAdded);
-            arenaObjectsManager.addOnObjectRemovedCallback(OnObjectRemoved);
+            arenaObjectsManager.AddOnObjectAddedCallback(OnObjectAdded);
+            arenaObjectsManager.AddOnObjectAddedCallback(OnObjectRemoved);
         }
 
         private void OnDisable()

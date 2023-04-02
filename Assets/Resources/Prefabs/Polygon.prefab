@@ -137,7 +137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5431ab7b7f48b9959d89a8789ecb88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wall: {fileID: 8971053593205736512, guid: 248d8ef896b2a3148af6480173723661, type: 3}
+  wallPrefab: {fileID: 8971053593205736512, guid: 248d8ef896b2a3148af6480173723661, type: 3}
+  walls: []
 --- !u!114 &8275329332670604979
 MonoBehaviour:
   m_ObjectHideFlags: 0
