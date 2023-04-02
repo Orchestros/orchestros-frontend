@@ -20,7 +20,7 @@ namespace Managers.Argos
             _parsers = GetComponents<ArenaObjectToXml>().ToDictionary(a => a.Tag, a => a);
             
             
-            if (GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile))
+            if (GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile) && !string.IsNullOrEmpty(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile)))
             {
                 ImportArgosFile(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile));
             }

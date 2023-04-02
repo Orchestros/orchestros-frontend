@@ -16,7 +16,12 @@ namespace UI
         {
             _uiDocument = GetComponent<UIDocument>();
             _newSceneButton = _uiDocument.rootVisualElement.Query<Button>("newMap").First();
-            _newSceneButton.clickable.clicked += () => { SceneManager.LoadScene("Scenes/ArgosMapEditor"); };
+            _newSceneButton.clickable.clicked += () =>
+            {
+                // Reset ArgosFile
+                GlobalVariables.Set(GlobalVariablesKey.ArgosFile, "");
+                SceneManager.LoadScene("Scenes/ArgosMapEditor");
+            };
 
             _openSceneButton = _uiDocument.rootVisualElement.Query<Button>("openMap").First();
             _openSceneButton.clickable.clicked += async () =>

@@ -31,7 +31,9 @@ namespace Managers.Argos.XML
             node.SetAttribute("color", "yellow");
             node.SetAttribute("medium", "leds");
             node.SetAttribute("orientation", ArgosHelper.QuaternionToArgosVector(arenaObject.transform.rotation));
-            node.SetAttribute("position", ArgosHelper.VectorToArgosVectorNoHeight(arenaObject.transform.position));
+            var transformPosition = arenaObject.transform.position;
+            transformPosition.y = 10f;
+            node.SetAttribute("position", ArgosHelper.VectorToArgosVector(transformPosition));
 
             return new List<XmlElement> { node };
         }

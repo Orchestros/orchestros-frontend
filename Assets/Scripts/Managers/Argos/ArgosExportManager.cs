@@ -32,7 +32,7 @@ namespace Managers.Argos
             AsyncUpdate();
         }
 
-        public void OnTriggerSave()
+        public void  OnTriggerSave()
         {
             AsyncUpdate();
         }
@@ -41,9 +41,9 @@ namespace Managers.Argos
         {
             string outputPath;
 
-            if (!GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile) || Input.GetKey(KeyCode.LeftShift))
+            if (!GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile) || string.IsNullOrEmpty(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile)) || Input.GetKey(KeyCode.LeftShift))
             {
-                outputPath = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
+                outputPath = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser(true);
             }
             else
             {

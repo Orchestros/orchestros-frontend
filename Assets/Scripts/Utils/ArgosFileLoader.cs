@@ -66,10 +66,12 @@ namespace Utils
 
         public async Task<string> GetArgosFilePathFromUser(bool newFile = false)
         {
-            string[] extensions = { "Argos map", "argos,xml", "All files", "*" };
+            
+            
 #if UNITY_EDITOR
+            Debug.Log("XXX");
             var path = newFile
-                ? EditorUtility.SaveFilePanel("Save argos file", "", "map.argos", "argos,xml")
+                ? EditorUtility.SaveFilePanel("Save argos file", "", "map2.argos", "argos,xml")
                 : EditorUtility.OpenFilePanel("Load argos file", "", "argos,xml");
             return path;
 #else

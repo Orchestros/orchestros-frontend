@@ -54,7 +54,7 @@ namespace Managers
 
 
                 foreach (var pair in editableValues)
-                    if (summedEditableValues.ContainsKey(pair.Key))
+                    if (summedEditableValues.ContainsKey(pair.Key) && summedEditableValues[pair.Key] != pair.Value) 
                         summedEditableValues[pair.Key] = "";
                     else
                         summedEditableValues[pair.Key] = pair.Value;
@@ -89,7 +89,13 @@ namespace Managers
 
         private void OnSave(Dictionary<string, string> values)
         {
-            foreach (var item in _editableItemsList.SelectMany(items => items)) item.UpdateValues(values);
+            // Values without empty strings
+            values = values.Where(pair => pair.Value != "").ToDictionary(pair => pair.Key, pair => pair.Value);
+            
+            foreach (var item in _editableItemsList.SelectMany(items => items))
+            {
+                item.UpdateValues(values);
+            }
 
             OnCancel();
         }
