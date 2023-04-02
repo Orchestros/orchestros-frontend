@@ -1,12 +1,11 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using Managers.Argos.XML;
 using UnityEngine;
 using Utils;
 
-namespace Managers
+namespace Managers.Argos
 {
     public class DemoExportManager : MonoBehaviour
     {
@@ -29,7 +28,18 @@ namespace Managers
             if (!Input.GetKeyDown(KeyCode.E) || !Input.GetKey(KeyCode.LeftControl))
                 return;
 
+            // Horrible but needed for web compatibility
+#pragma warning disable CS4014
             UpdateAsync();
+#pragma warning restore CS4014
+        }
+
+        public void OnTriggerSave()
+        {
+            // Horrible but needed for web compatibility
+#pragma warning disable CS4014
+            UpdateAsync();
+#pragma warning restore CS4014
         }
 
         private async Task UpdateAsync()

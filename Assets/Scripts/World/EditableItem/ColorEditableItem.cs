@@ -31,11 +31,15 @@ namespace World.EditableItem
 
             if (newValues.ContainsKey("color"))
             {
-                Debug.Log(newValues["color"]);
                 ColorUtility.TryParseHtmlString(newValues["color"], out color);
             }
 
             _renderer.material.color = color;
+        }
+
+        public string GetColor()
+        {
+            return _renderer.material.color.ToHexString();
         }
     }
 }

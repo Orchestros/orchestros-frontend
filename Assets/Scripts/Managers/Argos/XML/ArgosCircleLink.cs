@@ -13,11 +13,12 @@ namespace Managers.Argos.XML
         {
             var newObject = Instantiate(prefab);
             var radius = ArgosHelper.StringToFloatWithInverseArgosFactor(element.GetAttribute("radius"));
-            newObject.transform.localScale = new Vector3(radius*2, 1, radius*2);
-            Debug.Log("x");
+            newObject.transform.localScale = new Vector3(radius * 2, 1, radius * 2);
             var position = ArgosHelper.ArgosVectorToVector(element.GetAttribute("position"));
-            Debug.Log(position);
 
+            ColorUtility.TryParseHtmlString(element.GetAttribute("color"), out var color);
+            newObject.GetComponent<Renderer>().material.color = color;
+            
             position += new Vector3(0, 1, 0);
             newObject.transform.position = position;
             var spawnCircleEditableItem = newObject.GetComponent<SpawnCircleEditableItem>();
@@ -35,17 +36,27 @@ namespace Managers.Argos.XML
         {
             var isEditableCircle = false;
             var spawnCircleEditableItem = arenaObject.GetComponent<SpawnCircleEditableItem>();
+            var colorEditableItem = arenaObject.GetComponent<ColorEditableItem>();
 
             if (spawnCircleEditableItem) isEditableCircle = spawnCircleEditableItem.isSpawnCircle;
 
 
             var node = document.CreateElement(string.Empty, isEditableCircle ? "spawnCircle" : "circle", string.Empty);
             var localScale = arenaObject.transform.localScale;
+            
+            // Get color
+            if (colorEditableItem)
+            {
+                Debug.Log("Color editable item");
+                var color = colorEditableItem.GetColor();
+                Debug.Log(color);
+                node.SetAttribute("color", color == "FFFFFFFF" ? "white" : "black");
+            }
+            
 
             node.SetAttribute("id", arenaObject.GetInstanceID().ToString());
             node.SetAttribute("radius", ArgosHelper.FloatToStringWithArgosFactor(localScale.x / 2));
 
-            node.SetAttribute("color", "black");
 
             node.SetAttribute("position", ArgosHelper.VectorToArgosVectorNoHeight(arenaObject.transform.position));
             node.SetAttribute("spawn_circle", isEditableCircle ? "true" : "false");

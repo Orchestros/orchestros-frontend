@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
@@ -28,6 +29,11 @@ namespace Managers.Argos
             if (!Input.GetKey(KeyCode.LeftControl) || !Input.GetKeyDown(KeyCode.S))
                 return;
 
+            AsyncUpdate();
+        }
+
+        public void OnTriggerSave()
+        {
             AsyncUpdate();
         }
 
@@ -89,8 +95,8 @@ namespace Managers.Argos
             {
                 var leftBottom = summedBounds.center - summedBounds.extents;
                 var topRight = summedBounds.center + summedBounds.extents;
-                
-                
+
+
                 distributePosition.SetAttribute("max", ArgosHelper.VectorToArgosVectorNoHeight(
                     new Vector3(Math.Min(leftBottom.x, topRight.x), 0, Math.Max(leftBottom.z, topRight.z))
                 ));
@@ -100,16 +106,26 @@ namespace Managers.Argos
             }
 
             arena.SetAttribute("center",
-                ArgosHelper.VectorToArgosVector(summedBounds.center));
-            arena.SetAttribute("size", ArgosHelper.VectorToArgosVector(new Vector3(
-                -summedBounds.extents.x * 2,
-                ArgosHelper.StringToFloatWithInverseArgosFactor("2"),
-                -summedBounds.extents.z * 2
-            )));
+                ArgosHelper.VectorToArgosVector(summedBounds.center)
+            );
+
+            var arenaSizeVector = new Vector3(
+                Math.Max(1000, -summedBounds.extents.x * 2),
+                Math.Max(1000, ArgosHelper.StringToFloatWithInverseArgosFactor("2")),
+                Math.Max(1000, -summedBounds.extents.z * 2)
+            );
+            var vectorToArgosVector = ArgosHelper.VectorToArgosVector(arenaSizeVector);
+            
+            // Transform negative values to positive
+            var split = vectorToArgosVector.Split(',');
+            split[0] = Math.Abs(float.Parse(split[0])).ToString(CultureInfo.InvariantCulture);
+            split[1] = Math.Abs(float.Parse(split[1])).ToString(CultureInfo.InvariantCulture);
+            split[2] = Math.Abs(float.Parse(split[2])).ToString(CultureInfo.InvariantCulture);
+            vectorToArgosVector = string.Join(",", split);
+            
+            arena.SetAttribute("size", vectorToArgosVector);
 
             ArgosFileLoader.SaveFile(outputPath, doc.OuterXml);
         }
     }
-    
-    
 }

@@ -3,10 +3,7 @@ using System.Linq;
 using System.Xml;
 using Managers.Argos.XML;
 using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.Windows;
 using Utils;
-using Input = UnityEngine.Input;
 
 namespace Managers.Argos
 {

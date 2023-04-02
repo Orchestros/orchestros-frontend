@@ -29,7 +29,9 @@ namespace Managers
 
         public Highlightable GetHighlightable(GameObject objectWithHighlightable)
         {
-            return _highlightable[objectWithHighlightable.GetInstanceID()];
+            return !_highlightable.ContainsKey(objectWithHighlightable.GetInstanceID())
+                ? null
+                : _highlightable[objectWithHighlightable.GetInstanceID()];
         }
 
         public ArenaObject GetArenaObject(GameObject objectWithArena)

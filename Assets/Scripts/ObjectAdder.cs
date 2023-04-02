@@ -58,7 +58,7 @@ public class ObjectAdder : MonoBehaviour
                 DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, transformPosition, bounds);
             
             // Object real size
-            transformPosition.y = bounds.extents.y;
+            transformPosition.y = Mathf.Max(1,bounds.extents.y);
             
             transform.position = transformPosition.Round();
         }

@@ -19,9 +19,8 @@ namespace Utils
 
         [DllImport("__Internal")]
         public static extern void BrowserTextDownload(string filename, string textContent);
-        
-        
-        
+
+
         // AfterAssembliesLoaded is called before BeforeSceneLoad
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         public static void InitUniTaskLoop()
@@ -29,7 +28,7 @@ namespace Utils
             var loop = PlayerLoop.GetCurrentPlayerLoop();
             Cysharp.Threading.Tasks.PlayerLoopHelper.Initialize(ref loop);
         }
-        
+
         [DllImport("__Internal")]
         private static extern void ImageUploaderCaptureClick();
 
@@ -41,13 +40,13 @@ namespace Utils
 
         public static void SaveFile(string filename, string textContent)
         {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             System.IO.File.WriteAllText(filename, textContent);
-            #else
+#else
             BrowserTextDownload(filename, textContent);
-            #endif
+#endif
         }
-        
+
 #pragma warning disable CS1998
         public async Task<string> GetContentFromPathOrUrl(string pathOrUrl)
 #pragma warning restore CS1998
@@ -65,11 +64,13 @@ namespace Utils
 #endif
         }
 
-        public async Task<string> GetArgosFilePathFromUser()
+        public async Task<string> GetArgosFilePathFromUser(bool newFile = false)
         {
             string[] extensions = { "Argos map", "argos,xml", "All files", "*" };
 #if UNITY_EDITOR
-            var path = EditorUtility.OpenFilePanel("Open image", "", "jpg,png,bmp");
+            var path = newFile
+                ? EditorUtility.SaveFilePanel("Save argos file", "", "map.argos", "argos,xml")
+                : EditorUtility.OpenFilePanel("Load argos file", "", "argos,xml");
             return path;
 #else
             ImageUploaderCaptureClick();

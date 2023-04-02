@@ -19,8 +19,8 @@ namespace Managers
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
+            if (Input.GetKeyDown(KeyCode.Escape) && Input.GetKey(KeyCode.LeftShift) )
+            { 
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Scenes/Menu");
             }
         }
