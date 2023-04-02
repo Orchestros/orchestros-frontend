@@ -13,13 +13,16 @@ namespace Managers
     {
         // A manager for selecting objects in the game world.
         public SelectionManager selectionManager;
+
         // A manager for drawing dynamic lines in the game world.
         public DynamicLineManager dynamicLineManager;
 
         // The speed at which objects move.
         public float speed = 0.5f;
+
         // The speed at which objects move when holding the shift key.
         public float stepSpeed = 10f;
+
         // The speed at which objects rotate.
         public float rotationSpeedInDegrees = 2.5f;
 
@@ -64,7 +67,8 @@ namespace Managers
                     bounds.center = hit.point;
 
                     // Get the new position of the selected item.
-                    var newPosition = DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, hit.point, bounds, selectedItem);
+                    var newPosition =
+                        DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, hit.point, bounds, selectedItem);
                     // Set the Y position of the new position to the Y position of the selected item.
                     newPosition.y = selectedItem.transform.position.y;
                     // Move the selected item to the new position rounded to the nearest integer.
@@ -84,7 +88,9 @@ namespace Managers
             if (!Input.GetKey(KeyCode.LeftControl)) return;
 
             // Get the delta vector for moving the selected items.
-            var deltaVector = Input.GetKey(KeyCode.LeftShift) ? Mover.RetrieveDeltaOneTime(stepSpeed) : Mover.RetrieveDeltaContinuously(speed);
+            var deltaVector = Input.GetKey(KeyCode.LeftShift)
+                ? Mover.RetrieveDeltaOneTime(stepSpeed)
+                : Mover.RetrieveDeltaContinuously(speed);
 
             // Move the selected items by the delta vector.
             foreach (var selectedItem in selectionManager.GetSelectedEditableItems())
@@ -100,7 +106,7 @@ namespace Managers
                     selectedItem.transform.Rotate(Vector3.down * rotationSpeedInDegrees, Space.Self);
             }
         }
-        
+
         // Called when the script is disabled.
         private void OnDisable()
         {
@@ -137,9 +143,8 @@ namespace Managers
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
             // Enable the script if there is at least one selected editable item and the EditFormManager state is not active.
-            return selectionManager.GetSelectedEditableItems().Count > 0 && !activeStates.Contains(typeof(EditFormManager));
+            return selectionManager.GetSelectedEditableItems().Count > 0 &&
+                   !activeStates.Contains(typeof(EditFormManager));
         }
     }
 }
-
-    

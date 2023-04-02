@@ -33,7 +33,7 @@ public class GridController : MonoBehaviour
     private void UpdateGrid()
     {
         _currentLine = 0;
-        
+
         foreach (var t1 in _gridLines)
         {
             t1.SetActive(false);
@@ -121,7 +121,7 @@ public class GridController : MonoBehaviour
 
         // Create a plane object to represent the grid line
         line = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        
+
         _gridLines.Add(line);
 
         // Remove the mesh collider from the plane object to avoid unnecessary collisions

@@ -8,7 +8,6 @@
 /// <para>It also uses a lock to ensure consistency between the threads.</para>
 /// </remarks>
 /// <source>https://stackoverflow.com/questions/42393259/load-scene-with-param-variable-unity</source>
-
 public static class GlobalVariables
 {
     private static readonly object LockObject = new();
@@ -18,12 +17,12 @@ public static class GlobalVariables
     /// </summary>
     /// <value>Gets the underlying variables dictionary</value>
     private static Dictionary<GlobalVariablesKey, object> VariablesDictionary { get; set; } = new();
-    
+
     public static bool HasKey(GlobalVariablesKey key)
     {
         return VariablesDictionary.ContainsKey(key);
     }
-    
+
     /// <summary>
     /// Gets a variable and casts it to the provided type argument.
     /// </summary>
@@ -32,7 +31,7 @@ public static class GlobalVariables
     /// <returns>The casted variable value</returns>
     public static T Get<T>(GlobalVariablesKey key)
     {
-        return (T) VariablesDictionary[key];
+        return (T)VariablesDictionary[key];
     }
 
     /// <summary>
@@ -50,4 +49,7 @@ public static class GlobalVariables
     }
 }
 
-public enum GlobalVariablesKey { ArgosFile }
+public enum GlobalVariablesKey
+{
+    ArgosFile
+}

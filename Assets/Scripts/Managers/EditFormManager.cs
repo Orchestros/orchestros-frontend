@@ -124,7 +124,8 @@ namespace Managers
         private void OnSave(Dictionary<string, string> values)
         {
             // Remove values with empty strings
-            values = values.Where(pair => !string.IsNullOrEmpty(pair.Value)).ToDictionary(pair => pair.Key, pair => pair.Value);
+            values = values.Where(pair => !string.IsNullOrEmpty(pair.Value))
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
 
             // Update the selected editable items with the edited values
             foreach (var item in _editableItemsList.SelectMany(items => items))

@@ -7,9 +7,10 @@ using UnityEngine;
 /// </summary>
 public class ScaleIndicator : MonoBehaviour
 {
-    [Tooltip("The maximum ratio between the absolute delta of the camera view's start and end points and the scale displayed.")]
+    [Tooltip(
+        "The maximum ratio between the absolute delta of the camera view's start and end points and the scale displayed.")]
     public int maxScaleViewportRatio = 10;
-    
+
     [Tooltip("The GameObject that holds a TextMeshProUGUI component that will display the scale value.")]
     public GameObject text;
 

@@ -138,7 +138,7 @@ namespace Managers
         private void ToggleObjectSelection(GameObject colliderGameObject)
         {
             var highlightable = arenaObjectsManager.GetHighlightable(colliderGameObject);
-            
+
             if (highlightable == null) return;
 
             if (_selectedObjects.Contains(colliderGameObject))

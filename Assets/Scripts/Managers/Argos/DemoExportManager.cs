@@ -95,7 +95,8 @@ namespace Managers.Argos
 
                 var robot = doc.CreateElement("epuck");
                 robot.SetAttribute("id", "Epuck-" + currentIndex);
-                robot.SetAttribute("position", ArgosHelper.VectorToArgosVectorNoHeight2D(arenaGameObject.transform.position));
+                robot.SetAttribute("position",
+                    ArgosHelper.VectorToArgosVectorNoHeight2D(arenaGameObject.transform.position));
                 demo.AppendChild(robot);
                 currentIndex += 1;
             }

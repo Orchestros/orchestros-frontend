@@ -10,7 +10,9 @@ namespace Managers
     /// </summary>
     public abstract class MonoBehaviourWithState : MonoBehaviour
     {
-        [SerializeField] public UnityEvent<bool> activationEvent = new(); // an event that is called when the state of the manager is changed
+        [SerializeField]
+        public UnityEvent<bool>
+            activationEvent = new(); // an event that is called when the state of the manager is changed
 
         protected bool IsActive; // whether the manager is currently active
 

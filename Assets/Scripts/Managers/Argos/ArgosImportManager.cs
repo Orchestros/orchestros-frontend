@@ -27,7 +27,8 @@ namespace Managers.Argos
             }
 
             // If the Argos file path is set, import the file
-            if (GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile) && !string.IsNullOrEmpty(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile)))
+            if (GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile) &&
+                !string.IsNullOrEmpty(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile)))
             {
                 ImportArgosFile(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile));
             }
@@ -96,7 +97,7 @@ namespace Managers.Argos
                 InstantiateObjectFromElement(element, ArgosTag.Plane);
             }
         }
-        
+
         // This method instantiates a new object in the scene based on the XML element and the object type tag
         private void InstantiateObjectFromElement(XmlElement element, ArgosTag objectTypeTag)
         {
@@ -114,4 +115,3 @@ namespace Managers.Argos
         }
     }
 }
-

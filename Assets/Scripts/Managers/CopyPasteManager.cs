@@ -43,12 +43,12 @@ namespace Managers
 
                 // Instantiate and parent the copied objects to the copy-paste group
                 foreach (var newObject in _copiedObjects.Select(copiedObject =>
-                    Instantiate(
-                        copiedObject,
-                        copiedObject.transform.position - firstObjectPosition,
-                        copiedObject.transform.rotation,
-                        _group.transform
-                    )))
+                             Instantiate(
+                                 copiedObject,
+                                 copiedObject.transform.position - firstObjectPosition,
+                                 copiedObject.transform.rotation,
+                                 _group.transform
+                             )))
                 {
                     newObject.transform.parent = _group.transform;
                 }

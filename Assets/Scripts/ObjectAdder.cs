@@ -63,7 +63,8 @@ public class ObjectAdder : MonoBehaviour
             bounds.center = hit.point;
 
             // Use the DynamicLineMoverHelper to get a new position for the object that takes into account dynamic line management
-            transformPosition = DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, transformPosition, bounds);
+            transformPosition =
+                DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, transformPosition, bounds);
 
             // Set the position of the object and round it to the nearest integer value
             transform.position = transformPosition.Round();
@@ -82,6 +83,7 @@ public class ObjectAdder : MonoBehaviour
             {
                 _meshRenderers[i].material.color = _initialColors[i];
             }
+
             gameObject.layer = _initialLayer;
 
             // Call the OnCompleted delegate
