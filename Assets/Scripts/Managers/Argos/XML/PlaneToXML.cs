@@ -51,7 +51,7 @@ namespace Managers.Argos.XML
             if (!colorEditableItem) return new List<XmlElement> { node };
             
             var color = colorEditableItem.GetColor();
-            node.SetAttribute("color", color is "FFFFFF" ? "white" : "black"); // Set the color to "white" if it's "ffffff", otherwise set it to "black"
+            node.SetAttribute("color", color is "FFFFFFFF" ? "white" : "black"); // Set the color to "white" if it's "ffffff", otherwise set it to "black"
 
             return new List<XmlElement> { node };
         }
