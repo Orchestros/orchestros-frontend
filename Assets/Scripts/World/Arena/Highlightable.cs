@@ -14,21 +14,26 @@ namespace World.Arena
         // Start is called before the first frame update
         private void Start()
         {
+            // Check if there is already a highlighted plane
             for (var i = 0; i < transform.childCount; i++)
             {
                 var child = transform.GetChild(i);
-                if (child.gameObject.name == HighlightedPlaneName) _plane = child.gameObject;
+                if (child.gameObject.name == HighlightedPlaneName)
+                {
+                    _plane = child.gameObject;
+                }
             }
 
-            if (_plane != null) // If there already was a plane (if the object was copied for instance)
+            // If there is already a highlighted plane, disable it and return
+            if (_plane != null)
             {
                 _plane.SetActive(false);
                 return;
             }
 
+            // Create a new highlighted plane
             var localTransform = transform;
             var position = localTransform.position;
-
             _plane = new GameObject
             {
                 name = HighlightedPlaneName,
@@ -40,36 +45,44 @@ namespace World.Arena
                 }
             };
 
-
             _plane.SetActive(false);
 
+            // Get the ArenaObject and add a LineRenderer to the highlighted plane
             _arenaObject = GetComponent<ArenaObject>();
             _lineRenderer = _plane.AddComponent<LineRenderer>();
         }
 
+        // Destroy the highlighted plane when the object is destroyed
         private void OnDestroy()
         {
             Destroy(_plane);
         }
 
+        // Set the display of the highlighted plane and circle
         public void SetDisplay(bool display)
         {
+            // If the highlight should be displayed, add a LineRenderer component to the highlighted plane
             if (display)
             {
                 _arenaObject = GetComponent<ArenaObject>();
                 _lineRenderer = _plane.GetOrAddComponent<LineRenderer>();
 
+                // Set the color of the circle based on whether the object can be edited
                 var color = _arenaObject.CanBeEdited ? Color.blue : Color.black;
                 _lineRenderer.startColor = color;
                 _lineRenderer.endColor = color;
+
+                // Draw a circle around the object
                 DrawCircle(4f, 2);
             }
 
             _plane.SetActive(display);
         }
 
+        // Draw a circle around the object
         private void DrawCircle(float radius, float lineWidth)
         {
+            // Set the material and properties of the LineRenderer
             _lineRenderer.material = circleMaterial;
             const int segments = 360;
             _lineRenderer.useWorldSpace = false;
@@ -77,6 +90,7 @@ namespace World.Arena
             _lineRenderer.endWidth = lineWidth;
             _lineRenderer.positionCount = segments + 1;
 
+            // Create an array of points to define the circle
             const int
                 pointCount =
                     segments + 1; // add extra point to make start point and endpoint the same to close the circle

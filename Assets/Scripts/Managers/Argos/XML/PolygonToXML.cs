@@ -20,7 +20,7 @@ namespace Managers.Argos.XML
         {
             var elements = new List<XmlElement>();
 
-            foreach (var child in arenaObject.transform.GetComponent<PolygonController>().Walls)
+            foreach (var child in arenaObject.transform.GetComponent<PolygonController>().walls)
                 elements.AddRange(GetXMLWall(document, child, arenaObject.transform.localScale.x));
 
             return elements;
@@ -28,7 +28,7 @@ namespace Managers.Argos.XML
 
         public override Bounds GetBounds(GameObject arenaObject)
         {
-            var wallObjects = arenaObject.GetComponent<PolygonController>().Walls;
+            var wallObjects = arenaObject.GetComponent<PolygonController>().walls;
 
             var newBounds = wallObjects.First().GetComponent<Renderer>().bounds;
 
