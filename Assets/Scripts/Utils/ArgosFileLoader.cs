@@ -88,7 +88,7 @@ namespace Utils
             return path;
 #else
             ImageUploaderCaptureClick();
-            while (!didFetchUrl)
+            while (!_didFetchUrl)
             {
                 Debug.Log("Waiting for file to be selected");
                 // Wait for the file to be selected
