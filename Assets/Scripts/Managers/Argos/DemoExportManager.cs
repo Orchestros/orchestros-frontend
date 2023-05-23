@@ -107,7 +107,7 @@ namespace Managers.Argos
             loopFunctions.AppendChild(demo);
 
             // Save the modified XML document to the current XML file
-            doc.Save(currentXML);
+            argosFileLoader.SaveFile(currentXML, doc.OuterXml);
         }
     }
 }
