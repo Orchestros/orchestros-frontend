@@ -13,6 +13,8 @@ namespace Managers.Argos
         // Reference to the ArenaObjectsManager which manages the objects in the scene
         public ArenaObjectsManager arenaObjectsManager;
 
+        public ArgosFileLoader argosFileLoader;
+        
         // Path to the current XML file
         public string currentXML;
 
@@ -35,7 +37,7 @@ namespace Managers.Argos
 
             // Call the UpdateAsync method asynchronously
 #pragma warning disable CS4014
-            UpdateAsync();
+            UpdateDemoData();
 #pragma warning restore CS4014
         }
 
@@ -44,15 +46,15 @@ namespace Managers.Argos
         {
             // Call the UpdateAsync method asynchronously
 #pragma warning disable CS4014
-            UpdateAsync();
+            UpdateDemoData();
 #pragma warning restore CS4014
         }
 
         // This method updates the demo data and saves it to the XML file
-        private async Task UpdateAsync()
+        private void UpdateDemoData()
         {
             var doc = new XmlDocument();
-            doc.LoadXml(await ArgosFileLoader.GetArgosFileLoader().GetContentFromPathOrUrl(currentXML));
+            doc.LoadXml(argosFileLoader.GetArgosFileLoader().GetContentFromPathOrUrl(currentXML));
 
             var loopFunctions = (XmlElement)doc.GetElementsByTagName("loop_functions")[0];
 

@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 32913170}
   - component: {fileID: 32913169}
   - component: {fileID: 32913172}
+  - component: {fileID: 32913173}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -202,6 +203,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 894b1717919a4bc49403b6fd1a7796a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  argosWebSync: {fileID: 32913173}
+--- !u!114 &32913173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32913168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 945caf994c604237b92c30f1db2343ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &128496203
@@ -1896,6 +1910,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arenaObjectsManager: {fileID: 760284490}
+  argosFileLoader: {fileID: 32913172}
   baseXML: {fileID: 4900000, guid: 5b110735565bc8f42ae81ce23f2c4ab9, type: 3}
 --- !u!114 &1098071528
 MonoBehaviour:
@@ -1975,6 +1990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arenaObjectsManager: {fileID: 760284490}
+  argosFileLoader: {fileID: 32913172}
   baseXML: {fileID: 4900000, guid: f926a77526dd7ae41b0a68ff53d5deb0, type: 3}
 --- !u!114 &1098071534
 MonoBehaviour:

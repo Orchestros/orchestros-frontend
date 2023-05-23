@@ -12,6 +12,8 @@ namespace Managers.Argos
         // Reference to the ArenaObjectsManager which manages the objects in the scene
         public ArenaObjectsManager arenaObjectsManager;
 
+        public ArgosFileLoader argosFileLoader;
+        
         // Base XML file used as a template for the imported file
         public TextAsset baseXML;
 
@@ -48,7 +50,7 @@ namespace Managers.Argos
         // This method is called asynchronously when the I key and Left Control key are pressed simultaneously
         private async void AsyncUpdate()
         {
-            var file = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
+            var file = argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
             ImportArgosFile(file);
         }
 
@@ -56,7 +58,8 @@ namespace Managers.Argos
         private void ImportArgosFile(string filePath)
         {
             var doc = new XmlDocument();
-            var fileContent = ArgosFileLoader.GetArgosFileLoader().GetContentFromPathOrUrl(filePath).Result;
+            var fileContent = argosFileLoader.GetArgosFileLoader().GetContentFromPathOrUrl(filePath);
+
             doc.LoadXml(fileContent);
 
             var arena = (XmlElement)doc.GetElementsByTagName("arena")[0];

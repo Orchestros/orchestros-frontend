@@ -15,11 +15,26 @@ namespace Managers
         // An array of MonoBehaviours with state.
         private MonoBehaviourWithState[] _states;
 
+        private static bool _didInit = false;
+
         // Called once when the script is first enabled.
         private void Start()
         {
-            // Find all MonoBehaviours with state in the resources folder.
-            _states = Resources.FindObjectsOfTypeAll<MonoBehaviourWithState>();
+#if UNITY_WEBGL
+            if (!_didInit)
+            {
+                // Check whether in demonstration or arena builder mode.
+                var isDemo = Application.absoluteURL.Contains("demo");
+                // Load Scenes/Demo scene.
+                UnityEngine.SceneManagement.SceneManager.LoadScene(isDemo
+                    ? "Scenes/Demonstrator"
+                    : "Scenes/ArgosMapEditor");
+                _didInit = true;
+            }
+#endif
+
+                // Find all MonoBehaviours with state in the resources folder.
+                _states = Resources.FindObjectsOfTypeAll<MonoBehaviourWithState>();
 
             // Add a listener to the activation event of each state.
             foreach (var state in _states)
@@ -31,11 +46,13 @@ namespace Managers
         // Called once per frame.
         private void Update()
         {
+# if !UNITY_WEBGL
             // If the left shift key and escape key are pressed down, load the menu scene.
             if (Input.GetKeyDown(KeyCode.Escape) && Input.GetKey(KeyCode.LeftShift))
             {
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Scenes/Menu");
             }
+# endif
         }
 
         // Called when the activation state of a MonoBehaviourWithState changes.

@@ -15,6 +15,7 @@ namespace Managers.Argos
     {
         // Reference to the ArenaObjectsManager which manages the objects in the scene
         public ArenaObjectsManager arenaObjectsManager;
+        public ArgosFileLoader argosFileLoader;
 
         // Base XML file used as a template for the exported file
         public TextAsset baseXML;
@@ -46,7 +47,7 @@ namespace Managers.Argos
         }
 
         // This method is called asynchronously when the save trigger is activated or when Left Control and S keys are pressed simultaneously
-        private async Task AsyncUpdate()
+        private void AsyncUpdate()
         {
             string outputPath;
 
@@ -55,7 +56,7 @@ namespace Managers.Argos
                 string.IsNullOrEmpty(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile)) ||
                 Input.GetKey(KeyCode.LeftShift))
             {
-                outputPath = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser(true);
+                outputPath = argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser(true);
                 
                 GlobalVariables.Set(GlobalVariablesKey.ArgosFile, outputPath);
             }
@@ -159,7 +160,7 @@ namespace Managers.Argos
             arena.SetAttribute("size", vectorToArgosVector);
 
             // Save the XML file to the specified path
-            ArgosFileLoader.SaveFile(outputPath, doc.OuterXml);
+            argosFileLoader.SaveFile(outputPath, doc.OuterXml);
         }
     }
 }

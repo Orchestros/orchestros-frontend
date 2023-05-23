@@ -14,6 +14,7 @@ namespace UI
         private Button _newSceneButton;
         private Button _openSceneButton;
         private Button _loadDemoButton;
+        public ArgosFileLoader argosFileLoader;
 
         /// <summary>
         /// Sets up event handlers for the UI buttons.
@@ -30,9 +31,9 @@ namespace UI
             };
 
             _openSceneButton = _uiDocument.rootVisualElement.Query<Button>("openMap").First();
-            _openSceneButton.clickable.clicked += async () =>
+            _openSceneButton.clickable.clicked +=  () =>
             {
-                var file = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
+                var file = argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
 
                 if (file.Length <= 0) return;
 
@@ -42,9 +43,9 @@ namespace UI
             };
 
             _loadDemoButton = _uiDocument.rootVisualElement.Query<Button>("newDemo").First();
-            _loadDemoButton.clickable.clicked += async () =>
+            _loadDemoButton.clickable.clicked +=  () =>
             {
-                var file = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
+                var file = argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
 
                 if (file.Length <= 0) return;
 
