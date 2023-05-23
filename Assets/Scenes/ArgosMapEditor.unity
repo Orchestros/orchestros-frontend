@@ -1625,8 +1625,8 @@ MonoBehaviour:
   activationEvent:
     m_PersistentCalls:
       m_Calls: []
-  circleMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   dynamicLineManager: {fileID: 991677348}
+  circleMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &929353732
 GameObject:
   m_ObjectHideFlags: 0

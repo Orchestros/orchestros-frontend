@@ -36,15 +36,15 @@ namespace World.EditableItem
             var newZ = position.z;
 
             // If a new x value is provided, parse it and update newX
-            if (newValues.ContainsKey("x"))
+            if (newValues.TryGetValue("x", out var value))
             {
-                newX = float.Parse(newValues["x"]);
+                newX = float.Parse(value);
             }
 
             // If a new z value is provided, parse it and update newZ
-            if (newValues.ContainsKey("z"))
+            if (newValues.TryGetValue("z", out var newValue))
             {
-                newZ = float.Parse(newValues["z"]);
+                newZ = float.Parse(newValue);
             }
 
             // Update the position of the game object with the new x and z values

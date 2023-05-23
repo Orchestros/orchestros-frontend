@@ -1,10 +1,11 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Cysharp.Threading.Tasks;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.LowLevel;
-using UnityEngine.Networking;
 
 namespace Utils
 {
@@ -28,7 +29,7 @@ namespace Utils
         public static void InitUniTaskLoop()
         {
             var loop = PlayerLoop.GetCurrentPlayerLoop();
-            Cysharp.Threading.Tasks.PlayerLoopHelper.Initialize(ref loop);
+            PlayerLoopHelper.Initialize(ref loop);
         }
 
         /// <summary>
@@ -47,8 +48,9 @@ namespace Utils
         /// <param name="textContent">The content of the file to save.</param>
         public static void SaveFile(string filename, string textContent)
         {
-#if UNITY_EDITOR
-            System.IO.File.WriteAllText(filename, textContent);
+            // IF web
+#if !UNITY_WEBGL
+            File.WriteAllText(filename, textContent);
 #else
             BrowserTextDownload(filename, textContent);
 #endif
@@ -61,8 +63,8 @@ namespace Utils
         /// <returns>The content of the file as a string.</returns>
         public async Task<string> GetContentFromPathOrUrl(string pathOrUrl)
         {
-#if UNITY_EDITOR
-            return System.IO.File.ReadAllText(pathOrUrl);
+#if !UNITY_WEBGL
+            return File.ReadAllText(pathOrUrl);
 #else
             UnityWebRequest www = UnityWebRequest.Get(pathOrUrl);
             www.SendWebRequest();
@@ -81,10 +83,32 @@ namespace Utils
         /// <returns>The path or URL of the selected file.</returns>
         public async Task<string> GetArgosFilePathFromUser(bool newFile = false)
         {
-#if UNITY_EDITOR
-            var path = newFile
-                ? EditorUtility.SaveFilePanel("Save argos file", "", "map2.argos", "argos,xml")
-                : EditorUtility.OpenFilePanel("Load argos file", "", "argos,xml");
+#if !UNITY_WEBGL
+
+            var path = "";
+        
+            // Using System.Windows.Forms for OpenFileDialog
+
+            FileDialog dialog;
+            
+            if (newFile) {
+                dialog = new SaveFileDialog();
+            } else {
+                dialog = new OpenFileDialog();
+            }
+            
+            dialog.Filter = "argos,xml files (*.argos,*.xml)|*.argos;*.xml";
+            dialog.Title = "Load argos file";
+
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                path = dialog.FileName;
+            }
+            Debug.Log("Selected file: " + path);
+            Debug.Log("Dialog result: " + dialogResult);
+            
+
             return path;
 #else
             ImageUploaderCaptureClick();

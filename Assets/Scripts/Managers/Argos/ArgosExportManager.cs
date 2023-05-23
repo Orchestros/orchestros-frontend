@@ -56,6 +56,8 @@ namespace Managers.Argos
                 Input.GetKey(KeyCode.LeftShift))
             {
                 outputPath = await ArgosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser(true);
+                
+                GlobalVariables.Set(GlobalVariablesKey.ArgosFile, outputPath);
             }
             else
             {

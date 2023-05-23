@@ -50,6 +50,9 @@ public class ObjectAdder : MonoBehaviour
 
     private void Update()
     {
+        // For each mesh renderer, remove if destroyed
+        _meshRenderers.RemoveAll(meshRenderer => meshRenderer == null);
+        
         // Raycast from the mouse position to the scene to find the point where the user has clicked
         var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 
