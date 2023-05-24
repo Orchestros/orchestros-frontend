@@ -57,8 +57,8 @@ namespace Managers.Argos
             {
                 argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser(file =>
                 {
-                    GlobalVariables.Set(GlobalVariablesKey.ArgosFile, file);
                     BuildXML(file);
+                    GlobalVariables.Set(GlobalVariablesKey.ArgosFile, file);
                 }, newFile: true);
             }
             else
@@ -70,11 +70,66 @@ namespace Managers.Argos
             }
         }
 
+        // Function to remove elements with a specific tag name from the XML document
+        private void RemoveElements(XmlNode node, string tagName)
+        {
+            var elementsToRemove = new List<XmlNode>();
+
+            // Find and store elements with the specified tag name
+            foreach (XmlNode childNode in node.ChildNodes)
+            {
+                if (childNode.Name == tagName)
+                {
+                    elementsToRemove.Add(childNode);
+                }
+                else
+                {
+                    RemoveElements(childNode, tagName);
+                }
+            }
+
+            // Remove the stored elements from the parent node
+            foreach (var element in elementsToRemove)
+            {
+                node.RemoveChild(element);
+            }
+        }
+
+        private string GetBaseXml()
+        {
+            // if argos file is empty in global variables, return the base xml
+            if (!GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile) ||
+                string.IsNullOrEmpty(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile)))
+            {
+                return baseXML.text;
+            }
+
+            // if argos file is not empty, return the xml from the file
+            var fileContent = argosFileLoader.GetArgosFileLoader()
+                .GetContentFromPathOrUrl(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile));
+
+            // Open in XML and remove all the polygon box cylinder light circle spawnCircle rectangle
+            // no matter the depth of the element.
+            var doc = new XmlDocument();
+            doc.LoadXml(fileContent);
+            var root = doc.DocumentElement;
+            // Remove specific elements from the XML document
+            RemoveElements(root, "polygon");
+            RemoveElements(root, "box");
+            RemoveElements(root, "cylinder");
+            RemoveElements(root, "light");
+            RemoveElements(root, "circle");
+            RemoveElements(root, "spawnCircle");
+            RemoveElements(root, "rectangle");
+
+            return root!.OuterXml;
+        }
+
         // This method builds the XML file and saves it to the specified path
         private void BuildXML(string outputPath)
         {
             var doc = new XmlDocument();
-            doc.LoadXml(baseXML.text);
+            doc.LoadXml(GetBaseXml());
 
             var arena = (XmlElement)doc.GetElementsByTagName("arena")[0];
             var loopFunctions = (XmlElement)doc.GetElementsByTagName("loop_functions")[0];
@@ -98,8 +153,7 @@ namespace Managers.Argos
 
                 var parser = _parsers[argosTagForObject];
 
-                
-                
+
                 // Get the XML elements for the object using its parser
                 var xmlElements = parser.GetXMLElements(doc, arenaGameObject);
                 foreach (var xmlElement in xmlElements)

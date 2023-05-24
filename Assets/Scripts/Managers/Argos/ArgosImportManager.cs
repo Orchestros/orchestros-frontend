@@ -14,9 +14,6 @@ namespace Managers.Argos
 
         public ArgosFileLoader argosFileLoader;
         
-        // Base XML file used as a template for the imported file
-        public TextAsset baseXML;
-
         // Dictionary containing parsers for each object in the scene
         private readonly Dictionary<ArgosTag, ArenaObjectToXml> _parsers = new();
 
