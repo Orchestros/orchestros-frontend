@@ -87,7 +87,7 @@ namespace Utils
             }
 
 #else
-            onComplete(_lastFetchedUrl);
+            onComplete("");
 #endif
         }
     }

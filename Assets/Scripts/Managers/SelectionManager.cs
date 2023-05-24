@@ -64,6 +64,9 @@ namespace Managers
         /// </summary>
         private void Update()
         {
+            // Disable if ctrl is pressed
+            if (Input.GetKey(KeyCode.LeftControl)) return;
+            
             if (Input.GetMouseButtonDown(0))
             {
                 OnActivate();
