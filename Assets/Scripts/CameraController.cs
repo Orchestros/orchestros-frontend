@@ -15,6 +15,8 @@ public class CameraController : MonoBehaviour
     // The origin of the drag gesture
     private Vector3 _dragOrigin;
 
+    int cameraMode = 0;
+    
     // This function is called when the script is enabled
     private void Start()
     {
@@ -32,6 +34,29 @@ public class CameraController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl))
         {
             return;
+        }
+        
+        // On tab pressed, toggle the camera between orthographic and perspective
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            cameraMode = (cameraMode + 1) % 3;
+
+            switch (cameraMode)
+            {
+                case 0:
+                    // set x rotation to 90 degrees
+                    transform.rotation = Quaternion.Euler(90, 0, 0);
+                    _camera.orthographic = true;
+                    break;
+                case 1:
+                    _camera.orthographic = false;
+                    break;
+                default:
+                    _camera.orthographic = false;
+                    // rotate the camera 45 degrees
+                    transform.rotation = Quaternion.Euler(45, 0, 0);
+                    break;
+            }
         }
 
         // Handle drag input

@@ -54,5 +54,7 @@ public class CameraZoom : MonoBehaviour
 
         // Set the orthographic size of the camera to the new value
         _camera.orthographicSize = orthographicSize;
+        // Set the perspective field of view of the camera to the new value
+        _camera.fieldOfView = orthographicSize/4;
     }
 }
