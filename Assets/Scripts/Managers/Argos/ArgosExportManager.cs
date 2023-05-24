@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
@@ -95,14 +96,31 @@ namespace Managers.Argos
             }
         }
 
+        // The base xml to which the objects will be added.
+        // If in edit mode, the base xml will be the one from the file.
+        // If in create mode, the base xml will be the one from the .orchesta/template.argos file.
+        // Otherwise, the base xml will be the one from the baseXML.text (a Unity TextAsset).
         private string GetBaseXml()
         {
             // if argos file is empty in global variables, return the base xml
             if (!GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile) ||
                 string.IsNullOrEmpty(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile)))
             {
+                # if !UNITY_WEBGL
+                
+                // Check if .orchesta/template.argos file exists at user's home directory
+                var templateFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    Path.Combine(".orchestra", "template.argos"));
+                Debug.Log(templateFilePath);
+                if (File.Exists(templateFilePath))
+                {
+                    // If the file exists, return the xml from the file
+                    return File.ReadAllText(templateFilePath);
+                }
+                # endif
                 return baseXML.text;
             }
+            
 
             // if argos file is not empty, return the xml from the file
             var fileContent = argosFileLoader.GetArgosFileLoader()
