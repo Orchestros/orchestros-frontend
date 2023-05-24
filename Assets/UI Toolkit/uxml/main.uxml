@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/uss/main.uss?fileID=7433441132597879392&amp;guid=039ba498e03de3d439fb71b0c7f29aff&amp;type=3#main" />
+    <ui:VisualElement class="body" style="align-items: flex-end; background-image: resource(&apos;background&apos;); -unity-slice-left: 0; -unity-slice-right: 100;">
+        <ui:VisualElement class="buttonPanels">
+            <ui:Button name="newMap" text="New map" class="button" />
+            <ui:Button name="openMap" text="Open map" class="button" />
+            <ui:Button name="newDemo" text="New demonstration" class="button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

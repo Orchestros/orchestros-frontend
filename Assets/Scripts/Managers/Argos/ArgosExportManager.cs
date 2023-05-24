@@ -49,25 +49,24 @@ namespace Managers.Argos
         // This method is called asynchronously when the save trigger is activated or when Left Control and S keys are pressed simultaneously
         private void AsyncUpdate()
         {
-            string outputPath;
-
             // If the Argos file path is not set or Left Shift key is pressed, show the file dialog to get the file path from the user
+            var outputPath = GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile);
             if (!GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile) ||
                 string.IsNullOrEmpty(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile)) ||
                 Input.GetKey(KeyCode.LeftShift))
             {
-                outputPath = argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser(true);
-                
-                GlobalVariables.Set(GlobalVariablesKey.ArgosFile, outputPath);
+                argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser(file =>
+                {
+                    GlobalVariables.Set(GlobalVariablesKey.ArgosFile, file);
+                    BuildXML(file);
+                }, newFile: true);
             }
             else
             {
-                outputPath = GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile);
-            }
-
-            if (outputPath.Length > 0)
-            {
-                BuildXML(outputPath);
+                if (outputPath.Length > 0)
+                {
+                    BuildXML(outputPath);
+                }
             }
         }
 

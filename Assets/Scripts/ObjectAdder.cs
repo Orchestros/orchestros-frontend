@@ -15,7 +15,7 @@ public class ObjectAdder : MonoBehaviour
     [Tooltip("The DynamicLineManager instance for handling dynamic line management.")]
     public DynamicLineManager dynamicLineManager;
 
-    private readonly List<Color> _initialColors = new List<Color>();
+    private readonly List<Color> _initialColors = new();
     private int _initialLayer;
     private Camera _mainCamera;
     private List<MeshRenderer> _meshRenderers;

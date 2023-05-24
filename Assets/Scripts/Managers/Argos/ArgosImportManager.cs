@@ -48,10 +48,9 @@ namespace Managers.Argos
         }
 
         // This method is called asynchronously when the I key and Left Control key are pressed simultaneously
-        private async void AsyncUpdate()
+        private void AsyncUpdate()
         {
-            var file = argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
-            ImportArgosFile(file);
+            argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser(ImportArgosFile);
         }
 
         // This method imports the XML file and creates objects in the scene based on the XML elements

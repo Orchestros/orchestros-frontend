@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -33,13 +33,13 @@ namespace Utils
             if (queryParameters.TryGetValue("data", out var queryParameter))
             {
                 // Decode using base 64
-                decodedData = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(queryParameter));
+                decodedData = Encoding.UTF8.GetString(Convert.FromBase64String(queryParameter));
             }
 
             if (queryParameters.TryGetValue("output_to", out var parameter))
             {
                 // Decode using base 64
-                decodedUrl = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(parameter));
+                decodedUrl = Encoding.UTF8.GetString(Convert.FromBase64String(parameter));
             }
 
             _saveUrl = decodedUrl;
@@ -54,7 +54,7 @@ namespace Utils
 # endif
             // Make web request to URL with file data as the body
             var request = new UnityWebRequest(_saveUrl, "POST");
-            var bodyRaw = System.Text.Encoding.UTF8.GetBytes(data);
+            var bodyRaw = Encoding.UTF8.GetBytes(data);
             request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
 
             // Set headers
@@ -64,7 +64,7 @@ namespace Utils
             request.SendWebRequest();
         }
 
-        private Dictionary<string, string> GetQueryParameters(string url)
+        private static Dictionary<string, string> GetQueryParameters(string url)
         {
             var parameters = new Dictionary<string, string>();
 

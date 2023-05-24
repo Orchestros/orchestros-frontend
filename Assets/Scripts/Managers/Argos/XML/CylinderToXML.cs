@@ -37,7 +37,7 @@ namespace Managers.Argos.XML
             // Set the attributes of the XML element from the game object
             node.SetAttribute("id", arenaObject.GetInstanceID().ToString());
             node.SetAttribute("height", ArgosHelper.FloatToStringWithArgosFactor(localScale.y));
-            node.SetAttribute("radius", ArgosHelper.FloatToStringWithArgosFactor(localScale.x / 2));
+            node.SetAttribute("radius", ArgosHelper.FloatToStringWithArgosFactor(localScale.x));
             node.SetAttribute("movable", "false");
 
             // Set the body tag of the XML element from the game object

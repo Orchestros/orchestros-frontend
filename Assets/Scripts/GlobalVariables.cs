@@ -16,7 +16,7 @@ public static class GlobalVariables
     /// The underlying key-value storage (dictionary).
     /// </summary>
     /// <value>Gets the underlying variables dictionary</value>
-    private static Dictionary<GlobalVariablesKey, object> VariablesDictionary { get; set; } = new();
+    private static Dictionary<GlobalVariablesKey, object> VariablesDictionary { get; } = new();
 
     public static bool HasKey(GlobalVariablesKey key)
     {
@@ -37,7 +37,7 @@ public static class GlobalVariables
     /// <summary>
     /// Sets the variable, the existing value gets overridden.
     /// </summary>
-    /// <remarks>It uses a lock under the hood to ensure consistensy between threads</remarks>
+    /// <remarks>It uses a lock under the hood to ensure consistency between threads</remarks>
     /// <param name="key">The variable name/key</param>
     /// <param name="value">The variable value</param>
     public static void Set(GlobalVariablesKey key, object value)

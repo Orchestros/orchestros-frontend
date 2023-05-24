@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.Serialization;
+﻿using System;
+using System.IO;
+using SimpleFileBrowser;
+using UnityEngine;
 
 namespace Utils
 {
@@ -9,13 +11,7 @@ namespace Utils
     [RequireComponent(typeof(ArgosWebSync))]
     public class ArgosFileLoader : MonoBehaviour
     {
-        private string _lastFetchedUrl = ""; // URL of the last fetched file
-#pragma warning disable CS0414
-        private bool _didFetchUrl = false; // Flag indicating whether a file has been selected by the user
-#pragma warning restore CS0414
-
         public ArgosWebSync argosWebSync;
-
 
         /// <summary>
         /// Returns an instance of the ArgosFileLoader class from the scene's EventSystem object.
@@ -58,38 +54,40 @@ namespace Utils
         /// <summary>
         /// Prompts the user to select an Argos file to load or save.
         /// </summary>
+        /// <param name="onComplete">The action to call once the file dialog has been closed.</param>
         /// <param name="newFile">A flag indicating whether to prompt the user to save a new file or load an existing file.</param>
         /// <returns>The path or URL of the selected file.</returns>
-        public string GetArgosFilePathFromUser(bool newFile = false)
+        public void GetArgosFilePathFromUser(Action<string> onComplete, bool newFile = false)
         {
 #if !UNITY_WEBGL
-            var path = "";
-        
             // Using System.Windows.Forms for OpenFileDialog
+            FileBrowser.SetFilters(true, new FileBrowser.Filter("argos,xml files", ".argos", ".xml"));
+            FileBrowser.SetDefaultFilter(".argos");
 
-            FileDialog dialog;
-            
-            if (newFile) {
-                dialog = new SaveFileDialog();
-            } else {
-                dialog = new OpenFileDialog();
-            }
-            
-            dialog.Filter = "argos,xml files (*.argos,*.xml)|*.argos;*.xml";
-            dialog.Title = "Load argos file";
-
-            var dialogResult = dialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
+            if (newFile)
             {
-                path = dialog.FileName;
+                FileBrowser.ShowSaveDialog(
+                    onSuccess: (e) => onComplete(e[0]),
+                    onCancel: () => onComplete(""),
+                    pickMode: FileBrowser.PickMode.Files,
+                    initialFilename:"untitled.argos",
+                    saveButtonText: "Save Arena",
+                    allowMultiSelection: false
+                );
             }
-            Debug.Log("Selected file: " + path);
-            Debug.Log("Dialog result: " + dialogResult);
-            
+            else
+            {
+                FileBrowser.ShowLoadDialog(
+                    onSuccess: (e) => onComplete(e[0]),
+                    onCancel: () => onComplete(""),
+                    loadButtonText: "Load Arena",
+                    pickMode: FileBrowser.PickMode.Files,
+                    allowMultiSelection: false
+                );
+            }
 
-            return path;
 #else
-            return _lastFetchedUrl;
+            onComplete(_lastFetchedUrl);
 #endif
         }
     }

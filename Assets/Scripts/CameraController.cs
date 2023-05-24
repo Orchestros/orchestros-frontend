@@ -66,19 +66,18 @@ public class CameraController : MonoBehaviour
         }
 
         // Check if the middle mouse button is being held down
-        if (Input.GetMouseButton(2))
-        {
-            // Calculate the drag delta as a viewport point
-            var delta = -_camera.ScreenToViewportPoint(
-                (Input.mousePosition - _dragOrigin) *
-                (relativeDragSpeed * _camera.orthographicSize)
-            );
+        if (!Input.GetMouseButton(2)) return;
+        
+        // Calculate the drag delta as a viewport point
+        var delta = -_camera.ScreenToViewportPoint(
+            (Input.mousePosition - _dragOrigin) *
+            (relativeDragSpeed * _camera.orthographicSize)
+        );
 
-            // Translate the camera in the x and z-axis based on the drag delta
-            transform.Translate(new Vector3(delta.x, 0, delta.y), Space.World);
+        // Translate the camera in the x and z-axis based on the drag delta
+        transform.Translate(new Vector3(delta.x, 0, delta.y), Space.World);
 
-            // Save the current mouse position as the new drag origin
-            _dragOrigin = Input.mousePosition;
-        }
+        // Save the current mouse position as the new drag origin
+        _dragOrigin = Input.mousePosition;
     }
 }

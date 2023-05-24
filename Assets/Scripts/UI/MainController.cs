@@ -31,27 +31,32 @@ namespace UI
             };
 
             _openSceneButton = _uiDocument.rootVisualElement.Query<Button>("openMap").First();
-            _openSceneButton.clickable.clicked +=  () =>
+            _openSceneButton.clickable.clicked += () =>
             {
-                var file = argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
+                argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser(
+                    file =>
+                    {
+                        if (file.Length <= 0) return;
 
-                if (file.Length <= 0) return;
-
-                SceneManager.UnloadSceneAsync("Menu");
-                SceneManager.LoadScene("ArgosMapEditor");
-                GlobalVariables.Set(GlobalVariablesKey.ArgosFile, file);
+                        SceneManager.UnloadSceneAsync("Menu");
+                        SceneManager.LoadScene("ArgosMapEditor");
+                        GlobalVariables.Set(GlobalVariablesKey.ArgosFile, file);
+                    }
+                );
             };
 
             _loadDemoButton = _uiDocument.rootVisualElement.Query<Button>("newDemo").First();
-            _loadDemoButton.clickable.clicked +=  () =>
+            _loadDemoButton.clickable.clicked += () =>
             {
-                var file = argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser();
+                argosFileLoader.GetArgosFileLoader().GetArgosFilePathFromUser(
+                    file =>
+                    {
+                        if (file.Length <= 0) return;
 
-                if (file.Length <= 0) return;
-
-                SceneManager.UnloadSceneAsync("Menu");
-                SceneManager.LoadScene("Scenes/Demonstrator");
-                GlobalVariables.Set(GlobalVariablesKey.ArgosFile, file);
+                        SceneManager.UnloadSceneAsync("Menu");
+                        SceneManager.LoadScene("Scenes/Demonstrator");
+                        GlobalVariables.Set(GlobalVariablesKey.ArgosFile, file);
+                    });
             };
         }
     }
