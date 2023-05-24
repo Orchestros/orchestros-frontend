@@ -18,9 +18,10 @@
 
 
 .button {
-    background-color: #375283;
+    background-color: #7892BA;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
     border-radius: 7px;
+    margin-bottom: 5px;
     border-width: 0;
     padding: 10px;
     color: white;

@@ -205,6 +205,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894b1717919a4bc49403b6fd1a7796a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activationEvent:
+    m_PersistentCalls:
+      m_Calls: []
   argosWebSync: {fileID: 32913173}
 --- !u!114 &32913173
 MonoBehaviour:

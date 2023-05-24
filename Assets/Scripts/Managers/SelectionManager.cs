@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Utils;
 using World.Arena;
 
 namespace Managers
@@ -219,7 +220,8 @@ namespace Managers
             {
                 typeof(ArenaObjectsManager),
                 typeof(EditFormManager),
-                typeof(CopyPasteManager)
+                typeof(CopyPasteManager),
+                typeof(ArgosFileLoader)
             };
 
             return !activeStates.Any(x => prohibitedStates.Contains(x));

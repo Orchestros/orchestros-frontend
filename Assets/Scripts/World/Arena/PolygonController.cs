@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace World.Arena
 {
@@ -16,9 +17,9 @@ namespace World.Arena
         private new Renderer _renderer; // Renderer component of this object
 
         // Polygon parameters
-        private float _borderWidth = 3;
-        private float _borderLength = 10;
-        private int _bordersCount = 3;
+        public float borderWidth = 3;
+        public float borderLength = 10;
+        public int bordersCount = 3;
 
         private void Start()
         {
@@ -27,13 +28,13 @@ namespace World.Arena
             gameObject.layer = 2;
 
             // Generate the initial polygon
-            GeneratePolygon();
+            UpdatePolygon();
         }
 
         /// <summary>
         /// Updates the polygon based on the current parameters.
         /// </summary>
-        private void GeneratePolygon()
+        public void UpdatePolygon()
         {
             // Destroy any existing walls and clear the list
             foreach (var wall in walls)
@@ -44,16 +45,16 @@ namespace World.Arena
             walls.Clear();
 
             // Calculate the apothem size of the polygon
-            var apothemSize = _borderLength / (2 * Mathf.Tan(Mathf.PI / _bordersCount));
+            var apothemSize = borderLength / (2 * Mathf.Tan(Mathf.PI / bordersCount));
 
             // Calculate the scaled apothem size and the polygon center point
             var scaledApothemSize = apothemSize * PaddingFactorForSelectionCircle;
             var polygonCenter = Vector3.zero -
                                 new Vector3(0, 0,
-                                    apothemSize / scaledApothemSize + _borderWidth / 2 / scaledApothemSize);
+                                    apothemSize / scaledApothemSize + borderWidth / 2 / scaledApothemSize);
 
             // Generate the walls for the polygon
-            for (var i = 0; i < _bordersCount; i++)
+            for (var i = 0; i < bordersCount; i++)
             {
                 var currentWall = Instantiate(wallPrefab, transform);
                 var wallRenderer = currentWall.GetComponent<Renderer>();
@@ -63,12 +64,12 @@ namespace World.Arena
 
                 // Set the wall's layer and scale
                 currentWall.layer = 0;
-                currentWall.transform.localScale = new Vector3(_borderWidth / scaledApothemSize, 10 / scaledApothemSize,
-                    _borderLength / scaledApothemSize);
+                currentWall.transform.localScale = new Vector3(borderWidth / scaledApothemSize, 10 / scaledApothemSize,
+                    borderLength / scaledApothemSize);
 
                 // Calculate the wall's position and rotation
-                var degree = 90f + 360f / _bordersCount * i;
-                currentWall.transform.localPosition = Quaternion.Euler(0, 360f / _bordersCount * i, 0) * polygonCenter;
+                var degree = 90f + 360f / bordersCount * i;
+                currentWall.transform.localPosition = Quaternion.Euler(0, 360f / bordersCount * i, 0) * polygonCenter;
                 currentWall.transform.Rotate(new Vector3(0, degree, 0));
 
                 // Add the wall to the list
@@ -87,10 +88,10 @@ namespace World.Arena
         {
             return new Dictionary<string, string>
             {
-                { "border_count", _bordersCount.ToString() },
-                { "border_width", _borderWidth.ToString(CultureInfo.InvariantCulture) },
+                { "border_count", bordersCount.ToString() },
+                { "border_width", borderWidth.ToString(CultureInfo.InvariantCulture) },
                 {
-                    "border_length", _borderLength
+                    "border_length", borderLength
                         .ToString(CultureInfo.InvariantCulture)
                 }
             };
@@ -108,10 +109,10 @@ namespace World.Arena
             var newBorderLength = float.Parse(newValues["border_length"], CultureInfo.InvariantCulture);
 
             // Update the polygon with the new values
-            _bordersCount = newBordersCount;
-            _borderWidth = newBorderWidth;
-            _borderLength = newBorderLength;
-            GeneratePolygon();
+            bordersCount = newBordersCount;
+            borderWidth = newBorderWidth;
+            borderLength = newBorderLength;
+            UpdatePolygon();
         }
     }
 }

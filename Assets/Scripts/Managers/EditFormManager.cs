@@ -4,6 +4,7 @@ using System.Linq;
 using UI;
 using Unity.VisualScripting;
 using UnityEngine;
+using Utils;
 using World.EditableItem;
 
 namespace Managers
@@ -150,7 +151,7 @@ namespace Managers
         public override bool ShouldBeEnabled(HashSet<Type> activeStates)
         {
             // The manager should be enabled if there are selected editable items
-            return selectionManager.GetSelectedEditableItems().Count > 0;
+            return selectionManager.GetSelectedEditableItems().Count > 0 && !activeStates.Contains(typeof(ArgosFileLoader));
         }
     }
 }

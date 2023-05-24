@@ -98,8 +98,11 @@ namespace Managers.Argos
 
                 var parser = _parsers[argosTagForObject];
 
+                
+                
                 // Get the XML elements for the object using its parser
-                foreach (var xmlElement in parser.GetXMLElements(doc, arenaGameObject))
+                var xmlElements = parser.GetXMLElements(doc, arenaGameObject);
+                foreach (var xmlElement in xmlElements)
                 {
                     // Append the XML element to the appropriate parent
                     if (argosTagForObject is ArgosTag.Circle or ArgosTag.Plane)
@@ -108,6 +111,16 @@ namespace Managers.Argos
                     }
                     else
                     {
+                        if (argosTagForObject is ArgosTag.Polygon)
+                        {
+                            // if is last element, add to loop functions
+                            if (xmlElements.IndexOf(xmlElement) == xmlElements.Count - 1)
+                            {
+                                loopFunctions.AppendChild(xmlElement);
+                                continue;
+                            }
+                        }
+
                         arena.AppendChild(xmlElement);
                     }
                 }
@@ -159,7 +172,7 @@ namespace Managers.Argos
             arena.SetAttribute("size", vectorToArgosVector);
 
             // Save the XML file to the specified path
-            argosFileLoader.SaveFile(outputPath, doc.OuterXml);
+            argosFileLoader.SaveXmlFile(outputPath, doc);
         }
     }
 }

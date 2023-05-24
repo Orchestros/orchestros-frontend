@@ -1,7 +1,8 @@
+using Managers;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Utils;
+using SceneManager = UnityEngine.SceneManagement.SceneManager;
 
 namespace UI
 {

@@ -64,11 +64,23 @@ namespace Managers.Argos
             var arena = (XmlElement)doc.GetElementsByTagName("arena")[0];
             var loopFunctions = (XmlElement)doc.GetElementsByTagName("loop_functions")[0];
 
+
+            // create the polygon objects from the tag in the loop_functions section
+            foreach (XmlElement element in loopFunctions.GetElementsByTagName("polygon"))
+            {
+                InstantiateObjectFromElement(element, ArgosTag.Polygon);
+            }
+            
             // Create objects in the scene for all "box" XML elements in the "arena" section
             foreach (XmlElement element in arena.GetElementsByTagName("box"))
             {
-                InstantiateObjectFromElement(element, ArgosTag.Cube);
+                // Do not create objects for "box" elements that have a "parent" attribute (these are walls of polygons)
+                if (element.HasAttribute("is_polygon")) continue;
+                
+                 InstantiateObjectFromElement(element, ArgosTag.Cube);
             }
+            
+            
 
             // Create objects in the scene for all "cylinder" XML elements in the "arena" section
             foreach (XmlElement element in arena.GetElementsByTagName("cylinder"))

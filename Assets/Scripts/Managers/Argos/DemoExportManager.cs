@@ -44,10 +44,7 @@ namespace Managers.Argos
         // This method is called when the "TriggerSave" event is triggered
         public void OnTriggerSave()
         {
-            // Call the UpdateAsync method asynchronously
-#pragma warning disable CS4014
             UpdateDemoData();
-#pragma warning restore CS4014
         }
 
         // This method updates the demo data and saves it to the XML file
@@ -69,12 +66,11 @@ namespace Managers.Argos
                 idString = Regex.Replace(idString, "[^0-9]", "");
 
                 // If the ID string can be parsed as an integer, compare it to the current greatest ID
-                if (int.TryParse(idString, out var demoId))
+                if (!int.TryParse(idString, out var demoId)) continue;
+                
+                if (demoId > greatestDemoId)
                 {
-                    if (demoId > greatestDemoId)
-                    {
-                        greatestDemoId = demoId;
-                    }
+                    greatestDemoId = demoId;
                 }
             }
 
@@ -101,13 +97,17 @@ namespace Managers.Argos
                     ArgosHelper.VectorToArgosVectorNoHeight2D(arenaGameObject.transform.position));
                 demo.AppendChild(robot);
                 currentIndex += 1;
+                
             }
 
             // Append the new demo element to the loop functions element
             loopFunctions.AppendChild(demo);
 
+            
             // Save the modified XML document to the current XML file
-            argosFileLoader.SaveFile(currentXML, doc.OuterXml);
+            argosFileLoader.SaveXmlFile(currentXML, doc);
+            
+            arenaObjectsManager.Reset();
         }
     }
 }

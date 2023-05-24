@@ -62,6 +62,9 @@ namespace Managers
 
                     // If the ray does not intersect with any objects in the game world, skip to the next iteration of the loop.
                     if (!Physics.Raycast(ray, out var hit)) continue;
+                    
+                    // If the ray interest with one of the selected items, break the loop.
+                    if (hit.collider.gameObject == selectedItem) break;
 
                     // Move the bounds to the intersection point.
                     bounds.center = hit.point;
@@ -144,7 +147,7 @@ namespace Managers
         {
             // Enable the script if there is at least one selected editable item and the EditFormManager state is not active.
             return selectionManager.GetSelectedEditableItems().Count > 0 &&
-                   !activeStates.Contains(typeof(EditFormManager));
+                   !activeStates.Contains(typeof(EditFormManager)) && !activeStates.Contains(typeof(ArgosFileLoader));
         }
     }
 }

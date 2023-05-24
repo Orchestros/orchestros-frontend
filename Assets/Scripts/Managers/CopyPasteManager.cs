@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Utils;
 
 namespace Managers
 {
@@ -82,6 +83,7 @@ namespace Managers
         /// <inheritdoc />
         public override bool ShouldBeEnabled(HashSet<Type> activeStates) =>
             !activeStates.Contains(typeof(EditFormManager)) &&
+            !activeStates.Contains(typeof(ArgosFileLoader)) &&
             selectionManager.GetSelectedEditableItems().Count > 0;
     }
 }

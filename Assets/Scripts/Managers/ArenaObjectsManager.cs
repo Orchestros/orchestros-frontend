@@ -26,12 +26,10 @@ namespace Managers
         private readonly HashSet<GameObject> _objects = new HashSet<GameObject>(); // a set of game objects
 
         private readonly List<Action<GameObject>>
-            _onObjectAddedCallbacks =
-                new List<Action<GameObject>>(); // a list of callbacks to be called when a new object is added
+            _onObjectAddedCallbacks = new(); // a list of callbacks to be called when a new object is added
 
         private readonly List<Action<GameObject>>
-            _onObjectRemovedCallbacks =
-                new List<Action<GameObject>>(); // a list of callbacks to be called when an object is removed
+            _onObjectRemovedCallbacks = new(); // a list of callbacks to be called when an object is removed
 
         /// <summary>
         /// Gets a list of all the game objects currently managed.
@@ -125,7 +123,7 @@ namespace Managers
         public void AddObject(GameObject sourceObject)
         {
             // If the arena objects manager is already active, do nothing
-            if (IsActive)
+            if (IsActive || !enabled)
             {
                 return;
             }
@@ -139,6 +137,17 @@ namespace Managers
             objectAdder.dynamicLineManager = dynamicLineManager;
             objectAdder.OnCompleted = () => OnObjectAdded(newObject);
             objectAdder.OnCanceled = OnDeactivate;
+        }
+
+        public void Reset()
+        {
+            int limit = 10000;
+
+            while (_objects.Count > 0 && limit > 0)
+            {
+                RemoveObject(_objects.First());
+                limit--;
+            }
         }
 
         /// <summary>
@@ -156,7 +165,9 @@ namespace Managers
             _onObjectRemovedCallbacks.Add(newCallback);
 
         /// <inheritdoc />
-        public override bool ShouldBeEnabled(HashSet<Type> activeStates) =>
-            !activeStates.Any(x => x == typeof(EditFormManager));
+        public override bool ShouldBeEnabled(HashSet<Type> activeStates)
+        {
+            return activeStates.All(x => x != typeof(EditFormManager) && x != typeof(ArgosFileLoader));
+        }
     }
 }

@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 using SimpleFileBrowser;
 using UnityEngine;
+using Utils;
 
-namespace Utils
+namespace Managers
 {
     /// <summary>
     /// Provides file-related operations for a Unity project, such as loading and saving files and capturing image uploads.
     /// </summary>
     [RequireComponent(typeof(ArgosWebSync))]
-    public class ArgosFileLoader : MonoBehaviour
+    public class ArgosFileLoader : MonoBehaviourWithState
     {
         public ArgosWebSync argosWebSync;
 
@@ -26,15 +29,38 @@ namespace Utils
         /// Saves a file to disk.
         /// </summary>
         /// <param name="filename">The name of the file to save.</param>
-        /// <param name="textContent">The content of the file to save.</param>
-        public void SaveFile(string filename, string textContent)
+        /// <param name="xmlDocument">The xml document instance to save</param>
+        public void SaveXmlFile(string filename, XmlDocument xmlDocument)
         {
+            var textContent = BeautifyXml(xmlDocument);
+            
+            
             // IF web
 #if !UNITY_WEBGL
             File.WriteAllText(filename, textContent);
 #else
             argosWebSync.PostArgosFileToUrl(textContent);
 #endif
+        }
+        
+        public static string BeautifyXml(XmlDocument xmlDocument)
+        {
+            // Create a string writer to write the formatted XML output
+            using var stringWriter = new StringWriter();
+            // Create an XmlTextWriter with formatting options
+            using var xmlTextWriter = new XmlTextWriter(stringWriter);
+            
+            xmlTextWriter.Formatting = Formatting.Indented;
+            xmlTextWriter.Indentation = 4;
+
+            // Write the XML to the XmlTextWriter
+            xmlDocument.WriteTo(xmlTextWriter);
+
+            // Flush the XmlTextWriter to make sure everything is written
+            xmlTextWriter.Flush();
+
+            // Return the formatted XML as a string
+            return stringWriter.ToString();
         }
 
         /// <summary>
@@ -64,11 +90,21 @@ namespace Utils
             FileBrowser.SetFilters(true, new FileBrowser.Filter("argos,xml files", ".argos", ".xml"));
             FileBrowser.SetDefaultFilter(".argos");
 
+            OnActivate();
+
             if (newFile)
             {
                 FileBrowser.ShowSaveDialog(
-                    onSuccess: (e) => onComplete(e[0]),
-                    onCancel: () => onComplete(""),
+                    onSuccess: (e) =>
+                    {
+                        OnDeactivate();
+                        onComplete(e[0]);
+                    },
+                    onCancel: () =>
+                    {
+                        OnDeactivate(); 
+                        onComplete("");
+                    },
                     pickMode: FileBrowser.PickMode.Files,
                     initialFilename:"untitled.argos",
                     saveButtonText: "Save Arena",
@@ -78,8 +114,16 @@ namespace Utils
             else
             {
                 FileBrowser.ShowLoadDialog(
-                    onSuccess: (e) => onComplete(e[0]),
-                    onCancel: () => onComplete(""),
+                    onSuccess: (e) =>
+                    {
+                        OnDeactivate();
+                        onComplete(e[0]);
+                    },
+                    onCancel: () =>
+                    {
+                        OnDeactivate(); 
+                        onComplete("");
+                    },
                     loadButtonText: "Load Arena",
                     pickMode: FileBrowser.PickMode.Files,
                     allowMultiSelection: false
@@ -89,6 +133,11 @@ namespace Utils
 #else
             onComplete("");
 #endif
+        }
+
+        public override bool ShouldBeEnabled(HashSet<Type> activeStates)
+        {
+            return true;
         }
     }
 }
