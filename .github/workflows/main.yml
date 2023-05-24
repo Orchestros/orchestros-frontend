@@ -1,0 +1,66 @@
+name: Test, Build, and Deploy with GameCI
+on:
+  push:
+    branches:
+      - main
+  release:
+    types:
+      - published
+
+jobs:
+  buildWithLinux:
+      name: Build for ${{ matrix.targetPlatform }}
+      runs-on: ubuntu-latest
+      outputs:
+        buildVersion: ${{ steps.build.outputs.buildVersion }}
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+        - name: Create LFS file list
+          run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+        - name: Restore LFS cache
+          uses: actions/cache@v3
+          id: lfs-cache
+          with:
+            path: .git/lfs
+            key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+        - name: Git LFS Pull
+          run: |
+            git lfs pull
+            git add .
+            git reset --hard
+        - name: Cache Library
+          uses: actions/cache@v3
+          with:
+            path: Library
+            key: Library-build-linux-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+            restore-keys: Library-build-linux-
+        - name: Build Unity Project
+          id: build
+          uses: game-ci/unity-builder@main
+          with:
+            targetPlatform: "linux"
+            buildMethod: Cgs.Editor.BuildCgs.BuildOptions
+        - name: Upload Build
+          uses: actions/upload-artifact@v3
+          if: github.event.action == 'published' || contains(github.event.inputs.workflow_mode, matrix.targetPlatform) || (contains(github.event.inputs.workflow_mode, 'Steam') && matrix.targetPlatform == 'StandaloneLinux64')
+          with:
+            name: linux
+            path: build/linux
+        - name: Zip Build
+          uses: montudor/action-zip@v1
+          if: github.event.action == 'published' && matrix.targetPlatform == 'StandaloneLinux64'
+          with:
+            args: zip -qq -r build/linux.zip build/linux
+        - name: Upload Zip to GitHub Release
+          uses: eregon/publish-release@v1
+          env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            asset_name: linux.zip
+            file: build/linux.zip
+            tag: ${{ github.ref }}
+            overwrite: true
+            body: ${{ github.event.release.body }}
