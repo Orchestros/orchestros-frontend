@@ -68,7 +68,9 @@ public class ObjectAdder : MonoBehaviour
             // Use the DynamicLineMoverHelper to get a new position for the object that takes into account dynamic line management
             transformPosition =
                 DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, transformPosition, bounds);
-
+            
+            // Put the object on the ground (add half of the object's height to the y position)
+            transformPosition.y += bounds.extents.y;
             // Set the position of the object and round it to the nearest integer value
             transform.position = transformPosition.Round();
         }

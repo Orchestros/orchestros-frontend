@@ -34,11 +34,20 @@ namespace Managers.Argos.XML
 
             // Get the SpawnCircleEditableItem component of the game object and update its values
             var spawnCircleEditableItem = newObject.GetComponent<SpawnCircleEditableItem>();
+            var isSpawnCircle = element.Name == "spawnCircle";
             spawnCircleEditableItem.UpdateValues(new Dictionary<string, string>
             {
-                { "spawn_circle", (element.Name == "spawnCircle" ? 1 : 0).ToString() }
+                { "spawn_circle", (isSpawnCircle ? 1 : 0).ToString() }
             });
 
+            if (!isSpawnCircle) return newObject;
+            
+            // Set color of spawn circle to green
+            var materialColor = Color.green;
+            materialColor.a = 0.5f;
+            newObject.GetComponent<Renderer>().material.color = materialColor;
+
+            
             // Return the game object
             return newObject;
         }
@@ -73,9 +82,7 @@ namespace Managers.Argos.XML
 
             if (colorEditableItem)
             {
-                Debug.Log("Color editable item");
                 var color = colorEditableItem.GetColor();
-                Debug.Log(color);
                 node.SetAttribute("color", color == "FFFFFFFF" ? "white" : "black");
             }
 

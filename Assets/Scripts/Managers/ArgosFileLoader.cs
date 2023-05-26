@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Xml;
 using SimpleFileBrowser;
 using UnityEngine;
@@ -16,6 +17,10 @@ namespace Managers
     {
         public ArgosWebSync argosWebSync;
 
+        
+        [DllImport("__Internal")]
+        private static extern void sendMessageToParent(string message);
+        
         /// <summary>
         /// Returns an instance of the ArgosFileLoader class from the scene's EventSystem object.
         /// </summary>
@@ -39,11 +44,12 @@ namespace Managers
 #if !UNITY_WEBGL
             File.WriteAllText(filename, textContent);
 #else
+            sendMessageToParent(textContent);
             argosWebSync.PostArgosFileToUrl(textContent);
 #endif
         }
-        
-        public static string BeautifyXml(XmlDocument xmlDocument)
+
+        private static string BeautifyXml(XmlNode xmlDocument)
         {
             // Create a string writer to write the formatted XML output
             using var stringWriter = new StringWriter();
@@ -73,7 +79,7 @@ namespace Managers
 #if !UNITY_WEBGL
             return File.ReadAllText(pathOrUrl);
 #else
-            return argosWebSync.LoadArgosFileFromUrl();
+            return ArgosWebSync.LoadArgosFileFromUrl();
 #endif
         }
 

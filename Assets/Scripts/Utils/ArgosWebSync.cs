@@ -18,7 +18,7 @@ namespace Utils
 #endif
         }
 
-        public string LoadArgosFileFromUrl()
+        public static string LoadArgosFileFromUrl()
         {
 #if !UNITY_WEBGL
             return "";
@@ -78,7 +78,6 @@ namespace Utils
             foreach (var pair in queryPairs)
             {
                 var keyValue = pair.Split('=', 2);
-                Debug.Log(keyValue[0] + " " + keyValue[1]);
                 if (keyValue.Length != 2) continue;
                 var key = Uri.UnescapeDataString(keyValue[0]);
                 var value = Uri.UnescapeDataString(keyValue[1]);

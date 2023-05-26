@@ -13,7 +13,7 @@ namespace Managers.Argos
         public ArenaObjectsManager arenaObjectsManager;
 
         public ArgosFileLoader argosFileLoader;
-        
+
         // Dictionary containing parsers for each object in the scene
         private readonly Dictionary<ArgosTag, ArenaObjectToXml> _parsers = new();
 
@@ -67,17 +67,16 @@ namespace Managers.Argos
             {
                 InstantiateObjectFromElement(element, ArgosTag.Polygon);
             }
-            
+
             // Create objects in the scene for all "box" XML elements in the "arena" section
             foreach (XmlElement element in arena.GetElementsByTagName("box"))
             {
                 // Do not create objects for "box" elements that have a "parent" attribute (these are walls of polygons)
                 if (element.HasAttribute("is_polygon")) continue;
-                
-                 InstantiateObjectFromElement(element, ArgosTag.Cube);
+
+                InstantiateObjectFromElement(element, ArgosTag.Cube);
             }
-            
-            
+
 
             // Create objects in the scene for all "cylinder" XML elements in the "arena" section
             foreach (XmlElement element in arena.GetElementsByTagName("cylinder"))
@@ -97,9 +96,13 @@ namespace Managers.Argos
                 InstantiateObjectFromElement(element, ArgosTag.Circle);
             }
 
-            foreach (XmlElement element in loopFunctions.GetElementsByTagName("spawnCircle"))
+            // If current scene is Scenes/Demonstrator, skip the spawnCircle elements
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Demonstrator")
             {
-                InstantiateObjectFromElement(element, ArgosTag.Circle);
+                foreach (XmlElement element in loopFunctions.GetElementsByTagName("spawnCircle"))
+                {
+                    InstantiateObjectFromElement(element, ArgosTag.Circle);
+                }
             }
 
             // Create objects in the scene for all "rectangle" XML elements in the "loop_functions" section

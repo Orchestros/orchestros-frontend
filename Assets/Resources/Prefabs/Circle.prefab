@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 7699273442376795075}
   - component: {fileID: 7699273442376795074}
   - component: {fileID: -3589327933376382565}
-  - component: {fileID: -38577922799970597}
   - component: {fileID: -8026748460483788725}
   - component: {fileID: 5397944416989320709}
+  - component: {fileID: -38577922799970597}
   - component: {fileID: 7843434594013213766}
   m_Layer: 0
   m_Name: Circle
@@ -32,8 +32,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7699273442376795073}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 451.67236, y: 1221.8132, z: 0.30148315}
-  m_LocalScale: {x: 10, y: 0.01, z: 10}
+  m_LocalPosition: {x: 451.67236, y: 1222.813, z: 0.30148315}
+  m_LocalScale: {x: 10, y: 0.1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -115,19 +115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7af39e80faa64568b5ae0567be281282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-38577922799970597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7699273442376795073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a174e9bbade456e94e1b8705dbfd871, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isSpawnCircle: 0
 --- !u!114 &-8026748460483788725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +139,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99fc5f1c5bd4a11ad2598be03e77ebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-38577922799970597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7699273442376795073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a174e9bbade456e94e1b8705dbfd871, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSpawnCircle: 0
 --- !u!114 &7843434594013213766
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using System.Xml;
+using AOT;
 using Managers.Argos.XML;
 using UnityEngine;
-using Utils;
 
 namespace Managers.Argos
 {
@@ -24,8 +24,15 @@ namespace Managers.Argos
         // Dictionary containing parsers for each object in the scene
         private Dictionary<ArgosTag, ArenaObjectToXml> _parsers;
 
+        [DllImport("__Internal")]
+        private static extern void registerMessageCallback();
+
         private void Start()
         {
+#if UNITY_WEBGL
+            registerMessageCallback();
+#endif
+
             // Get all the ArenaObjectToXml components and create a dictionary using their tags as keys
             _parsers = GetComponents<ArenaObjectToXml>().ToDictionary(a => a.Tag, a => a);
         }
@@ -106,8 +113,7 @@ namespace Managers.Argos
             if (!GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile) ||
                 string.IsNullOrEmpty(GlobalVariables.Get<string>(GlobalVariablesKey.ArgosFile)))
             {
-                # if !UNITY_WEBGL
-                
+# if !UNITY_WEBGL
                 // Check if .orchesta/template.argos file exists at user's home directory
                 var templateFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
                     Path.Combine(".orchestra", "template.argos"));
@@ -117,10 +123,10 @@ namespace Managers.Argos
                     // If the file exists, return the xml from the file
                     return File.ReadAllText(templateFilePath);
                 }
-                # endif
+# endif
                 return baseXML.text;
             }
-            
+
 
             // if argos file is not empty, return the xml from the file
             var fileContent = argosFileLoader.GetArgosFileLoader()

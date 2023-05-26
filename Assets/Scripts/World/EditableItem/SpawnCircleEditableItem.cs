@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace World.EditableItem
 {
@@ -31,6 +32,16 @@ namespace World.EditableItem
 
             // Parse the new spawn circle value and update the isSpawnCircle flag accordingly
             int.TryParse(newValues["spawn_circle"], out var spawnCircleNewValue);
+            
+            // If is spawn circle, change material color to green, put it closer to the ground.
+            if (spawnCircleNewValue != 0)
+            {
+                var materialColor = Color.green;
+                // Make it opacity 50%
+                materialColor.a = 0.5f;
+                GetComponent<Renderer>().material.color = materialColor;
+                transform.Translate(0, -0.1f, 0);
+            }
             isSpawnCircle = spawnCircleNewValue != 0;
         }
     }

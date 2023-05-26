@@ -62,9 +62,6 @@ namespace Managers
 
                     // If the ray does not intersect with any objects in the game world, skip to the next iteration of the loop.
                     if (!Physics.Raycast(ray, out var hit)) continue;
-                    
-                    // If the ray interest with one of the selected items, break the loop.
-                    if (hit.collider.gameObject == selectedItem) break;
 
                     // Move the bounds to the intersection point.
                     bounds.center = hit.point;
@@ -72,10 +69,12 @@ namespace Managers
                     // Get the new position of the selected item.
                     var newPosition =
                         DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, hit.point, bounds, selectedItem);
-                    // Set the Y position of the new position to the Y position of the selected item.
-                    newPosition.y = selectedItem.transform.position.y;
                     // Move the selected item to the new position rounded to the nearest integer.
-                    selectedItem.transform.position = newPosition.Round();
+                    selectedItem.transform.position = new Vector3(
+                        Mathf.Round(newPosition.x),
+                      selectedItem.transform.position.y,
+                        Mathf.Round(newPosition.z)
+                    );
                 }
             }
 

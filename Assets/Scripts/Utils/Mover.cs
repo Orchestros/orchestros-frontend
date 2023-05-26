@@ -47,7 +47,13 @@ namespace Utils
 
             if (check(KeyCode.LeftArrow)) deltaX -= speed;
 
-            return new Vector3(deltaX, 0, deltaZ);
+            var retrieveDelta = new Vector3(deltaX, 0, deltaZ);
+            
+            // Apply y rotation to the movement delta
+            if (Camera.main != null)
+                retrieveDelta = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0) * retrieveDelta;
+
+            return retrieveDelta;
         }
     }
 }

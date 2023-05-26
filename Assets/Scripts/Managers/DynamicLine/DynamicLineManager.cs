@@ -39,13 +39,11 @@ namespace Managers.DynamicLine
 
         private void OnObjectAdded(GameObject newGameObject)
         {
-            Debug.Log("Adding object to dynamic line manager.");
             _renderers.Add(newGameObject.GetInstanceID(), newGameObject.GetComponent<Renderer>());
         }
 
         private void OnObjectRemoved(GameObject removedGameObject)
         {
-            Debug.Log("Removing object from dynamic line manager.");
             _renderers.Remove(removedGameObject.GetInstanceID());
         }
 
@@ -62,13 +60,9 @@ namespace Managers.DynamicLine
 
             var renderers = _renderers.Values.ToList();
 
-            Debug.Log("GameObject to ignore: " + gameObjectToIgnore);
-            Debug.Log(_renderers.Count);
             if (gameObjectToIgnore != null)
                 renderers = _renderers.Where(a => a.Key != gameObjectToIgnore.GetInstanceID()).Select(x => x.Value)
                     .ToList();
-            
-            Debug.Log("Hello world");
             
             linesTuple.AddRange(ComputeLinesForPoint(bottomLeftCorner, Direction.Top, Direction.Left, renderers));
             linesTuple.AddRange(ComputeLinesForPoint(topRightCorner, Direction.Bottom, Direction.Right, renderers));
@@ -84,12 +78,6 @@ namespace Managers.DynamicLine
             var hasHorizontalAlign = false;
             var hasVerticalAlign = false;
             
-            // Print each line tuple
-            foreach (var lineTuple in linesTuple)
-            {
-                Debug.Log(lineTuple.Item1.ToString() + " " + lineTuple.Item2);
-            }
-
             var linesFound = linesTuple.Select(lineTuple => lineTuple.Item1).GroupBy(s => new { s.Renderer, s.Axis })
                 .Select(grp => grp.FirstOrDefault())
                 .ToList();
@@ -161,12 +149,7 @@ namespace Managers.DynamicLine
                 objectLines.Add(new DynamicLine(centerPoint.z, RectTransform.Axis.Vertical, true,
                     horizontalDirection, currenPoint, centerPoint, renderToCompareWith));
             }
-        
-            // Print each line
-            foreach (var line in objectLines)
-            {
-                Debug.Log("Delta: " + line.Delta + " Axis: " + line.Axis + " Direction: " + line.Direction + " IsVertical: " + line.IsVertical());
-            }
+
             
             return (from dynamicLine in objectLines
                 let diff = Math.Abs(dynamicLine.Delta - (dynamicLine.IsVertical()

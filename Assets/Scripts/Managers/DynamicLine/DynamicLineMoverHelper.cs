@@ -19,7 +19,6 @@ namespace Managers.DynamicLine
         public static Vector3 RetrieveNewPosition(DynamicLineManager dynamicLineManager, Vector3 initialPosition,
             Bounds bounds, GameObject gameObject = null)
         {
-            Debug.Log("Retrieving new position.");
             // Update the dynamic lines based on the new bounds.
             var dynamicLines = dynamicLineManager.UpdateBounds(bounds, gameObject);
 
