@@ -1,9 +1,8 @@
-﻿using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Xml;
 using Managers.Argos.XML;
 using UnityEngine;
-using Utils;
 
 namespace Managers.Argos
 {
@@ -14,12 +13,19 @@ namespace Managers.Argos
         public ArenaObjectsManager arenaObjectsManager;
 
         public ArgosFileLoader argosFileLoader;
-        
+
         // Path to the current XML file
         public string currentXML;
 
+        [DllImport("__Internal")]
+        private static extern void registerMessageCallback();
+
         private void Start()
         {
+#if UNITY_WEBGL
+            registerMessageCallback();
+#endif
+
             // If the Argos file path is set, set the current XML path to it
             if (GlobalVariables.HasKey(GlobalVariablesKey.ArgosFile))
             {
@@ -67,7 +73,7 @@ namespace Managers.Argos
 
                 // If the ID string can be parsed as an integer, compare it to the current greatest ID
                 if (!int.TryParse(idString, out var demoId)) continue;
-                
+
                 if (demoId > greatestDemoId)
                 {
                     greatestDemoId = demoId;
@@ -97,16 +103,15 @@ namespace Managers.Argos
                     ArgosHelper.VectorToArgosVectorNoHeight2D(arenaGameObject.transform.position));
                 demo.AppendChild(robot);
                 currentIndex += 1;
-                
             }
 
             // Append the new demo element to the loop functions element
             loopFunctions.AppendChild(demo);
 
-            
+
             // Save the modified XML document to the current XML file
             argosFileLoader.SaveXmlFile(currentXML, doc);
-            
+
             arenaObjectsManager.Reset();
         }
     }
