@@ -10,6 +10,8 @@ namespace Utils
     {
         private static string _saveUrl;
 
+        public static string SavedFile = "";
+
         private void Start()
         {
 # if UNITY_WEBGL
@@ -23,6 +25,7 @@ namespace Utils
 #if !UNITY_WEBGL
             return "";
 #endif
+            if (SavedFile != "") return SavedFile;
 
             var absoluteURL = Application.absoluteURL;
             var queryParameters = GetQueryParameters(absoluteURL);
@@ -43,6 +46,8 @@ namespace Utils
             }
 
             _saveUrl = decodedUrl;
+            
+            SavedFile = decodedData;
 
             return decodedData;
         }
@@ -52,6 +57,8 @@ namespace Utils
 # if !UNITY_WEBGL
             return;
 # endif
+            SavedFile = data;
+            
             // Make web request to URL with file data as the body
             var request = new UnityWebRequest(_saveUrl, "POST");
             var bodyRaw = Encoding.UTF8.GetBytes(data);
