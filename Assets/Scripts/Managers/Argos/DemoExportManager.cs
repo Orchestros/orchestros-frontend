@@ -104,6 +104,13 @@ namespace Managers.Argos
                 demo.AppendChild(robot);
                 currentIndex += 1;
             }
+            
+            // If there are no robots in the scene, skip the rest of the method, no need to save the demo
+            // since it would hold no useful information.
+            if (currentIndex == 0)
+            {
+                return;
+            }
 
             // Append the new demo element to the loop functions element
             loopFunctions.AppendChild(demo);
@@ -115,4 +122,4 @@ namespace Managers.Argos
             arenaObjectsManager.Reset();
         }
     }
-}
+}   
