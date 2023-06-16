@@ -28,4 +28,4 @@ The system's only aspect that may seem less intuitive is the ability to create a
 ## Screenshots
 
 <img src="https://github.com/Orchestros/orchestros-frontend/blob/main/screenshot_1.png?raw=true" height="400">
-<img src="https://github.com/Orchestros/orchestros-frontend/blob/main/screenshot_2.png?raw=true" width="400">
+<img src="https://github.com/Orchestros/orchestros-frontend/blob/main/screenshot_2.png?raw=true" height="400">
