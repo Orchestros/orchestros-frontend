@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 32913169}
   - component: {fileID: 32913172}
   - component: {fileID: 32913173}
+  - component: {fileID: 32913174}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -191,7 +192,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &32913172
 MonoBehaviour:
@@ -221,6 +222,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945caf994c604237b92c30f1db2343ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &32913174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32913168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bc1578f77d88ed4fa793fff12efd5cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helperItems:
+  - description: Save
+    shortcut: Ctrl + S
+  - description: Save as
+    shortcut: Ctrl + Maj + S
+  - description: Back to menu
+    shortcut: Maj + escape
+  - description: Zoom
+    shortcut: Mouse scroll
+  - description: Drag camera
+    shortcut: Mouse third button 
+  - description: Camera position
+    shortcut: "\u2190/\u2192/\u2191/\u2193"
+  - description: Copy selection
+    shortcut: Ctrl + C
+  - description: Paste selection
+    shortcut: Ctrl + V
+  - description: Delete selection
+    shortcut: Delete
+  - description: Lock selection
+    shortcut: Ctrl + L
+  - description: Unlock selection
+    shortcut: Ctrl + Maj + L
+  - description: Move selection
+    shortcut: "Ctrl + \u2190/\u2192/\u2191/\u2193"
+  - description: Rotate selection
+    shortcut: Ctrl + R/Mouse scroll
+  - description: Switch camera mode
+    shortcut: Tab
+  - description: Move camera up
+    shortcut: Space
+  - description: Move camera down
+    shortcut: Shift
+  - description: Rotate camera
+    shortcut: R
+  helperUI: {fileID: 2063258841}
 --- !u!1 &128496203
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,7 +864,7 @@ RectTransform:
   - {fileID: 1871077370}
   - {fileID: 1945203950}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2107,7 +2156,7 @@ Transform:
   - {fileID: 705507995}
   - {fileID: 1198607324}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1198607320
 GameObject:
@@ -3247,6 +3296,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2052035474}
   m_CullTransparentMesh: 1
+--- !u!1 &2063258841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2063258843}
+  - component: {fileID: 2063258842}
+  m_Layer: 5
+  m_Name: HelperUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2063258842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063258841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: f2fa33335fe9a4a45ada388ae6c81d64, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: a4f81264762607b4397049cb7800c20a, type: 3}
+  m_SortingOrder: 0
+--- !u!4 &2063258843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063258841}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2094763955
 GameObject:
   m_ObjectHideFlags: 0
@@ -3422,5 +3519,5 @@ Transform:
   - {fileID: 1985673103}
   - {fileID: 1098071526}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

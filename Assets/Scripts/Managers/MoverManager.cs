@@ -72,7 +72,7 @@ namespace Managers
                     // Move the selected item to the new position rounded to the nearest integer.
                     selectedItem.transform.position = new Vector3(
                         Mathf.Round(newPosition.x),
-                      selectedItem.transform.position.y,
+                        selectedItem.transform.position.y,
                         Mathf.Round(newPosition.z)
                     );
                 }
@@ -106,6 +106,22 @@ namespace Managers
                 // If the mouse wheel is scrolled down, rotate the selected item to the left.
                 if (Input.GetAxis("Mouse ScrollWheel") < 0)
                     selectedItem.transform.Rotate(Vector3.down * rotationSpeedInDegrees, Space.Self);
+
+                // If the R key is pressed without using the mouse scroll wheel, apply a reduced rotation speed for keyboard input.
+                if (!Input.GetKey(KeyCode.R) || !Input.GetKey(KeyCode.LeftControl)) continue;
+
+                var keyboardRotationSpeed = rotationSpeedInDegrees / 10f; // A tenth of the original rotation speed
+
+                // If Ctrl + R is pressed, rotate the selected item to the right with the reduced speed.
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    selectedItem.transform.Rotate(Vector3.down * keyboardRotationSpeed, Space.Self);
+                }
+                else
+                {
+                    selectedItem.transform.Rotate(Vector3.up * keyboardRotationSpeed, Space.Self);
+
+                }
             }
         }
 
