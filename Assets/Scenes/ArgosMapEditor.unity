@@ -259,6 +259,8 @@ MonoBehaviour:
     shortcut: Ctrl + Maj + L
   - description: Move selection
     shortcut: "Ctrl + \u2190/\u2192/\u2191/\u2193"
+  - description: Move selection per step
+    shortcut: "Ctrl + Maj + \u2190/\u2192/\u2191/\u2193"
   - description: Rotate selection
     shortcut: Ctrl + R/Mouse scroll
   - description: Switch camera mode
