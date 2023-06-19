@@ -234,6 +234,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc1578f77d88ed4fa793fff12efd5cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activationEvent:
+    m_PersistentCalls:
+      m_Calls: []
   helperItems:
   - description: Save
     shortcut: Ctrl + S
@@ -244,7 +247,7 @@ MonoBehaviour:
   - description: Zoom
     shortcut: Mouse scroll
   - description: Drag camera
-    shortcut: Mouse third button 
+    shortcut: Mouse third button
   - description: Camera position
     shortcut: "\u2190/\u2192/\u2191/\u2193"
   - description: Copy selection
@@ -2253,7 +2256,7 @@ Transform:
   m_GameObject: {fileID: 1198607320}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -1008.15405, z: 0}
-  m_LocalScale: {x: 103, y: 1, z: 50}
+  m_LocalScale: {x: 500, y: 1, z: 500}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1185181565}
@@ -2272,7 +2275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineSpacing: 10
-  lineWidth: 0.001
+  lineWidth: 0.0002
   smallToLargeLine: 3
 --- !u!1 &1418512349
 GameObject:

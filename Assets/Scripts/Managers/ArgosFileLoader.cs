@@ -17,8 +17,22 @@ namespace Managers
     {
         public ArgosWebSync argosWebSync;
 
-        
-        [DllImport("__Internal")]
+        private List<string> History { get; } = new();
+
+        private void Start()
+         {
+             // Load history from player prefs
+                for (var i = 0; i < 10; i++)
+                {
+                    var historyItem = PlayerPrefs.GetString("history_" + i);
+                    if (historyItem.Length > 0)
+                    {
+                        History.Add(historyItem);
+                    }
+                }
+         }
+
+         [DllImport("__Internal")]
         private static extern void sendMessageToParent(string message);
         
         /// <summary>
@@ -83,6 +97,27 @@ namespace Managers
 #endif
         }
 
+
+        private void UpdateHistory(String newPath)
+        {
+            if (History.Contains(newPath))
+            {
+                History.Remove(newPath);
+            }
+            
+            History.Insert(0, newPath);
+            if (History.Count > 10)
+            {
+                History.RemoveAt(History.Count - 1);
+            }
+            
+            // Save history to player prefs
+            for (var i = 0; i < 10; i++)
+            {
+                PlayerPrefs.SetString("history_" + i, i < History.Count ? History[i] : "");
+            }
+        }
+        
         /// <summary>
         /// Prompts the user to select an Argos file to load or save.
         /// </summary>
@@ -103,6 +138,8 @@ namespace Managers
                 FileBrowser.ShowSaveDialog(
                     onSuccess: (e) =>
                     {
+                        // Add history item
+                        UpdateHistory(e[0]);
                         OnDeactivate();
                         onComplete(e[0]);
                     },
@@ -122,6 +159,7 @@ namespace Managers
                 FileBrowser.ShowLoadDialog(
                     onSuccess: (e) =>
                     {
+                        UpdateHistory(e[0]);
                         OnDeactivate();
                         onComplete(e[0]);
                     },

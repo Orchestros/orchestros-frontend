@@ -9,12 +9,13 @@ namespace UI
     /// <summary>
     /// Controller for the main menu UI.
     /// </summary>
-    public class MainController : MonoBehaviour
+    public class MenuController : MonoBehaviour
     {
         private UIDocument _uiDocument;
         private Button _newSceneButton;
         private Button _openSceneButton;
         private Button _loadDemoButton;
+        private ScrollView _historyScrollView;
         public ArgosFileLoader argosFileLoader;
 
         /// <summary>
@@ -23,6 +24,37 @@ namespace UI
         private void Start()
         {
             _uiDocument = GetComponent<UIDocument>();
+
+            _historyScrollView = _uiDocument.rootVisualElement.Query<ScrollView>("historyScrollView").First();
+            var isHistoryEmpty = true;
+            for (var i = 0; i < 10; i++)
+            {
+                
+                var historyItem = PlayerPrefs.GetString("history_" + i);
+                if (historyItem.Length <= 0) continue;
+
+                isHistoryEmpty = false;
+                var button = new Button(() =>
+                {
+                    GlobalVariables.Set(GlobalVariablesKey.ArgosFile, historyItem);
+                    SceneManager.LoadScene("ArgosMapEditor");
+                })
+                {
+                    // Text with backslashes is interpreted as a path, so we need to escape them
+                    text = historyItem.Replace("\\", "\\\\")
+                };
+
+                button.AddToClassList("history-item");
+                _historyScrollView.contentContainer.Add(button);
+            }
+            
+            if (isHistoryEmpty)
+            {
+                _historyScrollView.contentContainer.Add(new Label("No history yet"));
+            }
+            
+            
+            
             _newSceneButton = _uiDocument.rootVisualElement.Query<Button>("newMap").First();
             _newSceneButton.clickable.clicked += () =>
             {

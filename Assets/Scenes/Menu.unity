@@ -301,6 +301,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894b1717919a4bc49403b6fd1a7796a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activationEvent:
+    m_PersistentCalls:
+      m_Calls: []
   argosWebSync: {fileID: 1202832130}
 --- !u!1 &1416719576
 GameObject:
@@ -315,6 +318,7 @@ GameObject:
   - component: {fileID: 1416719579}
   - component: {fileID: 1416719580}
   - component: {fileID: 1416719581}
+  - component: {fileID: 1416719582}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -388,5 +392,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 945caf994c604237b92c30f1db2343ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1416719582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416719576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efefedbcb4d24ae2982dfb5e73336af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

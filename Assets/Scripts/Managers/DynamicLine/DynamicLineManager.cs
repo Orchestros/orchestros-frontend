@@ -113,12 +113,24 @@ namespace Managers.DynamicLine
                 if (hasHorizontalAlign && hasVerticalAlign) break;
             }
 
-            foreach (var line in dynamicLines) line.IsUsedToSnap = true;
 
             foreach (var addTextForLine in dynamicLines.Select(AddTextForLine)) _texts.Add(addTextForLine);
 
             foreach (var newLineObject in linesFound.Select(AddLine)) _lines.Add(newLineObject);
-
+            
+            // Keep maximum 2 snap^lines, sort by proximity to center
+            const int snapLineCount = 2;
+            var snapLines = dynamicLines.OrderBy(x => Vector3.Distance(x.Renderer.bounds.center, boundsOfCurrentObjectAdder.center)).Take(snapLineCount).ToList();
+            // Update the snap lines
+            foreach (var line in snapLines)
+            {
+                line.IsUsedToSnap = true;
+            }
+            
+            
+            // Maximum 5 lines in total
+            dynamicLines = dynamicLines.Take(5).ToList();
+    
             return dynamicLines;
         }
 

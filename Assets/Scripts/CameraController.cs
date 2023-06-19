@@ -63,7 +63,9 @@ public class CameraController : MonoBehaviour
                 default:
                     _camera.orthographic = false;
                     // rotate the camera 45 degrees
+                    _camera.fieldOfView = 60;
                     transform.rotation = Quaternion.Euler(45, 0, 0);
+                    transform.position = new Vector3(0, 100, 0);
                     break;
             }
         }

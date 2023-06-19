@@ -37,6 +37,15 @@ public class ObjectAdder : MonoBehaviour
 
         // Set the layer of the object to be invisible to raytracing in layer 2
         gameObject.layer = 2;
+        
+        // if game object has child objects, set their layer to be invisible to raytracing in layer 2
+        if (transform.childCount > 0)
+        {
+            foreach (Transform child in transform)
+            {
+                child.gameObject.layer = 2;
+            }
+        }
 
         // Change the color of the object's mesh renderers to a partially transparent color
         foreach (var meshRenderer in _meshRenderers)
@@ -63,14 +72,14 @@ public class ObjectAdder : MonoBehaviour
             // Calculate the size of the object to be added by determining the bounds of its mesh renderers
             var bounds = _meshRenderers.First().bounds;
             foreach (var meshRenderer in _meshRenderers) bounds.Encapsulate(meshRenderer.bounds);
-            bounds.center = hit.point;
+            bounds.center = new Vector3(hit.point.x, 0, hit.point.z);
 
             // Use the DynamicLineMoverHelper to get a new position for the object that takes into account dynamic line management
             transformPosition =
-                DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, transformPosition, bounds);
-            
-            // Put the object on the ground (add half of the object's height to the y position)
-            transformPosition.y += bounds.extents.y;
+                DynamicLineMoverHelper.RetrieveNewPosition(dynamicLineManager, bounds.center, bounds);
+            Debug.Log(transformPosition.y);
+            // Put the object on the ground (add half of the object's height to the y position), +1 to be above plane
+            transformPosition.y += bounds.extents.y + 1;
             // Set the position of the object and round it to the nearest integer value
             transform.position = transformPosition.Round();
         }
@@ -90,6 +99,14 @@ public class ObjectAdder : MonoBehaviour
             }
 
             gameObject.layer = _initialLayer;
+            
+            if (transform.childCount > 0)
+            {
+                foreach (Transform child in transform)
+                {
+                    child.gameObject.layer = _initialLayer;
+                }
+            }
 
             // Call the OnCompleted delegate
             OnCompleted?.Invoke();

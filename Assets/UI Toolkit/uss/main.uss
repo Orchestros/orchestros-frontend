@@ -27,3 +27,18 @@
     color: white;
     -unity-font-style: bold;
 }
+
+.history-item {
+    border-color: white;
+    color: #525252;
+    -unity-text-align: lower-left;
+    font-size: 10px;
+    border-bottom-color: silver;
+    padding: 5px;
+    border-radius: 0;
+    background-color: white;
+}
+.history-item:hover {
+    background-color: #7892BA;
+    color: white;
+}

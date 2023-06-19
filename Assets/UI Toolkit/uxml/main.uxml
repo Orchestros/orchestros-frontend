@@ -1,7 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/uss/main.uss?fileID=7433441132597879392&amp;guid=039ba498e03de3d439fb71b0c7f29aff&amp;type=3#main" />
-    <ui:VisualElement class="body" style="align-items: flex-end; background-image: resource(&apos;background&apos;); -unity-slice-left: 0; -unity-slice-right: 100;">
-        <ui:VisualElement class="buttonPanels" style="margin-right: 7%; margin-bottom: 10px; width: 22%;">
+    <ui:VisualElement class="body" style="align-items: flex-end; background-image: resource(&apos;background&apos;); -unity-slice-left: 0; -unity-slice-right: 100; margin-bottom: 10px; justify-content: space-between;">
+        <ui:VisualElement style="height: 20%;" />
+        <ui:ScrollView focusable="true" name="historyScrollView" scroll-deceleration-rate="0,135" elasticity="0,1" style="height: auto; width: 22%; margin-right: 7%; max-height: 30%; min-height: 20%;">
+            <ui:Label text="Recent arenas" display-tooltip-when-elided="true" style="background-color: rgb(255, 255, 255); color: rgb(87, 87, 87);" />
+        </ui:ScrollView>
+        <ui:VisualElement class="buttonPanels" style="margin-right: 7%; margin-bottom: 0; width: 22%; padding-left: 0; padding-right: 0;">
             <ui:Button name="newMap" text="New map" class="button" />
             <ui:Button name="openMap" text="Open map" class="button" />
             <ui:Button name="newDemo" text="New demonstration" class="button" />

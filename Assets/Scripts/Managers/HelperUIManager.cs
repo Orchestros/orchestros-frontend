@@ -1,12 +1,12 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
-namespace UI
+namespace Managers
 {
-    [System.Serializable]
+    [Serializable]
     public class HelperUIItem
     {
         public string description;
@@ -30,9 +30,10 @@ namespace UI
             element.Add(label2);
             return element;
         }
+
     }
 
-    public class HelperUIController : MonoBehaviour
+    public class HelperUIManager : MonoBehaviourWithState
     {
         // List of helper items, serialized so that they can be set in the Unity Editor
         [SerializeField] public HelperUIItem[] helperItems;
@@ -50,6 +51,11 @@ namespace UI
 
         private void SetupView()
         {
+            if (!isActiveAndEnabled)
+            {
+                return;
+            }
+            
             var uiDocument = helperUI.GetComponent<UIDocument>();
             Debug.Log(uiDocument);
             var rootVisualElement = uiDocument.rootVisualElement;
@@ -69,14 +75,19 @@ namespace UI
         /// Toggle UIDocument (gameObject) on/off when the user presses the 'H' key
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.H))
+            if (!Input.GetKeyDown(KeyCode.H)) return;
+            
+            helperUI.SetActive(!helperUI.activeSelf);
+            
+            if (helperUI.activeSelf)
             {
-                helperUI.SetActive(!helperUI.activeSelf);
-                if (helperUI.activeSelf)
-                {
-                    SetupView();
-                }
+                SetupView();
             }
+        }
+        
+        public override bool ShouldBeEnabled(HashSet<Type> activeStates)
+        {
+            return !activeStates.Contains(typeof(EditFormManager));
         }
     }
 }

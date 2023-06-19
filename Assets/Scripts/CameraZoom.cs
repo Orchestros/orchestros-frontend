@@ -3,7 +3,7 @@
 public class CameraZoom : MonoBehaviour
 {
     // The minimum orthographic size of the camera
-    public float minOrthographicSize = 10;
+    public float minOrthographicSize = 6;
 
     // The main camera component
     private Camera _camera;
