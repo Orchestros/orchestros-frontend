@@ -1978,7 +1978,7 @@ MonoBehaviour:
   activationEvent:
     m_PersistentCalls:
       m_Calls: []
-  dynamicDistance: 0.1
+  dynamicDistance: 1
   lineWidth: 1
   arenaObjectsManager: {fileID: 760284490}
   panel: {fileID: 572488316}
