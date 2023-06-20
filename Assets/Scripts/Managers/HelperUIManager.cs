@@ -57,7 +57,6 @@ namespace Managers
             }
             
             var uiDocument = helperUI.GetComponent<UIDocument>();
-            Debug.Log(uiDocument);
             var rootVisualElement = uiDocument.rootVisualElement;
             var scrollView = rootVisualElement.Children().First().Children().First().Children().Last() as ScrollView;
             

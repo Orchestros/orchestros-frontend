@@ -1,7 +1,7 @@
+using System.IO;
 using Managers;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Utils;
 using SceneManager = UnityEngine.SceneManagement.SceneManager;
 
 namespace UI
@@ -32,6 +32,13 @@ namespace UI
                 
                 var historyItem = PlayerPrefs.GetString("history_" + i);
                 if (historyItem.Length <= 0) continue;
+                
+                // Ensure file exists
+                if (!File.Exists(historyItem))
+                {
+                    PlayerPrefs.SetString("history_" + i, "");
+                    continue;
+                }
 
                 isHistoryEmpty = false;
                 var button = new Button(() =>

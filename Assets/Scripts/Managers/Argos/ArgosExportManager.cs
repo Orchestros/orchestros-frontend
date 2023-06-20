@@ -117,14 +117,10 @@ namespace Managers.Argos
                 // Check if .orchesta/template.argos file exists at user's home directory
                 var templateFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
                     Path.Combine(".orchestra", "template.argos"));
-                Debug.Log(templateFilePath);
-                if (File.Exists(templateFilePath))
-                {
+                return File.Exists(templateFilePath) ?
                     // If the file exists, return the xml from the file
-                    return File.ReadAllText(templateFilePath);
-                }
+                    File.ReadAllText(templateFilePath) : baseXML.text;
 # endif
-                return baseXML.text;
             }
 
 

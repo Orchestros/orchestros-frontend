@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Managers.DynamicLine
@@ -27,7 +28,7 @@ namespace Managers.DynamicLine
             var transformPosition = initialPosition;
 
             // Iterate through each dynamic line and update the transform position accordingly.
-            foreach (var line in dynamicLines)
+            foreach (var line in dynamicLines.Where(line => line.IsUsedToSnap))
             {
                 switch (line.Direction)
                 {
@@ -59,7 +60,11 @@ namespace Managers.DynamicLine
                 }
             }
 
-            return transformPosition;
+            // Compute the delta between the initial position and the transform position.
+            var distance = Vector3.Distance(initialPosition, transformPosition);
+            
+
+            return distance > 1 ? initialPosition : transformPosition;
         }
     }
 }
